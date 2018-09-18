@@ -92,5 +92,5 @@ public interface IControladorUsuario {
 
     public abstract DtNickTitProp obtenerNombreApellido(String nick) throws Exception;
     
-    public abstract Usuario ObtenerUsuario(String nombreU);
+    public abstract DtUsuario ObtenerDTUsuario(String nombreU);
 }

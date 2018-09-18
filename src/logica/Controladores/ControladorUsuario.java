@@ -118,7 +118,7 @@ public class ControladorUsuario implements IControladorUsuario {
 
             if (mentry.getValue() instanceof Proponente) {
                 Proponente aux = (Proponente) mentry.getValue();
-                DtUsuario usu = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen());
+                DtUsuario usu = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword());
                 listProp.add(usu);
             }
         }
@@ -255,7 +255,7 @@ public class ControladorUsuario implements IControladorUsuario {
             Map.Entry mentry = (Map.Entry) iterator.next();
             if (mentry.getValue() instanceof Proponente) {
                 Proponente aux = (Proponente) mentry.getValue();
-                DtProponente aux2 = new DtProponente(aux.getBiografia(), aux.getDireccion(), aux.getSitioweb(), aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen());
+                DtProponente aux2 = new DtProponente(aux.getBiografia(), aux.getDireccion(), aux.getSitioweb(), aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword());
                 retorno.add(aux2);
             }
         }
@@ -465,7 +465,7 @@ public class ControladorUsuario implements IControladorUsuario {
             Map.Entry mentry = (Map.Entry) iterator.next();
             if (mentry.getValue() instanceof Usuario) {
                 Usuario aux = (Usuario) mentry.getValue();
-                DtUsuario aux2 = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen());
+                DtUsuario aux2 = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword());
                 retorno.add(aux2);
             }
         }
@@ -718,9 +718,24 @@ public class ControladorUsuario implements IControladorUsuario {
     }
     
     @Override
-    public Usuario ObtenerUsuario(String nombreU){
+    public DtUsuario ObtenerDTUsuario(String nombreU){
         
-      return (Proponente) this.Usuarios.get(nombreU);
+     DtUsuario dtc = null;
+        Set set = Usuarios.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            if (mentry.getValue() instanceof Usuario) {
+                Usuario aux = (Usuario) mentry.getValue();
+
+                if (aux.getNickname().equals(nombreU)) {
+                    dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword());
+                    break;
+                }
+            }
+        }
+        return dtc;
    
     }
 

@@ -19,14 +19,24 @@ public class DtUsuario {
     private String correo;
     private Calendar fechaN;
     private String imagen;
+    private String password;
 
-    public DtUsuario(String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen) {
+    public DtUsuario(String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
         this.fechaN = fechaN;
         this.imagen = imagen;
+        this.password= password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getNickName() {
