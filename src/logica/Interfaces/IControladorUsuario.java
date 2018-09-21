@@ -46,7 +46,7 @@ public interface IControladorUsuario {
 
     public abstract ArrayList<DtinfoColaborador> BuscarColaborador(String nick);
 
-    public abstract List<DtinfoPropuesta> verPropuestas();
+    public abstract List<DtinfoPropuesta> verPropuestas(String nick);
 
     public abstract DtinfoColaborador verPerfil(String nombre);
 
@@ -93,4 +93,12 @@ public interface IControladorUsuario {
     public abstract DtNickTitProp obtenerNombreApellido(String nick) throws Exception;
     
     public abstract DtUsuario ObtenerDTUsuario(String nombreU);
+    
+    public abstract List<DtUsuario> ObtenerSeguidos(String nick);
+    
+    public abstract List<DtUsuario> ObtenerSeguidores(String nick);
+    
+    public abstract void CargarFavoritas();
+    
+     public abstract List<DtinfoPropuesta> obtenerfavoritas(String nick);
 }

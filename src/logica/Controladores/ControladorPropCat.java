@@ -44,6 +44,7 @@ import logica.Clases.Proponente;
 import logica.Clases.Propuesta;
 import logica.Clases.TipoE;
 import logica.Clases.TipoRetorno;
+import logica.Clases.Usuario;
 import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
@@ -733,5 +734,27 @@ public class ControladorPropCat implements IPropCat {
                 throw new Exception("No se pudo alterar el estado en la Base de datos");
             }
         }
+    }
+
+    @Override
+    public Usuario CargarFavoritas(Usuario usu, List<String> usufav) {
+        Set set = this.propuestas.entrySet();
+        Iterator it = set.iterator();
+        while (it.hasNext()) {
+            //recorro las propuestas
+            Map.Entry mentry = (Map.Entry) it.next();
+            Propuesta p = (Propuesta) mentry.getValue();
+            Iterator it2 = usufav.iterator();
+            //recorro las propuestas favoritas del usuario
+            while (it2.hasNext()) {
+                String titulo = (String) it2.next();
+                //si el nombre de la propuesta concuerda con la de la favorita del usuario se la agrego.
+                if (p.getTituloP().equals(titulo)) {
+                    usu.getFavoritas().put(titulo, p);
+                    break;
+                }
+            }
+        }
+        return usu;
     }
 }

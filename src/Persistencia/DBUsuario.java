@@ -16,7 +16,9 @@ import logica.Clases.Proponente;
 import java.util.Date;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -214,5 +216,21 @@ public class DBUsuario {
             return false;
         }
 
+    }
+    public List<String> CargarFavoritas(String nick){
+        List<String> favoritas=new ArrayList<>();
+        try {
+           PreparedStatement statement = conexion.prepareStatement("SELECT * FROM favoritas WHERE Usuario='"+nick+"'");
+           ResultSet st = statement.executeQuery();
+
+            while (st.next()) {
+                favoritas.add(st.getString("Propuesta"));
+            }
+            statement.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return favoritas;
     }
 }

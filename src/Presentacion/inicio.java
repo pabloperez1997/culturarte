@@ -37,6 +37,7 @@ public class inicio extends javax.swing.JFrame {
         ICU.CargarUsuarios();
         IPC.CargarPropuestas();
         IPC.CargarColaboraciones();
+        ICU.CargarFavoritas();
         this.setTitle("Culturarte");
     }
 

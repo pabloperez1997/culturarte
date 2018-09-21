@@ -20,8 +20,9 @@ public class DtUsuario {
     private Calendar fechaN;
     private String imagen;
     private String password;
+    private boolean esproponente;
 
-    public DtUsuario(String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password) {
+    public DtUsuario(String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password,boolean EsProponente) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -29,6 +30,11 @@ public class DtUsuario {
         this.fechaN = fechaN;
         this.imagen = imagen;
         this.password= password;
+        this.esproponente=EsProponente;
+    }
+
+    public boolean Esproponente() {
+        return esproponente;
     }
 
     public String getPassword() {

@@ -31,6 +31,7 @@ public class Usuario {
         this.password = password;
     }
     private Map<String, Usuario> seguidos;
+    private Map<String,Propuesta> favoritas;
     
 
     public Usuario(String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen,String password) {
@@ -42,6 +43,12 @@ public class Usuario {
         this.imagen = imagen;
         this.password=password;
         this.seguidos = new HashMap<>();
+        this.favoritas = new HashMap<>();
+    }
+
+
+    public Map<String, Propuesta> getFavoritas() {
+        return favoritas;
     }
 
     public String getNickname() {

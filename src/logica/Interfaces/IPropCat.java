@@ -21,6 +21,7 @@ import logica.Clases.Proponente;
 import logica.Clases.Propuesta;
 import logica.Clases.TipoE;
 import logica.Clases.TipoRetorno;
+import logica.Clases.Usuario;
 
 /**
  *
@@ -95,4 +96,7 @@ public interface IPropCat {
     public abstract List<DtNickTitProp> ListaEvaluarPropuesta();
 
     public abstract boolean EvaluarPropuesta(String titulo, TipoE tipo)throws Exception;
+    
+    public abstract Usuario CargarFavoritas(Usuario usu, List<String> usufav);
+
 }
