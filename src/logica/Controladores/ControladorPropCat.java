@@ -224,7 +224,7 @@ public class ControladorPropCat implements IPropCat {
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mentry.getValue();
-            DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getAutor().getNickname());
+            DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getCategoria().getNombreC());
             listPropuestas.add(dtprop);
         }
         return listPropuestas;
