@@ -89,7 +89,7 @@ public class ControladorPropCat implements IPropCat {
             Map.Entry mentry = (Map.Entry) iterator.next();
             Propuesta aux = (Propuesta) mentry.getValue();
 
-            if (aux.getEstadoActual().getEstado() == TipoE.Publicada || aux.getEstadoActual().getEstado() == TipoE.enFinanciacion || aux.getEstadoActual().getEstado() == TipoE.Ingresada) {
+            if (aux.getEstadoActual().getEstado() == TipoE.Publicada) {
                 DtNickTitProp aux2 = new DtNickTitProp(aux);
                 retorno.add(aux2);
             }
@@ -229,6 +229,21 @@ public class ControladorPropCat implements IPropCat {
         }
         return listPropuestas;
     }
+    
+    @Override
+     public List<DtNickTitProp> listarPropuestasR() {//commit
+        List<DtNickTitProp> listPropuestas = new ArrayList();
+
+        Iterator it = this.propuestas.entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Propuesta prop = (Propuesta) mentry.getValue();
+            DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getAutor().getNickname());
+            listPropuestas.add(dtprop);
+        }
+        return listPropuestas;
+    }
 
     @Override
     public EstadoPropuesta verEstadoPropuesta(String titulo) {
@@ -249,6 +264,22 @@ public class ControladorPropCat implements IPropCat {
 
                 retorno = new DtinfoPropuesta(aux.getTituloP(), aux.getDescripcionP(), aux.getImagen(), aux.getCategoria().getNombreC(), aux.getLugar(), aux.getFecha(), aux.getMontoE(), aux.getMontoTot(), aux.getRetorno());
                 this.Propuesta = aux;
+            }
+        }
+        return retorno;
+    }
+    
+    @Override
+    public DtinfoPropuesta RetornarPropuestaR(String titulo) {
+        Map<String, Propuesta> prop = this.propuestas;
+        Set set = prop.entrySet();
+        Iterator iterator = set.iterator();
+        DtinfoPropuesta retorno = null;
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            Propuesta aux = (Propuesta) mentry.getValue();
+            if (aux.getTituloP().compareTo(titulo) == 0) {
+                retorno = new DtinfoPropuesta(aux.getTituloP(), aux.getDescripcionP(), aux.getImagen(), aux.getCategoria().getNombreC(), aux.getLugar(), aux.getFecha(), aux.getMontoE(), aux.getMontoTot(), aux.getRetorno());
             }
         }
         return retorno;

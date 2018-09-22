@@ -44,7 +44,11 @@ public interface IPropCat {
 
     public abstract List<DtNickTitProp> listarPropuestas();
 
+    public abstract List<DtNickTitProp> listarPropuestasR();
+
     public abstract DtinfoPropuesta SeleccionarPropuestaR(String titulo);
+
+    public abstract DtinfoPropuesta RetornarPropuestaR(String titulo);
 
     public abstract List<DtinfoColaborador> ListarColaboradores(String titulo);
 
@@ -94,5 +98,5 @@ public interface IPropCat {
 
     public abstract List<DtNickTitProp> ListaEvaluarPropuesta();
 
-    public abstract boolean EvaluarPropuesta(String titulo, TipoE tipo)throws Exception;
+    public abstract boolean EvaluarPropuesta(String titulo, TipoE tipo) throws Exception;
 }
