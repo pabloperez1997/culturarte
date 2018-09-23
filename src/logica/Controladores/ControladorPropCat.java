@@ -229,9 +229,9 @@ public class ControladorPropCat implements IPropCat {
         }
         return listPropuestas;
     }
-    
+
     @Override
-     public List<DtNickTitProp> listarPropuestasR() {//commit
+    public List<DtNickTitProp> listarPropuestasR() {//commit
         List<DtNickTitProp> listPropuestas = new ArrayList();
 
         Iterator it = this.propuestas.entrySet().iterator();
@@ -239,8 +239,10 @@ public class ControladorPropCat implements IPropCat {
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mentry.getValue();
-            DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getAutor().getNickname());
-            listPropuestas.add(dtprop);
+            if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
+                DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getAutor().getNickname());
+                listPropuestas.add(dtprop);
+            }
         }
         return listPropuestas;
     }
@@ -268,7 +270,7 @@ public class ControladorPropCat implements IPropCat {
         }
         return retorno;
     }
-    
+
     @Override
     public DtinfoPropuesta RetornarPropuestaR(String titulo) {
         Map<String, Propuesta> prop = this.propuestas;
@@ -424,7 +426,6 @@ public class ControladorPropCat implements IPropCat {
             }
 
             DBC.agregarColaboracion(Entrada, monto);
-            this.Propuesta = null;
             return true;
         } else {
             throw new Exception("El monto que ingreso ha superado el limite del monto total, ingrese un monto menor o igual a: $" + (this.getPropuesta().getMontoTot() - TotalColaboracion));
