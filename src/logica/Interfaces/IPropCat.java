@@ -102,5 +102,7 @@ public interface IPropCat {
     public abstract boolean EvaluarPropuesta(String titulo, TipoE tipo)throws Exception;
     
     public abstract Usuario CargarFavoritas(Usuario usu, List<String> usufav);
+    
+    public List<DtinfoPropuesta> ListarPropuestasNoIngresadas(String nick);
 
 }

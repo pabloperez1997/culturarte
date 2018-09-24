@@ -789,4 +789,21 @@ public class ControladorPropCat implements IPropCat {
         }
         return usu;
     }
+    
+    public List<DtinfoPropuesta> ListarPropuestasNoIngresadas(String nick) {
+        List<DtinfoPropuesta> retorno = new ArrayList<>();
+        Set set = this.propuestas.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            Propuesta p = (Propuesta) mentry.getValue();
+            if (p.getAutor().getNickname().equals(nick)) {
+                if(p.getEstadoActual().getEstado() != TipoE.Ingresada){
+                DtinfoPropuesta dtP = new DtinfoPropuesta(p);
+                retorno.add(dtP);
+                }
+            }
+        }
+        return retorno;
+    }
 }
