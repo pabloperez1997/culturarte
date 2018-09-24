@@ -90,7 +90,7 @@ public class ControladorPropCat implements IPropCat {
             Map.Entry mentry = (Map.Entry) iterator.next();
             Propuesta aux = (Propuesta) mentry.getValue();
 
-            if (aux.getEstadoActual().getEstado() == TipoE.Publicada || aux.getEstadoActual().getEstado() == TipoE.enFinanciacion || aux.getEstadoActual().getEstado() == TipoE.Ingresada) {
+            if (aux.getEstadoActual().getEstado() == TipoE.Publicada) {
                 DtNickTitProp aux2 = new DtNickTitProp(aux);
                 retorno.add(aux2);
             }
@@ -225,8 +225,25 @@ public class ControladorPropCat implements IPropCat {
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mentry.getValue();
-            DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getAutor().getNickname());
+            DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getCategoria().getNombreC());
             listPropuestas.add(dtprop);
+        }
+        return listPropuestas;
+    }
+
+    @Override
+    public List<DtNickTitProp> listarPropuestasR() {//commit
+        List<DtNickTitProp> listPropuestas = new ArrayList();
+
+        Iterator it = this.propuestas.entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Propuesta prop = (Propuesta) mentry.getValue();
+            if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
+                DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getAutor().getNickname());
+                listPropuestas.add(dtprop);
+            }
         }
         return listPropuestas;
     }
@@ -250,6 +267,22 @@ public class ControladorPropCat implements IPropCat {
 
                 retorno = new DtinfoPropuesta(aux.getTituloP(), aux.getDescripcionP(), aux.getImagen(), aux.getCategoria().getNombreC(), aux.getLugar(), aux.getFecha(), aux.getMontoE(), aux.getMontoTot(), aux.getRetorno());
                 this.Propuesta = aux;
+            }
+        }
+        return retorno;
+    }
+
+    @Override
+    public DtinfoPropuesta RetornarPropuestaR(String titulo) {
+        Map<String, Propuesta> prop = this.propuestas;
+        Set set = prop.entrySet();
+        Iterator iterator = set.iterator();
+        DtinfoPropuesta retorno = null;
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            Propuesta aux = (Propuesta) mentry.getValue();
+            if (aux.getTituloP().compareTo(titulo) == 0) {
+                retorno = new DtinfoPropuesta(aux.getTituloP(), aux.getDescripcionP(), aux.getImagen(), aux.getCategoria().getNombreC(), aux.getLugar(), aux.getFecha(), aux.getMontoE(), aux.getMontoTot(), aux.getRetorno());
             }
         }
         return retorno;
@@ -394,7 +427,6 @@ public class ControladorPropCat implements IPropCat {
             }
 
             DBC.agregarColaboracion(Entrada, monto);
-            this.Propuesta = null;
             return true;
         } else {
             throw new Exception("El monto que ingreso ha superado el limite del monto total, ingrese un monto menor o igual a: $" + (this.getPropuesta().getMontoTot() - TotalColaboracion));

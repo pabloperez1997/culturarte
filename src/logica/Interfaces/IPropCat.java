@@ -45,7 +45,11 @@ public interface IPropCat {
 
     public abstract List<DtNickTitProp> listarPropuestas();
 
+    public abstract List<DtNickTitProp> listarPropuestasR();
+
     public abstract DtinfoPropuesta SeleccionarPropuestaR(String titulo);
+
+    public abstract DtinfoPropuesta RetornarPropuestaR(String titulo);
 
     public abstract List<DtinfoColaborador> ListarColaboradores(String titulo);
 
