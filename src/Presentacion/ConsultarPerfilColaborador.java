@@ -23,6 +23,7 @@ import logica.Interfaces.IControladorUsuario;
 public class ConsultarPerfilColaborador extends javax.swing.JInternalFrame {
 
     private IControladorUsuario ICU;
+    private DtinfoColaborador dtc2;
 
     public ConsultarPerfilColaborador() {
         initComponents();
@@ -220,6 +221,7 @@ public class ConsultarPerfilColaborador extends javax.swing.JInternalFrame {
         textnom.setText("");
         textfecha.setText("");
         DtinfoColaborador dtc = ICU.verPerfil((String) TablaC.getValueAt(TablaC.getSelectedRow(), 0));
+        dtc2=dtc;
         Calendar c = dtc.getFechaN();
         int dia = c.get(Calendar.DAY_OF_MONTH);
         int mes = c.get(Calendar.MONTH) + 1;
@@ -279,7 +281,7 @@ public class ConsultarPerfilColaborador extends javax.swing.JInternalFrame {
         }
 
         try {
-            ConsultarPerfilColaborador2 cpc = new ConsultarPerfilColaborador2();
+            ConsultarPerfilColaborador2 cpc = new ConsultarPerfilColaborador2(dtc2.getNickname());
             inicio.Escritorio.add(cpc);
             this.setVisible(false);
             cpc.toFront();

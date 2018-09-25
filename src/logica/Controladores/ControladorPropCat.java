@@ -44,6 +44,7 @@ import logica.Clases.Proponente;
 import logica.Clases.Propuesta;
 import logica.Clases.TipoE;
 import logica.Clases.TipoRetorno;
+import logica.Clases.Usuario;
 import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;

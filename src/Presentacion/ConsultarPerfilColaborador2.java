@@ -27,11 +27,11 @@ public class ConsultarPerfilColaborador2 extends javax.swing.JInternalFrame {
     private IControladorUsuario ICU;
     private IPropCat IPC;
 
-    public ConsultarPerfilColaborador2() throws Exception {
+    public ConsultarPerfilColaborador2(String nick) throws Exception {
         initComponents();
         ICU = Fabrica.getInstance().getIControladorUsuario();
         IPC = Fabrica.getInstance().getControladorPropCat();
-        List<DtinfoPropuesta> dtp = ICU.verPropuestas();
+        List<DtinfoPropuesta> dtp = ICU.verPropuestas(nick);
         if (dtp == null || dtp.size() == 0) {
             dtp=null;
             throw new Exception("El colaborador no posee colaboraciones");
@@ -366,7 +366,7 @@ public class ConsultarPerfilColaborador2 extends javax.swing.JInternalFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new ConsultarPerfilColaborador2().setVisible(true);
+                    new ConsultarPerfilColaborador2(null).setVisible(true);
                 } catch (Exception ex) {
                     Logger.getLogger(ConsultarPerfilColaborador2.class.getName()).log(Level.SEVERE, null, ex);
                 }
