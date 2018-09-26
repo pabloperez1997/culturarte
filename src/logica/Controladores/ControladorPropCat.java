@@ -82,6 +82,7 @@ public class ControladorPropCat implements IPropCat {
     
     @Override
     public List<DtNickTitProp> listarPropuestaC() {
+        EvaluarEstadosPropuestas();
         Map<String, Propuesta> prop = this.propuestas;
         Set set = prop.entrySet();
         Iterator iterator = set.iterator();
