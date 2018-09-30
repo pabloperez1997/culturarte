@@ -806,4 +806,22 @@ public class ControladorPropCat implements IPropCat {
         }
         return retorno;
     }
+    
+    public List<DtinfoPropuesta> ListarPropuesta(){
+        List<DtinfoPropuesta> propuestas=new ArrayList<>();
+        Set set=this.propuestas.entrySet();
+        Iterator it=set.iterator();
+        while(it.hasNext()){
+            Map.Entry mentry=(Map.Entry) it.next();
+            Propuesta p=(Propuesta) mentry.getValue();
+            DtinfoPropuesta dtp=new DtinfoPropuesta(p);
+            propuestas.add(dtp);
+        }
+        return propuestas;
+    }
+    
+    public boolean AgregarFavorita(String titulo,String nick){
+        
+        return true;
+    }
 }
