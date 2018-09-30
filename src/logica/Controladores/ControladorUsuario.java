@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
+import logica.Clases.DataImagen;
 import logica.Clases.DtColaboraciones;
 import logica.Clases.DtNickTitProp;
 import logica.Clases.DtProponente;
@@ -40,6 +41,7 @@ import logica.Clases.Proponente;
 import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
+import logica.Clases.codificador;
 
 /**
  *
@@ -53,6 +55,7 @@ public class ControladorUsuario implements IControladorUsuario {
     private IPropCat IPC;
     private DBUsuario dbUsuario = null;
     private Colaborador Colaborador;
+    codificador a = new codificador();
 
     public static ControladorUsuario getInstance() {
         if (instancia == null) {
@@ -158,8 +161,8 @@ public class ControladorUsuario implements IControladorUsuario {
             return false;
 
         } else {
-            Colaborador c = new Colaborador(nickName, nombre, apellido, correo, fechaN, imagen, password);
-
+            String hash = a.sha1(password);
+            Colaborador c = new Colaborador(nickName, nombre, apellido, correo, fechaN, imagen, hash);
             String fotoLocal = c.getImagen();
             if (!"".equals(c.getImagen())) {
                 File fLocal = new File(fotoLocal);
@@ -186,7 +189,8 @@ public class ControladorUsuario implements IControladorUsuario {
         if (this.Usuarios.get(nickName) != null) {
             return false;
         } else {
-            Proponente c = new Proponente(biografia, direccion, sitioWeb, nickName, nombre, apellido, correo, fechaN, imagen, password);
+            String hash = a.sha1(password);
+            Proponente c = new Proponente(biografia, direccion, sitioWeb, nickName, nombre, apellido, correo, fechaN, imagen, hash);
             String fotoLocal = c.getImagen();
             if (!"".
                     equals(c.getImagen())) {
@@ -848,4 +852,5 @@ public class ControladorUsuario implements IControladorUsuario {
             //aux=this.IPC.CargarFavoritas(aux, favoritas);
         }
     }
+
 }

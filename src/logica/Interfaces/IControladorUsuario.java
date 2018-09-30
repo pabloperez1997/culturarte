@@ -21,6 +21,7 @@ import logica.Clases.DtinfoColaborador;
 import logica.Clases.DtinfoPropuesta;
 import logica.Clases.Proponente;
 import logica.Clases.Usuario;
+import logica.Clases.DataImagen;
 
 /**
  *
