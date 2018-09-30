@@ -555,7 +555,7 @@ public class Registrar_Colaboracion extends javax.swing.JInternalFrame {
         Fabrica fabrica = Fabrica.getInstance();
         IPropCat controladorPC = fabrica.getControladorPropCat();
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        List<DtNickTitProp> lista = controladorPC.listarPropuestaC();
+        List<DtNickTitProp> lista = controladorPC.listarPropuestasR();
         modelo.setRowCount(0);
         for (int i = 0; i < lista.size(); i++) {
             DtNickTitProp p = (DtNickTitProp) lista.get(i);

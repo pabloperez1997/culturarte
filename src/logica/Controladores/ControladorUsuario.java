@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
+import logica.Clases.DataImagen;
 import logica.Clases.DtColaboraciones;
 import logica.Clases.DtNickTitProp;
 import logica.Clases.DtProponente;
@@ -40,6 +41,7 @@ import logica.Clases.Proponente;
 import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
+import logica.Clases.codificador;
 
 /**
  *
@@ -53,6 +55,7 @@ public class ControladorUsuario implements IControladorUsuario {
     private IPropCat IPC;
     private DBUsuario dbUsuario = null;
     private Colaborador Colaborador;
+    codificador a = new codificador();
 
     public static ControladorUsuario getInstance() {
         if (instancia == null) {
@@ -159,7 +162,6 @@ public class ControladorUsuario implements IControladorUsuario {
 
         } else {
             Colaborador c = new Colaborador(nickName, nombre, apellido, correo, fechaN, imagen, password);
-
             String fotoLocal = c.getImagen();
             if (!"".equals(c.getImagen())) {
                 File fLocal = new File(fotoLocal);
@@ -845,7 +847,8 @@ public class ControladorUsuario implements IControladorUsuario {
             Usuario aux = (Usuario) mentry.getValue();
             List<String> favoritas = this.dbUsuario.CargarFavoritas(aux.getNickname());
             //le agrego las propuestas favoritas
-            aux=this.IPC.CargarFavoritas(aux, favoritas);
+            //aux=this.IPC.CargarFavoritas(aux, favoritas);
         }
     }
+
 }

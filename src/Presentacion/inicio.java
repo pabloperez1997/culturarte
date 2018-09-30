@@ -329,7 +329,6 @@ public class inicio extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Carga de Datos de Prueba fue cancelada");
         }
-
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed

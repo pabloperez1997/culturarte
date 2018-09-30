@@ -233,6 +233,7 @@ public class ControladorPropCat implements IPropCat {
 
     @Override
     public List<DtNickTitProp> listarPropuestasR() {//commit
+        EvaluarEstadosPropuestas();
         List<DtNickTitProp> listPropuestas = new ArrayList();
 
         Iterator it = this.propuestas.entrySet().iterator();
@@ -384,7 +385,6 @@ public class ControladorPropCat implements IPropCat {
         IControladorUsuario ICU = Fabrica.getInstance().getIControladorUsuario();
         Calendar calendario = new GregorianCalendar();
         DBColaboracion DBC = new DBColaboracion();
-        java.util.Date utilDate = Calendar.getInstance().getTime();
 
         List<Colaboracion> colaboraciones = this.getPropuesta().getColaboraciones();
         List<Colaboracion> colaboracionesC = ICU.getColaborador().getColaboraciones();
@@ -769,42 +769,47 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public Usuario CargarFavoritas(Usuario usu, List<String> usufav) {
-        Set set = this.propuestas.entrySet();
-        Iterator it = set.iterator();
+    public void EvaluarEstadosPropuestas() {
+
+        Iterator it = this.getPropuestas().entrySet().iterator();
+
         while (it.hasNext()) {
-            //recorro las propuestas
-            Map.Entry mentry = (Map.Entry) it.next();
-            Propuesta p = (Propuesta) mentry.getValue();
-            Iterator it2 = usufav.iterator();
-            //recorro las propuestas favoritas del usuario
-            while (it2.hasNext()) {
-                String titulo = (String) it2.next();
-                //si el nombre de la propuesta concuerda con la de la favorita del usuario se la agrego.
-                if (p.getTituloP().equals(titulo)) {
-                    usu.getFavoritas().put(titulo, p);
-                    break;
+            Map.Entry mtry = (Map.Entry) it.next();
+
+            Propuesta prop = (Propuesta) mtry.getValue();
+
+            if (prop.getEstadoActual().getEstado() == TipoE.Publicada) {
+
+                Calendar fechaDeHoy = new GregorianCalendar();
+                Date fechaDeHoy1 = fechaDeHoy.getTime();
+
+                if (fechaDeHoy1.before(this.FechaCambioEstado(prop.getEstadoActual().getfechaInicio().getTime()))) {
+                    if (prop.getMontoTot() <= this.CalcularMontoPropuesta(prop)) {
+                        EstadoPropuesta nuevoE = new EstadoPropuesta(TipoE.Financiada, fechaDeHoy, true);
+                        EstadoPropuesta EstadoAnt = prop.getEstadoActual();
+                        EstadoAnt.setEsActual(false);
+                        prop.setEstados(EstadoAnt);
+                        prop.setEstadoActual(nuevoE);
+                    } else {
+                        EstadoPropuesta nuevoE = new EstadoPropuesta(TipoE.Cancelada, fechaDeHoy, true);
+                        EstadoPropuesta EstadoAnt = prop.getEstadoActual();
+                        EstadoAnt.setEsActual(false);
+                        prop.setEstados(EstadoAnt);
+                        prop.setEstadoActual(nuevoE);
+                    }
                 }
+
             }
         }
-        return usu;
+
     }
-    
-    public List<DtinfoPropuesta> ListarPropuestasNoIngresadas(String nick) {
-        List<DtinfoPropuesta> retorno = new ArrayList<>();
-        Set set = this.propuestas.entrySet();
-        Iterator iterator = set.iterator();
-        while (iterator.hasNext()) {
-            Map.Entry mentry = (Map.Entry) iterator.next();
-            Propuesta p = (Propuesta) mentry.getValue();
-            if (p.getAutor().getNickname().equals(nick)) {
-                if(p.getEstadoActual().getEstado() != TipoE.Ingresada){
-                DtinfoPropuesta dtP = new DtinfoPropuesta(p);
-                retorno.add(dtP);
-                }
-            }
-        }
-        return retorno;
+
+    public Date FechaCambioEstado(Date fechaActual) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fechaActual);
+        cal.add(Calendar.DAY_OF_YEAR, 30);
+
+        return cal.getTime();
     }
     
     public List<DtinfoPropuesta> ListarPropuesta(){

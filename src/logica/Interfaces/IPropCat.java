@@ -99,7 +99,7 @@ public interface IPropCat {
 
     public abstract List<DtNickTitProp> ListaEvaluarPropuesta();
 
-    public abstract boolean EvaluarPropuesta(String titulo, TipoE tipo)throws Exception;
+    public abstract boolean EvaluarPropuesta(String titulo, TipoE tipo) throws Exception;
     
     public abstract Usuario CargarFavoritas(Usuario usu, List<String> usufav);
     
@@ -111,4 +111,5 @@ public interface IPropCat {
         
     
 
+    public abstract void EvaluarEstadosPropuestas();
 }
