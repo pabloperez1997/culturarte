@@ -31,6 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
+import logica.Clases.codificador;
 
 /**
  * asdasd
@@ -42,6 +43,7 @@ public final class AltaUsuario extends javax.swing.JInternalFrame {
     private IControladorUsuario ICU;
     private String ruta;
     private final String fotoDefecto;
+    codificador a = new codificador();
 
     /**
      * Creates new form AltaUsuario
@@ -360,6 +362,7 @@ public final class AltaUsuario extends javax.swing.JInternalFrame {
         String imagen = rSFotoCircle2.getRutaImagen();
         String password = jPasswordPass.getText();
         String confirmPass = jPasswordConfirm.getText();
+        String hash = null;
 
         Calendar fechaN = jDateChooser1.getCalendar();
         boolean ingreso;
@@ -404,9 +407,11 @@ public final class AltaUsuario extends javax.swing.JInternalFrame {
                     return;
                 }
             }
-            ingreso = ICU.AgregarUsuarioProponente(nick, nombre, apellido, correo, fechaN, imagen, direccion, biografia, sitioWeb, password);
+            hash = a.sha1(password);
+            ingreso = ICU.AgregarUsuarioProponente(nick, nombre, apellido, correo, fechaN, imagen, direccion, biografia, sitioWeb, hash);
         } else {
-            ingreso = ICU.AgregarUsuarioColaborador(nick, nombre, apellido, correo, fechaN, imagen, password);
+            hash = a.sha1(password);
+            ingreso = ICU.AgregarUsuarioColaborador(nick, nombre, apellido, correo, fechaN, imagen, hash);
         }
 
         if (ingreso) {

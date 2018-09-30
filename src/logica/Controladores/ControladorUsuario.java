@@ -161,8 +161,7 @@ public class ControladorUsuario implements IControladorUsuario {
             return false;
 
         } else {
-            String hash = a.sha1(password);
-            Colaborador c = new Colaborador(nickName, nombre, apellido, correo, fechaN, imagen, hash);
+            Colaborador c = new Colaborador(nickName, nombre, apellido, correo, fechaN, imagen, password);
             String fotoLocal = c.getImagen();
             if (!"".equals(c.getImagen())) {
                 File fLocal = new File(fotoLocal);
@@ -189,8 +188,7 @@ public class ControladorUsuario implements IControladorUsuario {
         if (this.Usuarios.get(nickName) != null) {
             return false;
         } else {
-            String hash = a.sha1(password);
-            Proponente c = new Proponente(biografia, direccion, sitioWeb, nickName, nombre, apellido, correo, fechaN, imagen, hash);
+            Proponente c = new Proponente(biografia, direccion, sitioWeb, nickName, nombre, apellido, correo, fechaN, imagen, password);
             String fotoLocal = c.getImagen();
             if (!"".
                     equals(c.getImagen())) {
