@@ -102,4 +102,6 @@ public interface IControladorUsuario {
     public abstract void CargarFavoritas();
     
      public abstract List<DtinfoPropuesta> obtenerfavoritas(String nick);
+     
+         public abstract DtUsuario ObtenerDTUsuario_Correo(String correoU);
 }
