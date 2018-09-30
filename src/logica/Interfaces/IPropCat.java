@@ -103,6 +103,12 @@ public interface IPropCat {
     
     public abstract Usuario CargarFavoritas(Usuario usu, List<String> usufav);
     
-    public List<DtinfoPropuesta> ListarPropuestasNoIngresadas(String nick);
+    public abstract List<DtinfoPropuesta> ListarPropuestasNoIngresadas(String nick);
+    
+    public abstract List<DtinfoPropuesta> ListarPropuesta();
+    
+    public boolean AgregarFavorita(String titulo,String nick);
+        
+    
 
 }
