@@ -24,7 +24,7 @@ public class ConfirmarPropuestas extends javax.swing.JInternalFrame {
 
     public ConfirmarPropuestas() {
         initComponents();
-
+        Fabrica.getInstance().getControladorPropCat().EvaluarEstadosPropuestas();
         List<DtNickTitProp> listProp = Fabrica.getInstance().getControladorPropCat().ListaEvaluarPropuesta();
 
         DefaultTableModel modelo = (DefaultTableModel) jTablePropuestas.getModel();
