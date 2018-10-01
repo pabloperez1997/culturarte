@@ -864,4 +864,30 @@ public class ControladorUsuario implements IControladorUsuario {
             //aux=this.IPC.CargarFavoritas(aux, favoritas);
         }
     }
+
+        @Override
+    public DtUsuario ObtenerDTUsuario_Correo(String correoU) {
+
+        DtUsuario dtc = null;
+        Set set = Usuarios.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            if (mentry.getValue() instanceof Usuario) {
+                Usuario aux = (Usuario) mentry.getValue();
+
+                if (aux.getCorreo().equals(correoU)) {
+                    if (aux instanceof Colaborador) {
+                        dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
+                    } else {
+                        dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
+                    }
+                    break;
+                }
+            }
+        }
+        return dtc;
+
+    }
 }
