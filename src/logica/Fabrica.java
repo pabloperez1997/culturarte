@@ -363,20 +363,6 @@ public class Fabrica {
         IPC.getPropuestas().clear();//para limpiar el map dsp que borre todo
         ICU.eliminarCategorias();
 
-        File directorioPerfiles = new File(System.getProperty("user.dir") + "\\fPerfiles");
-        File[] ficherosPerfiles = directorioPerfiles.listFiles();
-        for (int x = 0; x < ficherosPerfiles.length; x++) {
-            if (ficherosPerfiles[x].getName().compareTo("nadie.png") != 0) {
-                boolean estatus = ficherosPerfiles[x].delete();
-            }
-        }//Esto para limpiar las imagenes de la carpeta fPerfiles
-
-        File directorioPropuestas = new File(System.getProperty("user.dir") + "\\fPropuestas\\");
-        File[] ficherosPropuestas = directorioPropuestas.listFiles();
-        for (int x = 0; x < ficherosPropuestas.length; x++) {
-            if (ficherosPropuestas[x].getName().compareTo("Culturarte.png") != 0) {
-                boolean estatus = ficherosPropuestas[x].delete();
-            }
-        }//Borra las imagenes de propuestas       
-    }
+       
+    }   
 }
