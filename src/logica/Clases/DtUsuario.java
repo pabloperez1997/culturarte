@@ -41,10 +41,6 @@ public class DtUsuario {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getNickName() {
         return nickname;
     }
