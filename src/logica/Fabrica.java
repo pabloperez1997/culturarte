@@ -26,7 +26,7 @@ import logica.Controladores.ControladorPropCat;
 import logica.Interfaces.IControladorUsuario;
 import logica.Clases.codificador;
 import logica.Clases.convertidorDeIMG;
-
+import logica.Controladores.configuraciones;
 /**
  *
  * @author Santiago.S
@@ -85,7 +85,8 @@ public class Fabrica {
     public void cargarDatosdePrueba() throws IOException {
         IControladorUsuario ICU = this.getIControladorUsuario();
         IPropCat IPC = this.getControladorPropCat();
-        String ruta = System.getProperty("user.dir") + "\\fotosdp\\";
+         configuraciones configuracion = new configuraciones();
+        String ruta = configuracion.getCarpetaImagenesUsers() + "\\fotosdp\\";
 //    
 //    DBUsuario d=new DBUsuario();
 //    d.limpiarBD();

@@ -10,7 +10,7 @@ package logica.Controladores;
  * @author Lucas
  */
 public class configuraciones {
-    private String carpetaImagenesUsers="C:\\Users\\Lucas\\Documents\\NetBeansProjects\\culturarte\\fPerfiles";
+    private String carpetaImagenesUsers="C:\\Users\\Mehitor\\Documents\\NetBeansProjects\\culturarte";
 
     public String getCarpetaImagenesUsers() {
         return carpetaImagenesUsers;

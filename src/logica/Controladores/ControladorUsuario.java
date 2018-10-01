@@ -60,7 +60,7 @@ public class ControladorUsuario implements IControladorUsuario {
     private Colaborador Colaborador;
     codificador a = new codificador();
     configuraciones configuracion = new configuraciones();
-    private String carpetaImagenesPerfiles = configuracion.getCarpetaImagenesUsers();
+    private String carpetaImagenesPerfiles = configuracion.getCarpetaImagenesUsers() + "\\fPerfiles";
 
     public static ControladorUsuario getInstance() {
         if (instancia == null) {
@@ -176,6 +176,7 @@ public class ControladorUsuario implements IControladorUsuario {
                     Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+                 this.Usuarios.put(nickName, c);
             boolean res = this.dbUsuario.agregarColaborador(c);
             return res;
         }
@@ -219,6 +220,7 @@ public class ControladorUsuario implements IControladorUsuario {
                     Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            this.Usuarios.put(nickName, c);
             boolean res = this.dbUsuario.agregarProponente(c);
             return res;
         }
@@ -865,7 +867,7 @@ public class ControladorUsuario implements IControladorUsuario {
         }
     }
 
-        @Override
+    @Override
     public DtUsuario ObtenerDTUsuario_Correo(String correoU) {
 
         DtUsuario dtc = null;
