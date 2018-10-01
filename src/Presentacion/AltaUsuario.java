@@ -11,12 +11,16 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -28,10 +32,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.commons.io.FilenameUtils;
 import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Clases.codificador;
+import logica.Clases.DataImagen;
+import logica.Clases.convertidorDeIMG;
 
 /**
  * asdasd
@@ -44,6 +50,7 @@ public final class AltaUsuario extends javax.swing.JInternalFrame {
     private String ruta;
     private final String fotoDefecto;
     codificador a = new codificador();
+    convertidorDeIMG convertidor = new convertidorDeIMG();
 
     /**
      * Creates new form AltaUsuario
@@ -66,6 +73,7 @@ public final class AltaUsuario extends javax.swing.JInternalFrame {
         this.jTextNick.requestFocus();
         jDateChooser1.setCalendar(new GregorianCalendar(2000, 00, 01));
         ((JTextField) this.jDateChooser1.getDateEditor()).setEditable(false);
+
     }
 
     /**
@@ -365,7 +373,7 @@ public final class AltaUsuario extends javax.swing.JInternalFrame {
         String hash = null;
 
         Calendar fechaN = jDateChooser1.getCalendar();
-        boolean ingreso;
+        boolean ingreso = false;
 
         if ("".equals(nick) || "".equals(nombre) || "".equals(apellido) || "".equals(correo) || fechaN.getTime() == null) {
             JOptionPane.showMessageDialog(null, "Se deben completar todos los campos obligatorios", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -408,10 +416,22 @@ public final class AltaUsuario extends javax.swing.JInternalFrame {
                 }
             }
             hash = a.sha1(password);
-            ingreso = ICU.AgregarUsuarioProponente(nick, nombre, apellido, correo, fechaN, imagen, direccion, biografia, sitioWeb, hash);
+            try {
+                DataImagen foto = convertidor.convertirStringAImg(imagen, nick);
+                ingreso = ICU.AgregarUsuarioProponente(nick, nombre, apellido, correo, fechaN, foto, direccion, biografia, sitioWeb, hash);
+
+            } catch (IOException ex) {
+                Logger.getLogger(AltaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             hash = a.sha1(password);
-            ingreso = ICU.AgregarUsuarioColaborador(nick, nombre, apellido, correo, fechaN, imagen, hash);
+
+            try {
+                DataImagen foto = convertidor.convertirStringAImg(imagen, nick);
+                ingreso = ICU.AgregarUsuarioColaborador(nick, nombre, apellido, correo, fechaN, foto, hash);
+            } catch (IOException ex) {
+                Logger.getLogger(AltaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         if (ingreso) {

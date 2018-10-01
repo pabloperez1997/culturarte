@@ -6,14 +6,15 @@
 package logica;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import logica.Clases.Colaborador;
+import logica.Clases.DataImagen;
 import logica.Clases.EstadoPropuesta;
 import logica.Clases.Proponente;
 import logica.Clases.TipoE;
@@ -24,12 +25,16 @@ import logica.Controladores.ControladorUsuario;
 import logica.Controladores.ControladorPropCat;
 import logica.Interfaces.IControladorUsuario;
 import logica.Clases.codificador;
+import logica.Clases.convertidorDeIMG;
+
 /**
  *
  * @author Santiago.S
  */
 public class Fabrica {
+
     codificador a = new codificador();
+    convertidorDeIMG convertidor = new convertidorDeIMG();
 
     //SINGLETON
     private static Fabrica instancia;
@@ -77,7 +82,7 @@ public class Fabrica {
         return ControladorU; //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void cargarDatosdePrueba() {
+    public void cargarDatosdePrueba() throws IOException {
         IControladorUsuario ICU = this.getIControladorUsuario();
         IPropCat IPC = this.getControladorPropCat();
         String ruta = System.getProperty("user.dir") + "\\fotosdp\\";
@@ -85,77 +90,87 @@ public class Fabrica {
 //    DBUsuario d=new DBUsuario();
 //    d.limpiarBD();
 //           
-
-        //-----------------------------------------------------Proponentes------------------------------------//   
-        ICU.AgregarUsuarioProponente("hrubino", "Horacio", "Rubino", "horacio.rubino@guambia.com.uy", new GregorianCalendar(1962, 01, 25),
-                ruta + "hrubino.jpg", "18 de Julio 1234", "Horacio Rubino Torres nace el 25 de " + "febrero de 1962, es conductor, actor y libretista.  Debuta en "
+        DataImagen foto;
+        //-----------------------------------------------------Proponentes------------------------------------//
+        foto = convertidor.convertirStringAImg(ruta + "hrubino.jpg", "hrubino");
+        ICU.AgregarUsuarioProponente("hrubino", "Horacio", "Rubino", "horacio.rubino@guambia.com.uy", new GregorianCalendar(1962, 01, 25), foto, "18 de Julio 1234", "Horacio Rubino Torres nace el 25 de " + "febrero de 1962, es conductor, actor y libretista.  Debuta en "
                 + "1982 en carnaval en Los \"Klaper´s\", donde estuvo cuatro" + " años, actuando y libretando. Luego para \"Gaby´s\" (6 años),"
                 + "escribió en categoría revistas y humoristas y desde el comienzo y hasta el presente"
-                + " en su propio conjunto Momosapiens. ", "https://twitter.com/horaciorubino",a.sha1("pass1"));
+                + " en su propio conjunto Momosapiens. ", "https://twitter.com/horaciorubino", a.sha1("pass1"));
 
-        ICU.AgregarUsuarioProponente("mbusca", "Martín", "Buscaglia", "Martin.bus@agadu.org.uy", new GregorianCalendar(1972, 05, 14),
-                ruta + "mbusca.jpg", "Colonia 4321", "Martín Buscaglia (Montevideo, 1972) es un artista, músico, compositor y productor uruguayo."
+        foto = convertidor.convertirStringAImg(ruta + "mbusca.jpg", "mbusca");
+        ICU.AgregarUsuarioProponente("mbusca", "Martín", "Buscaglia", "Martin.bus@agadu.org.uy", new GregorianCalendar(1972, 05, 14), foto, "Colonia 4321", "Martín Buscaglia (Montevideo, 1972) es un artista, músico, compositor y productor uruguayo."
                 + " Tanto con su banda (“Los Bochamakers”) como en su formato “Hombre orquesta”, o solo con su guitarra, "
                 + "ha recorrido el mundo tocando entre otros países en España, Estados Unidos, Inglaterra, Francia, Australia, "
                 + "Brasil, Colombia, Argentina, Chile, Paraguay, México y Uruguay. (Actualmente los Bochamakers son Matías Rada,"
                 + " Martín Ibarburu, Mateo Moreno, Herman Klang) Paralelamente, tiene proyectos a dúo con el español Kiko Veneno, "
                 + "la cubana Yusa, el argentino Lisandro Aristimuño, su compatriota Antolín, y a trío junto a los brasileros Os "
-                + "Mulheres Negras.", "http://www.martinbuscaglia.com/",a.sha1("pass2"));
+                + "Mulheres Negras.", "http://www.martinbuscaglia.com/", a.sha1("pass2"));
 
-        ICU.AgregarUsuarioProponente("hectorg", "Héctor", "Guido", "hector.gui@elgalpon.org.uy", new GregorianCalendar(1954, 00, 07),
-                ruta + "hectorg.jpg", "Gral. Flores 5645", "En 1972 ingresó a la Escuela de Arte Dramático del teatro El Galpón. Participó en más de treinta "
+        foto = convertidor.convertirStringAImg(ruta + "hectorg.jpg", "hectorg");
+        ICU.AgregarUsuarioProponente("hectorg", "Héctor", "Guido", "hector.gui@elgalpon.org.uy", new GregorianCalendar(1954, 00, 07), foto, "Gral. Flores 5645", "En 1972 ingresó a la Escuela de Arte Dramático del teatro El Galpón. Participó en más de treinta "
                 + "obras teatrales y varios largometrajes. Integró el elenco estable de Radioteatro del Sodre, y en 2006 fue asesor "
                 + "de su Consejo Directivo. Como actor recibió múltiples reconocimientos: cuatro premios Florencio, premio al mejor actor"
                 + " extranjero del Festival de Miami y premio Mejor Actor de Cine 2008. Durante varios períodos fue directivo del teatro"
                 + " El Galpón y dirigente de la Sociedad Uruguaya de Actores (SUA); integró también la Federación Uruguaya de Teatros "
                 + "Independientes (FUTI). Formó parte del equipo de gestión de la refacción de los teatros La Máscara, Astral y El Galpón, "
-                + "y del equipo de gestión en la construcción del teatro De la Candela y de la sala Atahualpa de El Galpón.", "",a.sha1("pass3"));
+                + "y del equipo de gestión en la construcción del teatro De la Candela y de la sala Atahualpa de El Galpón.", "", a.sha1("pass3"));
 
-        ICU.AgregarUsuarioProponente("tabarec", "Tabaré", "Cardozo", "tabare.car@agadu.org.uy", new GregorianCalendar(1971, 06, 24),
-                ruta + "tabarec.jpg", "Santiago Rivas 1212", "Tabaré Cardozo (Montevideo, 24 de julio de 1971) es un cantante, compositor y murguista uruguayo; "
+        foto = convertidor.convertirStringAImg(ruta + "tabarec.jpg", "tabarec");
+        ICU.AgregarUsuarioProponente("tabarec", "Tabaré", "Cardozo", "tabare.car@agadu.org.uy", new GregorianCalendar(1971, 06, 24), foto, "Santiago Rivas 1212", "Tabaré Cardozo (Montevideo, 24 de julio de 1971) es un cantante, compositor y murguista uruguayo; "
                 + "conocido por su participación en la murga Agarrate Catalina, conjunto que fundó junto a su hermano Yamandú y Carlos "
-                + "Tanco en el año 2001.", "https://www.facebook.com/Tabar%C3%A9-Cardozo-55179094281/?ref=br_rs",a.sha1("pass4"));
+                + "Tanco en el año 2001.", "https://www.facebook.com/Tabar%C3%A9-Cardozo-55179094281/?ref=br_rs", a.sha1("pass4"));
 
-        ICU.AgregarUsuarioProponente("cachilas", "Waldemar “Cachila”", "Silva", "Cachila.sil@c1080.org.uy", new GregorianCalendar(1947, 00, 01), ruta + "cachilas.jpg", "Br. Artigas 4567", "Nace en el año 1947 en el conventillo \\\"Medio Mundo\\\" ubicado en pleno Barrio Sur. Es heredero parcialmente-junto"
+        foto = convertidor.convertirStringAImg(ruta + "cachilas.jpg", "cachilas");
+        ICU.AgregarUsuarioProponente("cachilas", "Waldemar “Cachila”", "Silva", "Cachila.sil@c1080.org.uy", new GregorianCalendar(1947, 00, 01), foto, "Br. Artigas 4567", "Nace en el año 1947 en el conventillo \\\"Medio Mundo\\\" ubicado en pleno Barrio Sur. Es heredero parcialmente-junto"
                 + " al resto de sus hermanos- de la Comparsa \\\"Morenada\\\" (inactiva desde el fallecimiento de Juan Ángel Silva), en 1999 forma su "
                 + "propia Comparsa de negros y lubolos \\\"Cuareim 1080\\\". Director responsable, compositor y cantante de la misma. ",
-                "https://www.facebook.com/C1080?ref=br_rs",a.sha1("pass5"));
+                "https://www.facebook.com/C1080?ref=br_rs", a.sha1("pass5"));
 
-        ICU.AgregarUsuarioProponente("juliob", "Julio", "Bocca", "juliobocca@sodre.com.uy", new GregorianCalendar(1967, 02, 16), "",
-                "Benito Blanco 4321", "", "",a.sha1("pass6"));
+        ICU.AgregarUsuarioProponente("juliob", "Julio", "Bocca", "juliobocca@sodre.com.uy", new GregorianCalendar(1967, 02, 16), null,
+                "Benito Blanco 4321", "", "", a.sha1("pass6"));
 
-        ICU.AgregarUsuarioProponente("diegop", "Diego", "Parodi", "diego@efectocine.com", new GregorianCalendar(1975, 00, 01), "", "Emilio Frugoni 1138 Ap. 02", "", "http://www.efectocine.com",a.sha1("pass7"));
+        ICU.AgregarUsuarioProponente("diegop", "Diego", "Parodi", "diego@efectocine.com", new GregorianCalendar(1975, 00, 01), null, "Emilio Frugoni 1138 Ap. 02", "", "http://www.efectocine.com", a.sha1("pass7"));
 
-        ICU.AgregarUsuarioProponente("kairoh", "Kairo", "Herrera", "kairoher@pilsenrock.com.uy", new GregorianCalendar(1840, 03, 25),
-                ruta + "kairoh.jpg", "Paraguay 1423", "", "",a.sha1("pass8"));
+        foto = convertidor.convertirStringAImg(ruta + "kairoh.jpg", "kairoh");
+        ICU.AgregarUsuarioProponente("kairoh", "Kairo", "Herrera", "kairoher@pilsenrock.com.uy", new GregorianCalendar(1840, 03, 25), foto, "Paraguay 1423", "", "", a.sha1("pass8"));
 
-        ICU.AgregarUsuarioProponente("durazno", "Itendencia", "Durazno", "comunicacion@durazno.gub.uy", new GregorianCalendar(1980, 9, 31),
-                ruta + "durazno.png", "8 de Octubre 1429", "Nuestros festivales que son orgullo del Uruguay, como cada enero con lo mejor del tango o el festival de la música "
+        foto = convertidor.convertirStringAImg(ruta + "durazno.png", "durazno.png");
+        ICU.AgregarUsuarioProponente("durazno", "Itendencia", "Durazno", "comunicacion@durazno.gub.uy", new GregorianCalendar(1980, 9, 31),foto, "8 de Octubre 1429", "Nuestros festivales que son orgullo del Uruguay, como cada enero con lo mejor del tango o el festival de la música "
                 + "tropical. La fiesta de los jóvenes, donde miles de ellos disfrutan de variados espectáculos al aire libre y se confunden para vivir "
-                + "tres días inolvidables, convocados por diversos géneros, como rock, tropical, murga y tango.", "http://durazno.gub.uy/portal/index.php",a.sha1("pass9"));
+                + "tres días inolvidables, convocados por diversos géneros, como rock, tropical, murga y tango.", "http://durazno.gub.uy/portal/index.php", a.sha1("pass9"));
 
 ////-----------------------------------------------------Colaboradores------------------------------------//
-        ICU.AgregarUsuarioColaborador("robinh", "Robin", "Henderson", "Robin.h@tinglesa.com.uy", new GregorianCalendar(1940, 07, 03), "",a.sha1("pass1"));
+        ICU.AgregarUsuarioColaborador("robinh", "Robin", "Henderson", "Robin.h@tinglesa.com.uy", new GregorianCalendar(1940, 07, 03), null, a.sha1("pass1"));
 
-        ICU.AgregarUsuarioColaborador("marcelot", "Marcelo", "Tinelli", "marcelot@ideasdelsur.com.ar", new GregorianCalendar(1960, 03, 01), ruta + "marcelot.jpg",a.sha1("pass2"));
+        foto = convertidor.convertirStringAImg(ruta + "marcelot.jpg", "marcelot");
+        ICU.AgregarUsuarioColaborador("marcelot", "Marcelo", "Tinelli", "marcelot@ideasdelsur.com.ar", new GregorianCalendar(1960, 03, 01), foto, a.sha1("pass2"));
 
-        ICU.AgregarUsuarioColaborador("novick", "Edgardo", "Novick", "edgardo@novick.com.uy", new GregorianCalendar(1960, 03, 01), ruta + "novick.jpg",a.sha1("pass3"));
+        foto = convertidor.convertirStringAImg(ruta + "novick.jpg", "novick");
+        ICU.AgregarUsuarioColaborador("novick", "Edgardo", "Novick", "edgardo@novick.com.uy", new GregorianCalendar(1960, 03, 01), foto, a.sha1("pass3"));
 
-        ICU.AgregarUsuarioColaborador("sergiop", "Sergio", "Puglia", "puglia@alpanpan.com.uy", new GregorianCalendar(1950, 00, 28), ruta + "sergiop.jpg",a.sha1("pass4"));
+        foto = convertidor.convertirStringAImg(ruta + "sergiop.jpg", "sergiop");
+        ICU.AgregarUsuarioColaborador("sergiop", "Sergio", "Puglia", "puglia@alpanpan.com.uy", new GregorianCalendar(1950, 00, 28), foto, a.sha1("pass4"));
 
-        ICU.AgregarUsuarioColaborador("chino", "Alvaro", "Recoba", "chino@trico.org.uy", new GregorianCalendar(1976, 02, 17), "",a.sha1("pass5"));
+        
+        ICU.AgregarUsuarioColaborador("chino", "Alvaro", "Recoba", "chino@trico.org.uy", new GregorianCalendar(1976, 02, 17), null, a.sha1("pass5"));
 
-        ICU.AgregarUsuarioColaborador("tonyp", "Antonio", "Pacheco", "eltony@manya.org.uy", new GregorianCalendar(1995, 01, 14), "",a.sha1("pass6"));
+        ICU.AgregarUsuarioColaborador("tonyp", "Antonio", "Pacheco", "eltony@manya.org.uy", new GregorianCalendar(1995, 01, 14), null, a.sha1("pass6"));
 
-        ICU.AgregarUsuarioColaborador("nicoJ", "Nicolás", "Jodal", "jodal@artech.com.uy", new GregorianCalendar(1960, 07, 9), ruta + "nicoJ.jpg",a.sha1("pass7"));
+        foto = convertidor.convertirStringAImg(ruta + "nicoJ.jpg", "nicoJ");
+        ICU.AgregarUsuarioColaborador("nicoJ", "Nicolás", "Jodal", "jodal@artech.com.uy", new GregorianCalendar(1960, 07, 9), foto, a.sha1("pass7"));
 
-        ICU.AgregarUsuarioColaborador("juanP", "Juan", "Perez", "juanp@elpueblo.com", new GregorianCalendar(1970, 00, 01), "",a.sha1("pass8"));
+        
+        ICU.AgregarUsuarioColaborador("juanP", "Juan", "Perez", "juanp@elpueblo.com", new GregorianCalendar(1970, 00, 01), null, a.sha1("pass8"));
 
-        ICU.AgregarUsuarioColaborador("Mengano", "Mengano", "Gómez", "menganog@elpueblo.com", new GregorianCalendar(1982, 01, 02), "",a.sha1("pass9"));
+        
+        ICU.AgregarUsuarioColaborador("Mengano", "Mengano", "Gómez", "menganog@elpueblo.com", new GregorianCalendar(1982, 01, 02), null, a.sha1("pass9"));
 
-        ICU.AgregarUsuarioColaborador("Perengano", "Perengano", "López", "pere@elpueblo.com", new GregorianCalendar(1985, 02, 03), "",a.sha1("pass10"));
+        
+        ICU.AgregarUsuarioColaborador("Perengano", "Perengano", "López", "pere@elpueblo.com", new GregorianCalendar(1985, 02, 03), null, a.sha1("pass10"));
 
-        ICU.AgregarUsuarioColaborador("Tiajaci", "Tía", "Jacinta", "jacinta@elpueblo.com", new GregorianCalendar(1990, 03, 04), "",a.sha1("pass11"));
+        
+        ICU.AgregarUsuarioColaborador("Tiajaci", "Tía", "Jacinta", "jacinta@elpueblo.com", new GregorianCalendar(1990, 03, 04), null, a.sha1("pass11"));
 
 //-----------------------------------------------------Categorias------------------------------------//
         IPC.crearCategoriaDatosdePrueba("Categoria", null);
@@ -214,7 +229,7 @@ public class Fabrica {
         IPC.crearPropuestaDatosdePrueba("Romeo y Julieta", "Romeo y Julieta de Kenneth MacMillan, uno de los ballets favoritos del director artístico Julio Bocca, se\\r\\npresentará nuevamente "
                 + "el 5 de Noviembre en el Auditorio Nacional del Sodre. Basada en la obra homónima\\r\\nde William Shakespeare, Romeo y Julieta es considerada la coreografía maestra del MacMillan. "
                 + "La producción\\r\\nde vestuario y escenografía se realizó en los Talleres del Auditorio Adela Reta, sobre los diseños originales.", IPC.ObtenerCategoria("Ballet"), new GregorianCalendar(2018, 10, 05),
-                "Auditorio Nacional del Sodre", 800, 750000, TipoRetorno.porGanancias, ICU.ObtenerProponente("juliob"),"Romeo y Julieta.jpg");
+                "Auditorio Nacional del Sodre", 800, 750000, TipoRetorno.porGanancias, ICU.ObtenerProponente("juliob"), "Romeo y Julieta.jpg");
 
         IPC.crearPropuestaDatosdePrueba("Un día de Julio", "La Catalina presenta el espectáculo Un Día de Julio en Landia. Un hombre misterioso y solitario vive\\r\\nencerrado entre las cuatro paredes "
                 + "de su casa. Intenta, con sus teorías extravagantes, cambiar el mundo\\r\\nexterior que le resulta inhabitable. Un día de Julio sucederá algo que cambiará su vida y la de su entorno "
