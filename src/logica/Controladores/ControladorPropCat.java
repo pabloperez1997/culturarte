@@ -44,7 +44,7 @@ import logica.Clases.Proponente;
 import logica.Clases.Propuesta;
 import logica.Clases.TipoE;
 import logica.Clases.TipoRetorno;
-import logica.Clases.Usuario;
+import logica.Clases.DtPropuestaWeb;
 import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
@@ -804,11 +804,50 @@ public class ControladorPropCat implements IPropCat {
 
     }
 
-    public Date FechaCambioEstado(Date fechaActual) {
+    public Date FechaCambioEstado(Date fechaPublicada) {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(fechaActual);
+        cal.setTime(fechaPublicada);
         cal.add(Calendar.DAY_OF_YEAR, 30);
-
         return cal.getTime();
     }
+
+    @Override
+    public List<DtPropuestaWeb> ListarPropuestasWeb(TipoE estado) {
+        List<DtPropuestaWeb> listProp = new ArrayList<>();
+
+        Iterator it = this.propuestas.entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry mtry = (Map.Entry) it.next();
+            Propuesta prop = (Propuesta) mtry.getValue();
+
+            if (prop.getEstadoActual().getEstado() == estado) {
+
+                Date fPubFin = this.FechaCambioEstado(prop.getFechaPublicacion().getTime());
+                int diasR;
+
+                if (fPubFin == null) {
+                    diasR = 0;
+                } else {
+                    diasR = this.numeroDiasEntreDosFechas(fPubFin, new GregorianCalendar().getTime());
+                }
+                int porcentaje = (int) ((this.CalcularMontoPropuesta(prop) * 100) / prop.getMontoTot());
+                DtPropuestaWeb dtpropW = new  DtPropuestaWeb(prop.getTituloP(), prop.getDescripcionP(), diasR, this.CalcularMontoPropuesta(prop), porcentaje,0 );
+   
+                listProp.add(dtpropW);
+            
+            }
+        }
+
+        return listProp;
+    }
+
+    public int numeroDiasEntreDosFechas(Date fPubFin, Date fActual) {
+        long finalizacion = fPubFin.getTime();
+        long hoy = fActual.getTime();
+        long diferencia = finalizacion - hoy;
+        long difEnDias = diferencia / (1000 * 60 * 60 * 24);
+        return (int) difEnDias;
+    }
+
 }

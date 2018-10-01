@@ -16,6 +16,7 @@ import logica.Clases.DtConsultaPropuesta2;
 import logica.Clases.DtinfoColaborador;
 import logica.Clases.DtinfoPropuesta;
 import logica.Clases.DtNickTitProp;
+import logica.Clases.DtPropuestaWeb;
 import logica.Clases.EstadoPropuesta;
 import logica.Clases.Proponente;
 import logica.Clases.Propuesta;
@@ -102,4 +103,6 @@ public interface IPropCat {
     public abstract boolean EvaluarPropuesta(String titulo, TipoE tipo) throws Exception;
     
     public abstract void EvaluarEstadosPropuestas();
+    
+    public abstract List<DtPropuestaWeb> ListarPropuestasWeb(TipoE estado);
 }

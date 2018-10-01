@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Calendar;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 import logica.Clases.Colaboracion;
 
 public class Propuesta {
@@ -165,4 +166,22 @@ public class Propuesta {
         return ok;
     }
 
+    public Calendar getFechaPublicacion() {
+        if (this.estadoActual.getEstado() == TipoE.Publicada) {
+            return this.estadoActual.getfechaInicio();
+        } else {
+            if (this.estadoActual.getEstado() != TipoE.Cancelada && this.estadoActual.getEstado() != TipoE.Financiada && this.estadoActual.getEstado() != TipoE.noFinanciada) {
+                Iterator it = this.historialEstados.iterator();
+
+                while (it.hasNext()) {
+                    EstadoPropuesta est = (EstadoPropuesta) it.next();
+
+                    if (est.getEstado() == TipoE.Publicada) {
+                        return est.getfechaInicio();
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }
