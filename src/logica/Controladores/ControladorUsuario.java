@@ -18,8 +18,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import static java.nio.file.StandardOpenOption.CREATE;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -42,6 +44,7 @@ import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
 import logica.Clases.codificador;
+import logica.Controladores.configuraciones;
 
 /**
  *
@@ -56,6 +59,8 @@ public class ControladorUsuario implements IControladorUsuario {
     private DBUsuario dbUsuario = null;
     private Colaborador Colaborador;
     codificador a = new codificador();
+    configuraciones configuracion = new configuraciones();
+    private String carpetaImagenesPerfiles = configuracion.getCarpetaImagenesUsers() + "\\fPerfiles";
 
     public static ControladorUsuario getInstance() {
         if (instancia == null) {
@@ -156,56 +161,67 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
     @Override
-    public boolean AgregarUsuarioColaborador(String nickName, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password) {
+    public boolean AgregarUsuarioColaborador(String nickName, String nombre, String apellido, String correo, Calendar fechaN, DataImagen imagen, String password) {
+        Colaborador c = null;
         if (this.Usuarios.get(nickName) != null) {
             return false;
-
         } else {
-            Colaborador c = new Colaborador(nickName, nombre, apellido, correo, fechaN, imagen, password);
-            String fotoLocal = c.getImagen();
-            if (!"".equals(c.getImagen())) {
-                File fLocal = new File(fotoLocal);
-                String ex = getFileExtension(fLocal);
-                String ruta = System.getProperty("user.dir") + "\\fPerfiles\\" + c.getNickname() + "." + ex;
-                c.setImagen(nickName + "." + ex);
+            if (imagen == null) {
+                c = new Colaborador(nickName, nombre, apellido, correo, fechaN, "nadie.png", password);
             } else {
-                c.setImagen("nadie.png");
-            }
-            boolean res = this.dbUsuario.agregarColaborador(c);
-
-            if (res) {
-                this.Usuarios.put(nickName, c);
-                if (!"nadie.png".equals(c.getImagen())) {
-                    copiarFoto(fotoLocal, nickName);
+                c = new Colaborador(nickName, nombre, apellido, correo, fechaN, imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo(), password);
+                try {
+                    grabarFoto(correo, imagen);
+                } catch (IOException ex) {
+                    Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+                 this.Usuarios.put(nickName, c);
+            boolean res = this.dbUsuario.agregarColaborador(c);
             return res;
         }
     }
 
+    public void grabarFoto(String correo, DataImagen imagen) throws IOException {
+        String extencion = imagen.getExtensionArchivo();
+        String nombreA = imagen.getNombreArchivo();
+        byte[] arreglo = imagen.getStream();
+        String carpetaImg = carpetaImagenesPerfiles + correo;
+        if (this.carpetaImagenesPerfiles == null) {
+            throw new IllegalStateException("La carpeta de imagenes no fue configurada");
+        }
+        final File fileImagenes = new File(this.carpetaImagenesPerfiles);
+        if (!fileImagenes.isDirectory()) {
+            throw new IOException("La carpeta de imagenes no fue configurada");
+        }//if.
+        String pathStr = this.carpetaImagenesPerfiles + File.separatorChar + correo;
+        final File dirUsuario = new File(pathStr);
+        if (!dirUsuario.isDirectory()) {
+            dirUsuario.mkdirs();
+        }
+        pathStr = pathStr + File.separatorChar + nombreA + "." + extencion;
+        final Path path = Paths.get(pathStr);
+        Files.write(path, imagen.getStream(), CREATE);
+    }
+
     @Override
-    public boolean AgregarUsuarioProponente(String nickName, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String direccion, String biografia, String sitioWeb, String password) {
+    public boolean AgregarUsuarioProponente(String nickName, String nombre, String apellido, String correo, Calendar fechaN, DataImagen imagen, String direccion, String biografia, String sitioWeb, String password) {
+        Proponente c = null;
         if (this.Usuarios.get(nickName) != null) {
             return false;
         } else {
-            Proponente c = new Proponente(biografia, direccion, sitioWeb, nickName, nombre, apellido, correo, fechaN, imagen, password);
-            String fotoLocal = c.getImagen();
-            if (!"".
-                    equals(c.getImagen())) {
-                File fLocal = new File(fotoLocal);
-                String ex = getFileExtension(fLocal);
-                String ruta = System.getProperty("user.dir") + "\\fPerfiles\\" + c.getNickname() + "." + ex;
-                c.setImagen(nickName + "." + ex);
+            if (imagen == null) {
+                c = new Proponente(biografia, direccion, sitioWeb, nickName, nombre, apellido, correo, fechaN, "nadie.png", password);
             } else {
-                c.setImagen("nadie.png");
-            }
-            boolean res = this.dbUsuario.agregarProponente(c);
-            if (res) {
-                this.Usuarios.put(nickName, c);
-                if (!"nadie.png".equals(c.getImagen())) {
-                    copiarFoto(fotoLocal, nickName);
+                c = new Proponente(biografia, direccion, sitioWeb, nickName, nombre, apellido, correo, fechaN, imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo(), password);
+                try {
+                    grabarFoto(correo, imagen);
+                } catch (IOException ex) {
+                    Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            this.Usuarios.put(nickName, c);
+            boolean res = this.dbUsuario.agregarProponente(c);
             return res;
         }
     }
@@ -851,4 +867,29 @@ public class ControladorUsuario implements IControladorUsuario {
         }
     }
 
+    @Override
+    public DtUsuario ObtenerDTUsuario_Correo(String correoU) {
+
+        DtUsuario dtc = null;
+        Set set = Usuarios.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            if (mentry.getValue() instanceof Usuario) {
+                Usuario aux = (Usuario) mentry.getValue();
+
+                if (aux.getCorreo().equals(correoU)) {
+                    if (aux instanceof Colaborador) {
+                        dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
+                    } else {
+                        dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
+                    }
+                    break;
+                }
+            }
+        }
+        return dtc;
+
+    }
 }

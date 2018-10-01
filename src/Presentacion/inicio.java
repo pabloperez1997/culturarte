@@ -6,6 +6,7 @@
 package Presentacion;
 
 import java.beans.PropertyVetoException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -323,8 +324,13 @@ public class inicio extends javax.swing.JFrame {
             boolean ok = fabrica.limpiarBaseDeDatos();
             if (ok) {
                 fabrica.LimpiarLogica();
-                fabrica.cargarDatosdePrueba();
-                JOptionPane.showMessageDialog(null, "Datos Cargados Exitosamente!!!");
+                try {
+                    fabrica.cargarDatosdePrueba();
+                    JOptionPane.showMessageDialog(null, "Datos Cargados Exitosamente!!!");
+                } catch (IOException ex) {
+                    Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
         } else {
             JOptionPane.showMessageDialog(null, "Carga de Datos de Prueba fue cancelada");

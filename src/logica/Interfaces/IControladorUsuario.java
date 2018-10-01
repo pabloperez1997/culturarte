@@ -35,9 +35,9 @@ public interface IControladorUsuario {
 
     public abstract boolean dejarseguirUsuario(String nickUsu1, String nickUsu2) throws Exception;
 
-    public abstract boolean AgregarUsuarioColaborador(String nickName, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password);
+    public abstract boolean AgregarUsuarioColaborador(String nickName, String nombre, String apellido, String correo, Calendar fechaN, DataImagen imagen, String password);
 
-    public abstract boolean AgregarUsuarioProponente(String nickName, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String direccion, String biografia, String sitioWeb, String password);
+    public abstract boolean AgregarUsuarioProponente(String nickName, String nombre, String apellido, String correo, Calendar fechaN, DataImagen imagen, String direccion, String biografia, String sitioWeb, String password);
 
     public abstract Proponente ObtenerProponente(String nombreP);
 
@@ -79,9 +79,9 @@ public interface IControladorUsuario {
 
     public abstract void eliminarCategorias();
 
-    public abstract boolean AgregarUsuarioColaboradorDatosdePrueba(String nickName, String nombre, String apellido, String correo, Calendar fechaN, String imagen,String password);
+    public abstract boolean AgregarUsuarioColaboradorDatosdePrueba(String nickName, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password);
 
-    public abstract boolean AgregarUsuarioProponenteDatosdePrueba(String nickName, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String direccion, String biografia, String sitioWeb,String password);
+    public abstract boolean AgregarUsuarioProponenteDatosdePrueba(String nickName, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String direccion, String biografia, String sitioWeb, String password);
 
     public abstract void resetearColaborador();
 
@@ -92,14 +92,16 @@ public interface IControladorUsuario {
     public abstract List<DtSeguidor> MostrarMisSeguidos(String nick);
 
     public abstract DtNickTitProp obtenerNombreApellido(String nick) throws Exception;
-    
+
     public abstract DtUsuario ObtenerDTUsuario(String nombreU);
-    
+
     public abstract List<DtUsuario> ObtenerSeguidos(String nick);
-    
+
     public abstract List<DtUsuario> ObtenerSeguidores(String nick);
-    
+
     public abstract void CargarFavoritas();
     
      public abstract List<DtinfoPropuesta> obtenerfavoritas(String nick);
+     
+         public abstract DtUsuario ObtenerDTUsuario_Correo(String correoU);
 }
