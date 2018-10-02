@@ -783,19 +783,21 @@ public class ControladorPropCat implements IPropCat {
                 Calendar fechaDeHoy = new GregorianCalendar();
                 Date fechaDeHoy1 = fechaDeHoy.getTime();
 
-                if (fechaDeHoy1.before(this.FechaCambioEstado(prop.getEstadoActual().getfechaInicio().getTime()))) {
+                if (!fechaDeHoy1.before(this.FechaCambioEstado(prop.getEstadoActual().getfechaInicio().getTime()))) {
                     if (prop.getMontoTot() <= this.CalcularMontoPropuesta(prop)) {
                         EstadoPropuesta nuevoE = new EstadoPropuesta(TipoE.Financiada, fechaDeHoy, true);
                         EstadoPropuesta EstadoAnt = prop.getEstadoActual();
                         EstadoAnt.setEsActual(false);
                         prop.setEstados(EstadoAnt);
                         prop.setEstadoActual(nuevoE);
+                        this.dbPropuesta.EvaluarPropuestaBD(nuevoE, EstadoAnt, prop.getTituloP());
                     } else {
                         EstadoPropuesta nuevoE = new EstadoPropuesta(TipoE.Cancelada, fechaDeHoy, true);
                         EstadoPropuesta EstadoAnt = prop.getEstadoActual();
                         EstadoAnt.setEsActual(false);
                         prop.setEstados(EstadoAnt);
                         prop.setEstadoActual(nuevoE);
+                        this.dbPropuesta.EvaluarPropuestaBD(nuevoE, EstadoAnt, prop.getTituloP());
                     }
                 }
 
@@ -823,31 +825,24 @@ public class ControladorPropCat implements IPropCat {
 
             if (prop.getEstadoActual().getEstado() == estado) {
 
-                Date fPubFin = this.FechaCambioEstado(prop.getFechaPublicacion().getTime());
-                int diasR;
+                Calendar fechaPub = prop.getFechaPublicacion();
+                Date fPubFin = this.FechaCambioEstado(fechaPub.getTime());
 
-                if (fPubFin == null) {
-                    diasR = 0;
-                } else {
-                    diasR = this.numeroDiasEntreDosFechas(fPubFin, new GregorianCalendar().getTime());
-                }
+                Date fechaActual = new GregorianCalendar().getTime();
+                int dias = (int) ((fPubFin.getTime() - fechaActual.getTime()) / 86400000);
+
                 int porcentaje = (int) ((this.CalcularMontoPropuesta(prop) * 100) / prop.getMontoTot());
-                DtPropuestaWeb dtpropW = new  DtPropuestaWeb(prop.getTituloP(), prop.getDescripcionP(), diasR, this.CalcularMontoPropuesta(prop), porcentaje,0 );
-   
+                DtPropuestaWeb dtpropW;
+                if (dias < 0) {
+                    dtpropW = new DtPropuestaWeb(prop.getTituloP(), prop.getDescripcionP(), 0, this.CalcularMontoPropuesta(prop), porcentaje, prop.getColaboraciones().size());
+                } else {
+                    dtpropW = new DtPropuestaWeb(prop.getTituloP(), prop.getDescripcionP(), dias, this.CalcularMontoPropuesta(prop), porcentaje, prop.getColaboraciones().size());
+                }
                 listProp.add(dtpropW);
-            
+
             }
         }
 
         return listProp;
     }
-
-    public int numeroDiasEntreDosFechas(Date fPubFin, Date fActual) {
-        long finalizacion = fPubFin.getTime();
-        long hoy = fActual.getTime();
-        long diferencia = finalizacion - hoy;
-        long difEnDias = diferencia / (1000 * 60 * 60 * 24);
-        return (int) difEnDias;
-    }
-
 }
