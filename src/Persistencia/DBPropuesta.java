@@ -345,4 +345,18 @@ public class DBPropuesta {
 
         return false;
     }
+    
+    public boolean AgregarFavoritas(String nick,String TituloP){
+    try{
+        PreparedStatement stat = conexion.prepareStatement("INSERT INTO favoritas" + "(Usuario,Propuesta) VALUES (?,?)");
+        stat.setString(1, nick);
+        stat.setString(2, TituloP);
+        stat.executeUpdate();
+            stat.close();
+            return true;
+    } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

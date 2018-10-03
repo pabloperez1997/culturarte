@@ -853,6 +853,7 @@ public class ControladorPropCat implements IPropCat {
         return retorno;
     }
     
+    @Override
     public List<DtinfoPropuesta> ListarPropuesta(){
         List<DtinfoPropuesta> propuestas=new ArrayList<>();
         Set set=this.propuestas.entrySet();
@@ -866,9 +867,29 @@ public class ControladorPropCat implements IPropCat {
         return propuestas;
     }
     
+    @Override
+    public List<DtinfoPropuesta> ListarPropuestaNOI(){
+        List<DtinfoPropuesta> propuestas=new ArrayList<>();
+        Set set=this.propuestas.entrySet();
+        Iterator it=set.iterator();
+        while(it.hasNext()){
+            Map.Entry mentry=(Map.Entry) it.next();
+            Propuesta p=(Propuesta) mentry.getValue();
+            if(p.getEstadoActual().getEstado() != TipoE.Ingresada){
+            DtinfoPropuesta dtp=new DtinfoPropuesta(p);
+            propuestas.add(dtp);
+            }
+        }
+        return propuestas;
+    }
+    
     public boolean AgregarFavorita(String titulo,String nick){
-        
+        Boolean exito=this.dbPropuesta.AgregarFavoritas(nick, titulo);
+        if(exito){
         return true;
+        }else{
+            return false;
+        }
     }
 
     @Override

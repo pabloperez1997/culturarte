@@ -863,7 +863,7 @@ public class ControladorUsuario implements IControladorUsuario {
             Usuario aux = (Usuario) mentry.getValue();
             List<String> favoritas = this.dbUsuario.CargarFavoritas(aux.getNickname());
             //le agrego las propuestas favoritas
-            //aux=this.IPC.CargarFavoritas(aux, favoritas);
+            aux=this.IPC.CargarFavoritas(aux, favoritas);
         }
     }
 

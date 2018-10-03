@@ -108,9 +108,9 @@ public interface IPropCat {
     
     public abstract List<DtinfoPropuesta> ListarPropuesta();
     
-    public boolean AgregarFavorita(String titulo,String nick);
+    public abstract boolean AgregarFavorita(String titulo,String nick);
         
-    
+    public abstract List<DtinfoPropuesta> ListarPropuestaNOI();
 
     public abstract void EvaluarEstadosPropuestas();
     
