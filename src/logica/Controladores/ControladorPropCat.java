@@ -813,8 +813,8 @@ public class ControladorPropCat implements IPropCat {
         cal.add(Calendar.DAY_OF_YEAR, 30);
         return cal.getTime();
     }
-    
-        @Override
+
+    @Override
     public Usuario CargarFavoritas(Usuario usu, List<String> usufav) {
         Set set = this.propuestas.entrySet();
         Iterator it = set.iterator();
@@ -835,7 +835,7 @@ public class ControladorPropCat implements IPropCat {
         }
         return usu;
     }
-    
+
     public List<DtinfoPropuesta> ListarPropuestasNoIngresadas(String nick) {
         List<DtinfoPropuesta> retorno = new ArrayList<>();
         Set set = this.propuestas.entrySet();
@@ -844,84 +844,98 @@ public class ControladorPropCat implements IPropCat {
             Map.Entry mentry = (Map.Entry) iterator.next();
             Propuesta p = (Propuesta) mentry.getValue();
             if (p.getAutor().getNickname().equals(nick)) {
-                if(p.getEstadoActual().getEstado() != TipoE.Ingresada){
-                DtinfoPropuesta dtP = new DtinfoPropuesta(p);
-                retorno.add(dtP);
+                if (p.getEstadoActual().getEstado() != TipoE.Ingresada) {
+                    DtinfoPropuesta dtP = new DtinfoPropuesta(p);
+                    retorno.add(dtP);
                 }
             }
         }
         return retorno;
     }
-    
+
     @Override
-    public List<DtinfoPropuesta> ListarPropuesta(){
-        List<DtinfoPropuesta> propuestas=new ArrayList<>();
-        Set set=this.propuestas.entrySet();
-        Iterator it=set.iterator();
-        while(it.hasNext()){
-            Map.Entry mentry=(Map.Entry) it.next();
-            Propuesta p=(Propuesta) mentry.getValue();
-            DtinfoPropuesta dtp=new DtinfoPropuesta(p);
+    public List<DtinfoPropuesta> ListarPropuesta() {
+        List<DtinfoPropuesta> propuestas = new ArrayList<>();
+        Set set = this.propuestas.entrySet();
+        Iterator it = set.iterator();
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Propuesta p = (Propuesta) mentry.getValue();
+            DtinfoPropuesta dtp = new DtinfoPropuesta(p);
             propuestas.add(dtp);
         }
         return propuestas;
     }
-    
+
     @Override
-    public List<DtinfoPropuesta> ListarPropuestaNOI(){
-        List<DtinfoPropuesta> propuestas=new ArrayList<>();
-        Set set=this.propuestas.entrySet();
-        Iterator it=set.iterator();
-        while(it.hasNext()){
-            Map.Entry mentry=(Map.Entry) it.next();
-            Propuesta p=(Propuesta) mentry.getValue();
-            if(p.getEstadoActual().getEstado() != TipoE.Ingresada){
-            DtinfoPropuesta dtp=new DtinfoPropuesta(p);
-            propuestas.add(dtp);
+    public List<DtinfoPropuesta> ListarPropuestaNOI() {
+        List<DtinfoPropuesta> propuestas = new ArrayList<>();
+        Set set = this.propuestas.entrySet();
+        Iterator it = set.iterator();
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Propuesta p = (Propuesta) mentry.getValue();
+            if (p.getEstadoActual().getEstado() != TipoE.Ingresada) {
+                DtinfoPropuesta dtp = new DtinfoPropuesta(p);
+                propuestas.add(dtp);
             }
         }
         return propuestas;
     }
-    
-    public boolean AgregarFavorita(String titulo,String nick){
-        Boolean exito=this.dbPropuesta.AgregarFavoritas(nick, titulo);
-        if(exito){
-        return true;
-        }else{
+
+    public boolean AgregarFavorita(String titulo, String nick) {
+        Boolean exito = this.dbPropuesta.AgregarFavoritas(nick, titulo);
+        if (exito) {
+            Map<String, Propuesta> prop = this.propuestas;
+            Set set = prop.entrySet();
+            Iterator iterator = set.iterator();
+            while (iterator.hasNext()) {
+                Map.Entry mentry = (Map.Entry) iterator.next();
+                Propuesta aux = (Propuesta) mentry.getValue();
+                if (aux.getTituloP().equals(titulo)) {
+                    Fabrica.getInstance().getIControladorUsuario().agregarfavorita(nick, aux);
+                    break;
+                }
+            }
+                return true;
+            }else{
             return false;
         }
-    }
-
-    @Override
-    public List<DtPropuestaWeb> ListarPropuestasWeb(TipoE estado) {
-        List<DtPropuestaWeb> listProp = new ArrayList<>();
-
-        Iterator it = this.propuestas.entrySet().iterator();
-
-        while (it.hasNext()) {
-            Map.Entry mtry = (Map.Entry) it.next();
-            Propuesta prop = (Propuesta) mtry.getValue();
-
-            if (prop.getEstadoActual().getEstado() == estado) {
-
-                Calendar fechaPub = prop.getFechaPublicacion();
-                Date fPubFin = this.FechaCambioEstado(fechaPub.getTime());
-
-                Date fechaActual = new GregorianCalendar().getTime();
-                int dias = (int) ((fPubFin.getTime() - fechaActual.getTime()) / 86400000);
-
-                int porcentaje = (int) ((this.CalcularMontoPropuesta(prop) * 100) / prop.getMontoTot());
-                DtPropuestaWeb dtpropW;
-                if (dias < 0) {
-                    dtpropW = new DtPropuestaWeb(prop.getTituloP(), prop.getDescripcionP(), 0, this.CalcularMontoPropuesta(prop), porcentaje, prop.getColaboraciones().size());
-                } else {
-                    dtpropW = new DtPropuestaWeb(prop.getTituloP(), prop.getDescripcionP(), dias, this.CalcularMontoPropuesta(prop), porcentaje, prop.getColaboraciones().size());
-                }
-                listProp.add(dtpropW);
-
-            }
         }
 
-        return listProp;
+        @Override
+        public List<DtPropuestaWeb> ListarPropuestasWeb
+        (TipoE estado
+        
+            ) {
+        List<DtPropuestaWeb> listProp = new ArrayList<>();
+
+            Iterator it = this.propuestas.entrySet().iterator();
+
+            while (it.hasNext()) {
+                Map.Entry mtry = (Map.Entry) it.next();
+                Propuesta prop = (Propuesta) mtry.getValue();
+
+                if (prop.getEstadoActual().getEstado() == estado) {
+
+                    Calendar fechaPub = prop.getFechaPublicacion();
+                    Date fPubFin = this.FechaCambioEstado(fechaPub.getTime());
+
+                    Date fechaActual = new GregorianCalendar().getTime();
+                    int dias = (int) ((fPubFin.getTime() - fechaActual.getTime()) / 86400000);
+
+                    int porcentaje = (int) ((this.CalcularMontoPropuesta(prop) * 100) / prop.getMontoTot());
+                    DtPropuestaWeb dtpropW;
+                    if (dias < 0) {
+                        dtpropW = new DtPropuestaWeb(prop.getTituloP(), prop.getDescripcionP(), 0, this.CalcularMontoPropuesta(prop), porcentaje, prop.getColaboraciones().size());
+                    } else {
+                        dtpropW = new DtPropuestaWeb(prop.getTituloP(), prop.getDescripcionP(), dias, this.CalcularMontoPropuesta(prop), porcentaje, prop.getColaboraciones().size());
+                    }
+                    listProp.add(dtpropW);
+
+                }
+            }
+
+            return listProp;
+        }
     }
-}

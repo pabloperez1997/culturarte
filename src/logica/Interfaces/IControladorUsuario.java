@@ -22,6 +22,7 @@ import logica.Clases.DtinfoPropuesta;
 import logica.Clases.Proponente;
 import logica.Clases.Usuario;
 import logica.Clases.DataImagen;
+import logica.Clases.Propuesta;
 
 /**
  *
@@ -100,8 +101,10 @@ public interface IControladorUsuario {
     public abstract List<DtUsuario> ObtenerSeguidores(String nick);
 
     public abstract void CargarFavoritas();
-    
-     public abstract List<DtinfoPropuesta> obtenerfavoritas(String nick);
-     
-         public abstract DtUsuario ObtenerDTUsuario_Correo(String correoU);
+
+    public abstract List<DtinfoPropuesta> obtenerfavoritas(String nick);
+
+    public abstract DtUsuario ObtenerDTUsuario_Correo(String correoU);
+
+    public abstract void agregarfavorita(String nick, Propuesta p);
 }
