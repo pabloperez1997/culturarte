@@ -52,6 +52,7 @@ import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
 import logica.Clases.DataImagen;
 import logica.Controladores.configuraciones;
+import logica.Clases.convertidorDeIMG;
 
 /**
  *
@@ -69,6 +70,7 @@ public class ControladorPropCat implements IPropCat {
     private Propuesta Propuesta;
     private DBColaboracion dbColaboracion = null;
     private String carpetaImagenesPropuestas = new configuraciones().getCarpetaImagenesPropuestas();
+    convertidorDeIMG convertidor = new convertidorDeIMG();
 
     public static ControladorPropCat getInstance() {
         if (instancia == null) {
@@ -474,24 +476,25 @@ public class ControladorPropCat implements IPropCat {
 
     @Override
     public boolean crearPropuestaDatosdePrueba(String tituloP, String descripcion, Categoria cat, Calendar fecha, String lugar, float montoE, float montoTot, TipoRetorno retorno, Proponente p, String imagen) {
-
         if (this.getPropuestas().get(tituloP) != null) {
             return false;
         }
-
         Propuesta nuevaP;
         nuevaP = new Propuesta(tituloP, descripcion, imagen, lugar, fecha, montoE, montoTot, null, cat, retorno, p);
         this.propuestas.put(tituloP, nuevaP);
-        String ruta = System.getProperty("user.dir");
-        File dataInputFile = new File(ruta + "//fotosdp//" + imagen);
-        File fileSendPath = new File(ruta + "//fPropuestas//", dataInputFile.getName());
+        String ruta = new configuraciones().getCarpetaImagenesPropuestas();
+        String url = ruta + "\\fotosdp\\" + imagen;
         try {
-            Files.copy(Paths.get(dataInputFile.getAbsolutePath()), Paths.get(fileSendPath.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
+            DataImagen img = convertidor.convertirStringAImg(url, tituloP);
+
+            this.dbPropuesta = new DBPropuesta();
+            boolean agregada = this.dbPropuesta.agregarPropuestaDatosdePrueba(nuevaP);
+            if (agregada == true) {
+                grabarFotoPropuestas(tituloP, img);
+            }
         } catch (IOException ex) {
             Logger.getLogger(ControladorPropCat.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.dbPropuesta = new DBPropuesta();
-        boolean agregada = this.dbPropuesta.agregarPropuestaDatosdePrueba(nuevaP);
         return true;
     }
 

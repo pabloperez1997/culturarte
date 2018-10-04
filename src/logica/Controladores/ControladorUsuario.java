@@ -191,9 +191,7 @@ public class ControladorUsuario implements IControladorUsuario {
             throw new IllegalStateException("La carpeta de imagenes no fue configurada");
         }
         final File fileImagenes = new File(this.carpetaImagenesPerfiles);
-        if (!fileImagenes.isDirectory()) {
-            throw new IOException("La carpeta de imagenes no fue configurada");
-        }//if.
+        
         String pathStr = this.carpetaImagenesPerfiles + File.separatorChar + correo;
         final File dirUsuario = new File(pathStr);
         if (!dirUsuario.isDirectory()) {

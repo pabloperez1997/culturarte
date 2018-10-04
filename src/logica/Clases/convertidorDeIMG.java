@@ -21,7 +21,7 @@ public class convertidorDeIMG {
     private String url;
 
 
-    public DataImagen convertirStringAImg(String nick, String url) throws FileNotFoundException, IOException {
+    public DataImagen convertirStringAImg(String url, String nick) throws FileNotFoundException, IOException {
         File img = new File(url);
         FileInputStream ficheroStream = new FileInputStream(img);
         byte[] contenido = IOUtils.toByteArray(ficheroStream);
