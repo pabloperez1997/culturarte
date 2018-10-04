@@ -170,15 +170,13 @@ public class Propuesta {
         if (this.estadoActual.getEstado() == TipoE.Publicada) {
             return this.estadoActual.getfechaInicio();
         } else {
-            if (this.estadoActual.getEstado() != TipoE.Cancelada && this.estadoActual.getEstado() != TipoE.Financiada && this.estadoActual.getEstado() != TipoE.noFinanciada) {
-                Iterator it = this.historialEstados.iterator();
+            Iterator it = this.historialEstados.iterator();
 
-                while (it.hasNext()) {
-                    EstadoPropuesta est = (EstadoPropuesta) it.next();
+            while (it.hasNext()) {
+                EstadoPropuesta est = (EstadoPropuesta) it.next();
 
-                    if (est.getEstado() == TipoE.Publicada) {
-                        return est.getfechaInicio();
-                    }
+                if (est.getEstado() == TipoE.Publicada) {
+                    return est.getfechaInicio();
                 }
             }
         }

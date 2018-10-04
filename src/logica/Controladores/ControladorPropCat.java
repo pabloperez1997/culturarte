@@ -83,6 +83,8 @@ public class ControladorPropCat implements IPropCat {
 
     @Override
     public List<DtNickTitProp> listarPropuestaC() {
+        this.EvaluarEstadosPropuestas();
+
         Map<String, Propuesta> prop = this.propuestas;
         Set set = prop.entrySet();
         Iterator iterator = set.iterator();
@@ -203,6 +205,8 @@ public class ControladorPropCat implements IPropCat {
 
     @Override
     public List<DtinfoPropuesta> ListarPropuestasDeProponenteX(String nick) {
+        this.EvaluarEstadosPropuestas();
+
         List<DtinfoPropuesta> retorno = new ArrayList<>();
         Set set = this.propuestas.entrySet();
         Iterator iterator = set.iterator();
@@ -219,6 +223,8 @@ public class ControladorPropCat implements IPropCat {
 
     @Override
     public List<DtNickTitProp> listarPropuestas() {//commit
+        this.EvaluarEstadosPropuestas();
+
         List<DtNickTitProp> listPropuestas = new ArrayList();
 
         Iterator it = this.propuestas.entrySet().iterator();
@@ -234,7 +240,8 @@ public class ControladorPropCat implements IPropCat {
 
     @Override
     public List<DtNickTitProp> listarPropuestasR() {//commit
-        EvaluarEstadosPropuestas();
+        this.EvaluarEstadosPropuestas();
+
         List<DtNickTitProp> listPropuestas = new ArrayList();
 
         Iterator it = this.propuestas.entrySet().iterator();
@@ -252,12 +259,16 @@ public class ControladorPropCat implements IPropCat {
 
     @Override
     public EstadoPropuesta verEstadoPropuesta(String titulo) {
+        this.EvaluarEstadosPropuestas();
+
         EstadoPropuesta estActual = this.propuestas.get(titulo).getEstadoActual();
         return estActual;
     }
 
     @Override
     public DtinfoPropuesta SeleccionarPropuestaR(String titulo) {
+        this.EvaluarEstadosPropuestas();
+
         Map<String, Propuesta> prop = this.propuestas;
         Set set = prop.entrySet();
         Iterator iterator = set.iterator();
@@ -276,6 +287,8 @@ public class ControladorPropCat implements IPropCat {
 
     @Override
     public DtinfoPropuesta RetornarPropuestaR(String titulo) {
+        this.EvaluarEstadosPropuestas();
+
         Map<String, Propuesta> prop = this.propuestas;
         Set set = prop.entrySet();
         Iterator iterator = set.iterator();
@@ -339,6 +352,8 @@ public class ControladorPropCat implements IPropCat {
 
     @Override
     public List<DtinfoPropuesta> DarPropuestasCol(Colaborador c) {
+        this.EvaluarEstadosPropuestas();
+
         List<DtinfoPropuesta> resultado = new ArrayList<DtinfoPropuesta>();
         Iterator it = c.getColaboraciones().iterator();
         while (it.hasNext()) {
@@ -779,12 +794,12 @@ public class ControladorPropCat implements IPropCat {
 
             Propuesta prop = (Propuesta) mtry.getValue();
 
-            if (prop.getEstadoActual().getEstado() == TipoE.Publicada) {
+            if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
 
                 Calendar fechaDeHoy = new GregorianCalendar();
                 Date fechaDeHoy1 = fechaDeHoy.getTime();
 
-                if (!fechaDeHoy1.before(this.FechaCambioEstado(prop.getEstadoActual().getfechaInicio().getTime()))) {
+                if (!fechaDeHoy1.before(this.FechaCambioEstado(prop.getFechaPublicacion().getTime()))) {
                     if (prop.getMontoTot() <= this.CalcularMontoPropuesta(prop)) {
                         EstadoPropuesta nuevoE = new EstadoPropuesta(TipoE.Financiada, fechaDeHoy, true);
                         EstadoPropuesta EstadoAnt = prop.getEstadoActual();
@@ -793,7 +808,7 @@ public class ControladorPropCat implements IPropCat {
                         prop.setEstadoActual(nuevoE);
                         this.dbPropuesta.EvaluarPropuestaBD(nuevoE, EstadoAnt, prop.getTituloP());
                     } else {
-                        EstadoPropuesta nuevoE = new EstadoPropuesta(TipoE.Cancelada, fechaDeHoy, true);
+                        EstadoPropuesta nuevoE = new EstadoPropuesta(TipoE.noFinanciada, fechaDeHoy, true);
                         EstadoPropuesta EstadoAnt = prop.getEstadoActual();
                         EstadoAnt.setEsActual(false);
                         prop.setEstados(EstadoAnt);
@@ -813,8 +828,8 @@ public class ControladorPropCat implements IPropCat {
         cal.add(Calendar.DAY_OF_YEAR, 30);
         return cal.getTime();
     }
-    
-        @Override
+
+    @Override
     public Usuario CargarFavoritas(Usuario usu, List<String> usufav) {
         Set set = this.propuestas.entrySet();
         Iterator it = set.iterator();
@@ -835,8 +850,11 @@ public class ControladorPropCat implements IPropCat {
         }
         return usu;
     }
-    
+
+    @Override
     public List<DtinfoPropuesta> ListarPropuestasNoIngresadas(String nick) {
+        this.EvaluarEstadosPropuestas();
+
         List<DtinfoPropuesta> retorno = new ArrayList<>();
         Set set = this.propuestas.entrySet();
         Iterator iterator = set.iterator();
@@ -844,56 +862,59 @@ public class ControladorPropCat implements IPropCat {
             Map.Entry mentry = (Map.Entry) iterator.next();
             Propuesta p = (Propuesta) mentry.getValue();
             if (p.getAutor().getNickname().equals(nick)) {
-                if(p.getEstadoActual().getEstado() != TipoE.Ingresada){
-                DtinfoPropuesta dtP = new DtinfoPropuesta(p);
-                retorno.add(dtP);
+                if (p.getEstadoActual().getEstado() != TipoE.Ingresada) {
+                    DtinfoPropuesta dtP = new DtinfoPropuesta(p);
+                    retorno.add(dtP);
                 }
             }
         }
         return retorno;
     }
-    
+
     @Override
-    public List<DtinfoPropuesta> ListarPropuesta(){
-        List<DtinfoPropuesta> propuestas=new ArrayList<>();
-        Set set=this.propuestas.entrySet();
-        Iterator it=set.iterator();
-        while(it.hasNext()){
-            Map.Entry mentry=(Map.Entry) it.next();
-            Propuesta p=(Propuesta) mentry.getValue();
-            DtinfoPropuesta dtp=new DtinfoPropuesta(p);
+    public List<DtinfoPropuesta> ListarPropuesta() {
+        this.EvaluarEstadosPropuestas();
+
+        List<DtinfoPropuesta> propuestas = new ArrayList<>();
+        Set set = this.propuestas.entrySet();
+        Iterator it = set.iterator();
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Propuesta p = (Propuesta) mentry.getValue();
+            DtinfoPropuesta dtp = new DtinfoPropuesta(p);
             propuestas.add(dtp);
         }
         return propuestas;
     }
-    
+
     @Override
-    public List<DtinfoPropuesta> ListarPropuestaNOI(){
-        List<DtinfoPropuesta> propuestas=new ArrayList<>();
-        Set set=this.propuestas.entrySet();
-        Iterator it=set.iterator();
-        while(it.hasNext()){
-            Map.Entry mentry=(Map.Entry) it.next();
-            Propuesta p=(Propuesta) mentry.getValue();
-            if(p.getEstadoActual().getEstado() != TipoE.Ingresada){
-            DtinfoPropuesta dtp=new DtinfoPropuesta(p);
-            propuestas.add(dtp);
+    public List<DtinfoPropuesta> ListarPropuestaNOI() {
+        this.EvaluarEstadosPropuestas();
+
+        List<DtinfoPropuesta> propuestas = new ArrayList<>();
+        Set set = this.propuestas.entrySet();
+        Iterator it = set.iterator();
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Propuesta p = (Propuesta) mentry.getValue();
+            if (p.getEstadoActual().getEstado() != TipoE.Ingresada) {
+                DtinfoPropuesta dtp = new DtinfoPropuesta(p);
+                propuestas.add(dtp);
             }
         }
         return propuestas;
     }
-    
-    public boolean AgregarFavorita(String titulo,String nick){
-        Boolean exito=this.dbPropuesta.AgregarFavoritas(nick, titulo);
-        if(exito){
-        return true;
-        }else{
-            return false;
-        }
+
+    @Override
+    public boolean AgregarFavorita(String titulo, String nick) {
+        Boolean exito = this.dbPropuesta.AgregarFavoritas(nick, titulo);
+        return exito;
     }
 
     @Override
     public List<DtPropuestaWeb> ListarPropuestasWeb(TipoE estado) {
+        this.EvaluarEstadosPropuestas();
+
         List<DtPropuestaWeb> listProp = new ArrayList<>();
 
         Iterator it = this.propuestas.entrySet().iterator();
@@ -912,16 +933,15 @@ public class ControladorPropCat implements IPropCat {
 
                 int porcentaje = (int) ((this.CalcularMontoPropuesta(prop) * 100) / prop.getMontoTot());
                 DtPropuestaWeb dtpropW;
-                if (dias < 0) {
+
+                if (prop.getEstadoActual().getEstado() == TipoE.Cancelada || prop.getEstadoActual().getEstado() == TipoE.Financiada || prop.getEstadoActual().getEstado() == TipoE.noFinanciada) {
                     dtpropW = new DtPropuestaWeb(prop.getTituloP(), prop.getDescripcionP(), 0, this.CalcularMontoPropuesta(prop), porcentaje, prop.getColaboraciones().size());
                 } else {
                     dtpropW = new DtPropuestaWeb(prop.getTituloP(), prop.getDescripcionP(), dias, this.CalcularMontoPropuesta(prop), porcentaje, prop.getColaboraciones().size());
                 }
                 listProp.add(dtpropW);
-
             }
         }
-
         return listProp;
     }
 }
