@@ -5,11 +5,16 @@
  */
 package Presentacion;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import logica.Clases.DataImagen;
 import logica.Clases.TipoRetorno;
 import logica.Fabrica;
 import logica.Interfaces.IPropCat;
+import logica.Clases.convertidorDeIMG;
 
 /**
  *
@@ -340,70 +345,79 @@ public class AltaPropuesta2 extends javax.swing.JInternalFrame {
 
         String tituloP = jTextTitulo.getText();
         String lugar = jTextLugar.getText();
-        float montoE =0;
-        if(!this.jTextMontoEnt.getText().equals("")){
-       montoE = Float.parseFloat(jTextMontoEnt.getText());
+        float montoE = 0;
+        if (!this.jTextMontoEnt.getText().equals("")) {
+            montoE = Float.parseFloat(jTextMontoEnt.getText());
         }
-        float montoTot=0;
-        if(!jTextMontoTot.getText().equals("")){
-        montoTot = Float.parseFloat(jTextMontoTot.getText());
+        float montoTot = 0;
+        if (!jTextMontoTot.getText().equals("")) {
+            montoTot = Float.parseFloat(jTextMontoTot.getText());
         }
         String descripcion = jTextAreaDescripcion.getText();
         Calendar fechaR = jCalendarFechaReal.getCalendar();
         String imagen = rSFotoCirclePropuesta.getRutaImagen();
-        TipoRetorno tipoR = null;
-
-        if ("".equals(tituloP)) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Ingrese un titulo");
-            jTextTitulo.requestFocus();
-            datosBien = false;
-        } else if ("".equals(lugar)) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Ingrese un Lugar ");
-            jTextLugar.requestFocus();
-            datosBien = false;
-        } else if (montoE == 0) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Ingrese el precio de las entradas");
-            jTextMontoEnt.requestFocus();
-            datosBien = false;
-        } else if (montoTot == 0) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Ingrese el monto total del evento");
-            jTextMontoTot.requestFocus();
-            datosBien = false;
-        } else if (fechaR.getTime() == null) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Ingrese la fecha de realizacion del evento");
-            datosBien = false;
-        } else if (montoTot < (montoE / 10)) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Debe ingresar montos validos");
-            jTextMontoTot.setText("");
-            jTextMontoEnt.setText("");
-            jTextMontoTot.requestFocus();
-            datosBien = false;
-        } else if (jCheckBoxEntradas.isSelected() && jCheckBoxGanancias.isSelected()) {
-            tipoR = TipoRetorno.EntGan;
-        } else if (jCheckBoxGanancias.isSelected()) {
-            tipoR = TipoRetorno.porGanancias;
-        } else if (jCheckBoxEntradas.isSelected()) {
-            tipoR = TipoRetorno.Entradas;
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(null, "Debe seleccionar una forma de retribucion de colaboraciones");
-            datosBien = false;
-        }
-        if (datosBien) {
-            try {
-                boolean ok = ICP.crearPropuesta(tituloP, descripcion, lugar, imagen, fechaR, montoE, montoTot, tipoR);
-
-                if (ok) {
-                    javax.swing.JOptionPane.showMessageDialog(null, "La propuesta ha sido creada con Exito");
-                    this.LimpiarComponentes();
-                } else {
-                    javax.swing.JOptionPane.showMessageDialog(null, "La propuesta no pudo ser cargada ");
-                    this.LimpiarComponentes();
-                }
-            } catch (Exception e) {
-                javax.swing.JOptionPane.showMessageDialog(null, e.getMessage());
-                jTextTitulo.setText("");
-                jTextTitulo.requestFocus();
+        convertidorDeIMG convertidor = new convertidorDeIMG();
+        DataImagen foto = null;
+        try {
+            if (!imagen.isEmpty()) {
+                foto = convertidor.convertirStringAImg(tituloP, imagen);
             }
+            TipoRetorno tipoR = null;
+
+            if ("".equals(tituloP)) {
+                javax.swing.JOptionPane.showMessageDialog(null, "Ingrese un titulo");
+                jTextTitulo.requestFocus();
+                datosBien = false;
+            } else if ("".equals(lugar)) {
+                javax.swing.JOptionPane.showMessageDialog(null, "Ingrese un Lugar ");
+                jTextLugar.requestFocus();
+                datosBien = false;
+            } else if (montoE == 0) {
+                javax.swing.JOptionPane.showMessageDialog(null, "Ingrese el precio de las entradas");
+                jTextMontoEnt.requestFocus();
+                datosBien = false;
+            } else if (montoTot == 0) {
+                javax.swing.JOptionPane.showMessageDialog(null, "Ingrese el monto total del evento");
+                jTextMontoTot.requestFocus();
+                datosBien = false;
+            } else if (fechaR.getTime() == null) {
+                javax.swing.JOptionPane.showMessageDialog(null, "Ingrese la fecha de realizacion del evento");
+                datosBien = false;
+            } else if (montoTot < (montoE / 10)) {
+                javax.swing.JOptionPane.showMessageDialog(null, "Debe ingresar montos validos");
+                jTextMontoTot.setText("");
+                jTextMontoEnt.setText("");
+                jTextMontoTot.requestFocus();
+                datosBien = false;
+            } else if (jCheckBoxEntradas.isSelected() && jCheckBoxGanancias.isSelected()) {
+                tipoR = TipoRetorno.EntGan;
+            } else if (jCheckBoxGanancias.isSelected()) {
+                tipoR = TipoRetorno.porGanancias;
+            } else if (jCheckBoxEntradas.isSelected()) {
+                tipoR = TipoRetorno.Entradas;
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "Debe seleccionar una forma de retribucion de colaboraciones");
+                datosBien = false;
+            }
+            if (datosBien) {
+                try {
+                    boolean ok = ICP.crearPropuesta(tituloP, descripcion, lugar, foto, fechaR, montoE, montoTot, tipoR);
+
+                    if (ok) {
+                        javax.swing.JOptionPane.showMessageDialog(null, "La propuesta ha sido creada con Exito");
+                        this.LimpiarComponentes();
+                    } else {
+                        javax.swing.JOptionPane.showMessageDialog(null, "La propuesta no pudo ser cargada ");
+                        this.LimpiarComponentes();
+                    }
+                } catch (Exception e) {
+                    javax.swing.JOptionPane.showMessageDialog(null, e.getMessage());
+                    jTextTitulo.setText("");
+                    jTextTitulo.requestFocus();
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(AltaPropuesta2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonCrearPropActionPerformed
 

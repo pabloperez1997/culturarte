@@ -23,6 +23,7 @@ import logica.Clases.Propuesta;
 import logica.Clases.TipoE;
 import logica.Clases.TipoRetorno;
 import logica.Clases.Usuario;
+import logica.Clases.DataImagen;
 
 /**
  *
@@ -40,7 +41,7 @@ public interface IPropCat {
 
     public abstract boolean seleccionarUC(String nombreP, String tipoEsp) throws Exception;
 
-    public abstract boolean crearPropuesta(String tituloP, String descripcion, String lugar, String imagen, Calendar fecha, float montoE, float montoTot, TipoRetorno retorno) throws Exception;
+    public abstract boolean crearPropuesta(String tituloP, String descripcion, String lugar, DataImagen imagen, Calendar fecha, float montoE, float montoTot, TipoRetorno retorno) throws Exception;
 
     public abstract List<String> ListarCategorias();
 
@@ -115,4 +116,5 @@ public interface IPropCat {
     public abstract void EvaluarEstadosPropuestas();
     
     public abstract List<DtPropuestaWeb> ListarPropuestasWeb(TipoE estado);
+
 }
