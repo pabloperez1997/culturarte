@@ -14,8 +14,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import static java.nio.file.StandardOpenOption.CREATE;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,7 +31,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.text.html.HTMLDocument;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
 import logica.Clases.Colaborador;
@@ -49,6 +50,9 @@ import logica.Clases.Usuario;
 import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
+import logica.Clases.DataImagen;
+import logica.Controladores.configuraciones;
+import logica.Clases.convertidorDeIMG;
 
 /**
  *
@@ -65,6 +69,8 @@ public class ControladorPropCat implements IPropCat {
     private Proponente uProponente;
     private Propuesta Propuesta;
     private DBColaboracion dbColaboracion = null;
+    private String carpetaImagenesPropuestas = new configuraciones().getCarpetaImagenesPropuestas();
+    convertidorDeIMG convertidor = new convertidorDeIMG();
 
     public static ControladorPropCat getInstance() {
         if (instancia == null) {
@@ -163,36 +169,28 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public boolean crearPropuesta(String tituloP, String descripcion, String lugar, String imagen, Calendar fecha, float montoE, float montoTot, TipoRetorno retorno) throws Exception {
-        String ruta = System.getProperty("user.dir");
+    public boolean crearPropuesta(String tituloP, String descripcion, String lugar, DataImagen imagen, Calendar fecha, float montoE, float montoTot, TipoRetorno retorno) throws Exception {
 
         if (this.propuestas.get(tituloP) != null) {
             throw new Exception("Ya existe una propuesta bajo ese Nombre");
         }
-
         TipoE tipo = TipoE.Ingresada;
         Calendar fechaI = new GregorianCalendar();
         EstadoPropuesta estado = new EstadoPropuesta(tipo, fechaI, true);
-
-        Propuesta nuevaP = new Propuesta(tituloP, descripcion, imagen, lugar, fecha, montoE, montoTot, estado, this.catRecordada, retorno, this.uProponente);
-
-        String fotoLocal = nuevaP.getImagen();
-        if (!"".equals(nuevaP.getImagen())) {
-            File fLocal = new File(fotoLocal);
-            String ex = getFileExtension(fLocal);
-            nuevaP.setImagen(tituloP + "." + ex);
+        String urlImagen;
+        if (imagen != null) {
+            urlImagen = imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo();
         } else {
-            nuevaP.setImagen("Culturarte.png");
+            urlImagen = "Culturarte.png";
         }
-
+        Propuesta nuevaP = new Propuesta(tituloP, descripcion, urlImagen, lugar, fecha, montoE, montoTot, estado, this.catRecordada, retorno, this.uProponente);
         boolean agregada = this.dbPropuesta.agregarPropuesta(nuevaP, estado);
         if (agregada) {
             this.propuestas.put(tituloP, nuevaP);
             this.catRecordada.setPropuesta(nuevaP);
             this.uProponente.setPropuesta(nuevaP);
-
-            if (!"".equals(nuevaP.getImagen())) {
-                copiarFoto(imagen, tituloP);
+            if (!urlImagen.equals("Culturarte.png")) {
+                grabarFotoPropuestas(tituloP, imagen);
             }
 
         } else {
@@ -201,6 +199,28 @@ public class ControladorPropCat implements IPropCat {
             throw new Exception("La propuesta no pudo ser dada de alta por conflicto del sistema");
         }
         return true;
+    }
+
+    public void grabarFotoPropuestas(String titulo, DataImagen imagen) throws IOException {
+        String extencion = imagen.getExtensionArchivo();
+        String nombreA = imagen.getNombreArchivo();
+        byte[] arreglo = imagen.getStream();
+        String carpetaImg = carpetaImagenesPropuestas + titulo;
+        if (this.carpetaImagenesPropuestas == null) {
+            throw new IllegalStateException("La carpeta de imagenes no fue configurada");
+        }
+        final File fileImagenes = new File(this.carpetaImagenesPropuestas);
+        if (!fileImagenes.isDirectory()) {
+            throw new IOException("La carpeta de imagenes no fue configurada");
+        }//if.
+        String pathStr = this.carpetaImagenesPropuestas + "\\fPropuestas" + File.separatorChar + titulo;
+        final File dirUsuario = new File(pathStr);
+        if (!dirUsuario.isDirectory()) {
+            dirUsuario.mkdirs();
+        }
+        pathStr = pathStr + File.separatorChar + nombreA + "." + extencion;
+        final Path path = Paths.get(pathStr);
+        Files.write(path, imagen.getStream(), CREATE);
     }
 
     @Override
@@ -471,24 +491,25 @@ public class ControladorPropCat implements IPropCat {
 
     @Override
     public boolean crearPropuestaDatosdePrueba(String tituloP, String descripcion, Categoria cat, Calendar fecha, String lugar, float montoE, float montoTot, TipoRetorno retorno, Proponente p, String imagen) {
-
         if (this.getPropuestas().get(tituloP) != null) {
             return false;
         }
-
         Propuesta nuevaP;
         nuevaP = new Propuesta(tituloP, descripcion, imagen, lugar, fecha, montoE, montoTot, null, cat, retorno, p);
         this.propuestas.put(tituloP, nuevaP);
-        String ruta = System.getProperty("user.dir");
-        File dataInputFile = new File(ruta + "//fotosdp//" + imagen);
-        File fileSendPath = new File(ruta + "//fPropuestas//", dataInputFile.getName());
+        String ruta = new configuraciones().getCarpetaImagenesPropuestas();
+        String url = ruta + "\\fotosdp\\" + imagen;
         try {
-            Files.copy(Paths.get(dataInputFile.getAbsolutePath()), Paths.get(fileSendPath.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
+            DataImagen img = convertidor.convertirStringAImg(url, tituloP);
+
+            this.dbPropuesta = new DBPropuesta();
+            boolean agregada = this.dbPropuesta.agregarPropuestaDatosdePrueba(nuevaP);
+            if (agregada == true) {
+                grabarFotoPropuestas(tituloP, img);
+            }
         } catch (IOException ex) {
             Logger.getLogger(ControladorPropCat.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.dbPropuesta = new DBPropuesta();
-        boolean agregada = this.dbPropuesta.agregarPropuestaDatosdePrueba(nuevaP);
         return true;
     }
 

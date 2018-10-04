@@ -191,9 +191,7 @@ public class ControladorUsuario implements IControladorUsuario {
             throw new IllegalStateException("La carpeta de imagenes no fue configurada");
         }
         final File fileImagenes = new File(this.carpetaImagenesPerfiles);
-        if (!fileImagenes.isDirectory()) {
-            throw new IOException("La carpeta de imagenes no fue configurada");
-        }//if.
+        
         String pathStr = this.carpetaImagenesPerfiles + File.separatorChar + correo;
         final File dirUsuario = new File(pathStr);
         if (!dirUsuario.isDirectory()) {
@@ -473,8 +471,7 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
     @Override
-    public ArrayList<DtUsuario> ListarUsuarios() {
-        ControladorUsuario CU = new ControladorUsuario();
+    public ArrayList<DtUsuario> ListarUsuarios() {    
         Set set = Usuarios.entrySet();
         Iterator iterator = set.iterator();
         ArrayList<DtUsuario> retorno = new ArrayList();
@@ -891,5 +888,19 @@ public class ControladorUsuario implements IControladorUsuario {
         }
         return dtc;
 
+    }
+    
+    @Override
+    public void agregarfavorita(String nick,Propuesta p){
+        Set set = Usuarios.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            Usuario u=(Usuario) mentry.getValue();
+            if (u.getNickname().equals(nick)){
+                u.getFavoritas().put(p.getTituloP(), p);
+                break;
+            }
+        }
     }
 }

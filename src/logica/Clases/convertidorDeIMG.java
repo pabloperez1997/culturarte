@@ -17,6 +17,9 @@ import org.apache.commons.io.IOUtils;
  * @author Lucas
  */
 public class convertidorDeIMG {
+    private String nombre;
+    private String url;
+
 
     public DataImagen convertirStringAImg(String url, String nick) throws FileNotFoundException, IOException {
         File img = new File(url);

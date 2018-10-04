@@ -15,5 +15,9 @@ public class configuraciones {
     public String getCarpetaImagenesUsers() {
         return carpetaImagenesUsers;
     }
-    
+
+    public String getCarpetaImagenesPropuestas() {
+        return carpetaImagenesPropuestas;
+    }
+
 }

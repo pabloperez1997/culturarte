@@ -348,7 +348,7 @@ public class DBPropuesta {
     
     public boolean AgregarFavoritas(String nick,String TituloP){
     try{
-        PreparedStatement stat = conexion.prepareStatement("INSERT INTO favoritas" + "(Usuario,Propuesta) VALUES (?,?)");
+        PreparedStatement stat = conexion.prepareStatement("INSERT INTO favoritas(Usuario,Propuesta) values (?,?)");
         stat.setString(1, nick);
         stat.setString(2, TituloP);
         stat.executeUpdate();

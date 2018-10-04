@@ -416,8 +416,11 @@ public final class AltaUsuario extends javax.swing.JInternalFrame {
                 }
             }
             hash = a.sha1(password);
+            DataImagen foto = null;
             try {
-                DataImagen foto = convertidor.convertirStringAImg(imagen, nick);
+                if (imagen != "") {
+                    foto = convertidor.convertirStringAImg(imagen, nick);
+                }
                 ingreso = ICU.AgregarUsuarioProponente(nick, nombre, apellido, correo, fechaN, foto, direccion, biografia, sitioWeb, hash);
 
             } catch (IOException ex) {
@@ -427,7 +430,10 @@ public final class AltaUsuario extends javax.swing.JInternalFrame {
             hash = a.sha1(password);
 
             try {
-                DataImagen foto = convertidor.convertirStringAImg(imagen, nick);
+                DataImagen foto = null;
+                if (imagen != "") {
+                    foto = convertidor.convertirStringAImg(imagen, nick);
+                }
                 ingreso = ICU.AgregarUsuarioColaborador(nick, nombre, apellido, correo, fechaN, foto, hash);
             } catch (IOException ex) {
                 Logger.getLogger(AltaUsuario.class.getName()).log(Level.SEVERE, null, ex);
