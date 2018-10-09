@@ -11,7 +11,7 @@ package logica.Controladores;
  */
 public class configuraciones {
 
-    private String carpetaImagenesUsers = "C:\\Users\\gabri\\Documents\\NetBeansProjects\\culturarte";
+    private String carpetaImagenes = "C:\\Users\\gabri\\Documents\\NetBeansProjects\\culturarte";
     
     private String carpetaImagenesPropuestas = "C:\\Users\\gabri\\Documents\\NetBeansProjects\\culturarte";
 

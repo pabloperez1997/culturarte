@@ -753,7 +753,8 @@ public class ControladorUsuario implements IControladorUsuario {
                     if (aux instanceof Colaborador) {
                         dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
                     } else {
-                        dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
+                        Proponente p=(Proponente) aux;
+                        dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true,p.getBiografia(),p.getsitioweb(),p.getDireccion());
                     }
                     break;
                 }
