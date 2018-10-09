@@ -542,7 +542,7 @@ public class ConfirmarPropuestas extends javax.swing.JInternalFrame {
 
         String titulo = jTablePropuestas.getValueAt(row, 0).toString();
         try {
-            DtConsultaPropuesta info = Fabrica.getInstance().getControladorPropCat().SeleccionarPropuesta(titulo);
+            DtConsultaPropuesta info = Fabrica.getInstance().getControladorPropCat().SeleccionarPropuesta(titulo,null);
 
             jTextFielTitulo.setText(info.getTitulo());
             jTextFieldCategoria.setText(info.getCategoria());
