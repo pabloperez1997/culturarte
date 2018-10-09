@@ -371,6 +371,7 @@ public class Fabrica {
         IPC.AgregarFavorita("Cine en el Botánico", "diegop");
         IPC.AgregarFavorita("El Lazarillo de Tormes", "diegop");
         IPC.AgregarFavorita("Religiosamente", "kairoh");
+        IPC.AgregarFavorita("Pilsen Rock", "kairoh");
         IPC.AgregarFavorita("Durazno Rock", "durazno");
         IPC.AgregarFavorita("Cine en el Botánico", "robinh");
         IPC.AgregarFavorita("Religiosamente", "marcelot");
@@ -378,7 +379,7 @@ public class Fabrica {
         IPC.AgregarFavorita("Religiosamente", "novick");
         IPC.AgregarFavorita("Pilsen Rock", "novick");
         IPC.AgregarFavorita("El Pimiento Indomable", "sergiop");
-        IPC.AgregarFavorita("Romeo y Julieta", "segiop");
+        IPC.AgregarFavorita("Romeo y Julieta", "sergiop");
         IPC.AgregarFavorita("Pilsen Rock", "chino");
         IPC.AgregarFavorita("Pilsen Rock", "tonyp");
         IPC.AgregarFavorita("Un día de Julio", "tonyp");
