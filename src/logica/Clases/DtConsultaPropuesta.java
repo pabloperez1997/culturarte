@@ -25,8 +25,9 @@ public class DtConsultaPropuesta {
     private String nickproponente;
     private boolean esExtendible;
     private boolean esCancelable;
+    private boolean esComentable;
 
-    public DtConsultaPropuesta(String tit, String cat, String lugar, String fecha, float monto, float montoe, String estado, String desc, String img, float montoTot, String tipoRet, String nickprop, boolean extendible, boolean cancelable) {
+    public DtConsultaPropuesta(String tit, String cat, String lugar, String fecha, float monto, float montoe, String estado, String desc, String img, float montoTot, String tipoRet, String nickprop, boolean extendible, boolean cancelable, boolean comentable) {
         this.titulo = tit;
         this.categoria = cat;
         this.descripcion = desc;
@@ -41,6 +42,7 @@ public class DtConsultaPropuesta {
         this.nickproponente = nickprop;
         this.esExtendible = extendible;
         this.esCancelable = cancelable;
+        this.esComentable = comentable;
     }
 
     public String getNickproponente() {
@@ -97,5 +99,9 @@ public class DtConsultaPropuesta {
 
     public boolean getExtendible() {
         return this.esExtendible;
+    }
+
+    public boolean getComentable() {
+        return this.esComentable;
     }
 }

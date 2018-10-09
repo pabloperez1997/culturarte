@@ -542,7 +542,7 @@ public class ConfirmarPropuestas extends javax.swing.JInternalFrame {
 
         String titulo = jTablePropuestas.getValueAt(row, 0).toString();
         try {
-            DtConsultaPropuesta info = Fabrica.getInstance().getControladorPropCat().SeleccionarPropuesta(titulo,null);
+            DtConsultaPropuesta info = Fabrica.getInstance().getControladorPropCat().SeleccionarPropuesta(titulo, null);
 
             jTextFielTitulo.setText(info.getTitulo());
             jTextFieldCategoria.setText(info.getCategoria());
@@ -607,18 +607,23 @@ public class ConfirmarPropuestas extends javax.swing.JInternalFrame {
 
                     if (resultado) {
                         javax.swing.JOptionPane.showMessageDialog(null, "La propuesta fue publicada con exito");
+                        this.LimpiarCampos();
                     } else {
                         javax.swing.JOptionPane.showMessageDialog(null, "Un fallo interno no permitio completar la operacion");
+                        this.LimpiarCampos();
                     }
                 } else if (jCheckBoxCancelar.isSelected()) {
                     resultado = Fabrica.getInstance().getControladorPropCat().EvaluarPropuesta(jTextFielTitulo.getText(), TipoE.Cancelada);
                     if (resultado) {
                         javax.swing.JOptionPane.showMessageDialog(null, "La propuesta fue cancelada con exito");
+                        this.LimpiarCampos();
                     } else {
                         javax.swing.JOptionPane.showMessageDialog(null, "Un fallo interno no permitio completar la operacion");
+                        this.LimpiarCampos();
                     }
                 } else {
                     javax.swing.JOptionPane.showMessageDialog(null, "Debe Optar por un nuevo estado para esta Propuesta");
+                    
                 }
             }
         } catch (Exception e) {
@@ -626,6 +631,31 @@ public class ConfirmarPropuestas extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButtonConfirmarMouseClicked
 
+    void LimpiarCampos() {
+        jTextAreaDescripcion.setText("");
+        jTextFielTitulo.setText("");
+        jTextFieldApellido.setText("");
+        jTextFieldLugar.setText("");
+        jTextFieldNombre.setText("");
+        jTextFieldFechaR.setText("");
+        jTextFieldCategoria.setText("");
+        jTextFieldNickName.setText("");
+        jTextFieldMontoTot.setText("");
+        jTextFieldMontoE.setText("");
+        jTextFieldTipoR.setText("");
+        jTextFieldBuscador.setText("");
+
+        List<DtNickTitProp> ListProp = Fabrica.getInstance().getControladorPropCat().ListaEvaluarPropuesta();
+        DefaultTableModel modelo = (DefaultTableModel) jTablePropuestas.getModel();
+        modelo.setRowCount(0);
+        for (int i = 0; i < ListProp.size(); i++) {
+
+            DtNickTitProp propu = (DtNickTitProp) ListProp.get(i);
+            Object[] datos = {propu.getTituloP(), propu.getProponente()};
+
+            modelo.addRow(datos);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonConfirmar;

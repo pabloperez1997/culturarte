@@ -361,15 +361,19 @@ public class ControladorPropCat implements IPropCat {
             String fechaR = new SimpleDateFormat("dd/MMM/yyyy").format(fecha);
             boolean cancelable = false;
             boolean extendible = false;
+            boolean comentable = false;
+
             if (prop.getAutor().getNickname().equals(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
                 cancelable = true;
             } else if (prop.getAutor().getNickname().equals(proponente)) {
                 if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
                     extendible = true;
                 }
+            } else if (prop.EsColaborador(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
+                comentable = this.Comentable(prop, proponente);
             }
 
-            return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick,extendible,cancelable);
+            return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable);
 
         } else {
             throw new Exception("La propuesta ingresada no esta en el sistema");
@@ -940,16 +944,16 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public boolean AgregarFavorita(String titulo, String nick) {
         Boolean exito = this.dbPropuesta.AgregarFavoritas(nick, titulo);
-        if(exito){
-        Iterator it= this.propuestas.entrySet().iterator();
-        while(it.hasNext()){
-            Map.Entry mentry=(Map.Entry) it.next();
-            Propuesta p=(Propuesta) mentry.getValue();
-            if(p.getTituloP().equals(titulo)){
-            Fabrica.getInstance().getIControladorUsuario().agregarfavorita(nick, p);
-            break;
+        if (exito) {
+            Iterator it = this.propuestas.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry mentry = (Map.Entry) it.next();
+                Propuesta p = (Propuesta) mentry.getValue();
+                if (p.getTituloP().equals(titulo)) {
+                    Fabrica.getInstance().getIControladorUsuario().agregarfavorita(nick, p);
+                    break;
+                }
             }
-        }
         }
         return exito;
     }
@@ -987,25 +991,24 @@ public class ControladorPropCat implements IPropCat {
         }
         return listProp;
     }
-    
+
     @Override
-    public List<DtinfoPropuesta> ListarPropuestasCategoria(String nombrecat){
-        List<DtinfoPropuesta> propuestas=new ArrayList<>();
-        Map<String,Propuesta> prop=this.propuestas;
-        Set set=prop.entrySet();
-        Iterator it=set.iterator();
-        while(it.hasNext()){
-            Map.Entry mentry =(Map.Entry) it.next();
-            Propuesta p=(Propuesta) mentry.getValue();
-            if(p.getCategoria().getNombreC().equals(nombrecat)){
-                DtinfoPropuesta dtp=new DtinfoPropuesta(p);
+    public List<DtinfoPropuesta> ListarPropuestasCategoria(String nombrecat) {
+        List<DtinfoPropuesta> propuestas = new ArrayList<>();
+        Map<String, Propuesta> prop = this.propuestas;
+        Set set = prop.entrySet();
+        Iterator it = set.iterator();
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Propuesta p = (Propuesta) mentry.getValue();
+            if (p.getCategoria().getNombreC().equals(nombrecat)) {
+                DtinfoPropuesta dtp = new DtinfoPropuesta(p);
                 propuestas.add(dtp);
             }
         }
         return propuestas;
     }
-    
-   
+
     @Override
     public List<DtNickTitProp> listarPropuestasComentar() {
 
@@ -1081,7 +1084,7 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public boolean ExtenderFinanciacion(String Titulo) {
         Iterator it = this.getPropuestas().entrySet().iterator();
-        DBPropuesta DBP = new DBPropuesta();
+
         while (it.hasNext()) {
             Map.Entry mtry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mtry.getValue();
@@ -1090,11 +1093,21 @@ public class ControladorPropCat implements IPropCat {
                 Calendar calendario = new GregorianCalendar();
                 calendario.add(Calendar.DAY_OF_YEAR, 30);
                 EP.setfechaInicio(calendario);
-                DBP.ModificarEstadoPublicadaPropuesta(prop.getTituloP(), calendario);
+                this.dbPropuesta.ModificarEstadoPublicadaPropuesta(prop.getTituloP(), calendario);
                 return true;
             }
         }
         return false;
     }
 
+    public boolean Comentable(Propuesta prop, String nick) {
+        Iterator it = prop.getComentarios().iterator();
+        while (it.hasNext()) {
+            Comentario com = (Comentario) it.next();
+            if (com.getNickColab().equals(nick)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
