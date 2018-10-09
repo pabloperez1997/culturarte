@@ -192,4 +192,21 @@ public class Propuesta {
         }
         return null;
     }
+    
+    
+       public EstadoPropuesta getEstadoPublicado() {
+        if (this.estadoActual.getEstado() == TipoE.Publicada) {
+            return this.estadoActual;
+        } else {
+            Iterator it = this.historialEstados.iterator();
+            while (it.hasNext()) {
+                EstadoPropuesta est = (EstadoPropuesta) it.next();
+
+                if (est.getEstado() == TipoE.Publicada) {
+                    return est;
+                }
+            }
+        }
+        return null;
+    }
 }

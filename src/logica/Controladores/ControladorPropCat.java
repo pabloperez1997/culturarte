@@ -1018,5 +1018,46 @@ public class ControladorPropCat implements IPropCat {
         p.getComentarios().add(c);
    
      }
+     
+     
+
+        @Override
+    public List<DtNickTitProp> ListarPropuestasX_DeProponenteX(String nick) {
+        this.EvaluarEstadosPropuestas();
+        List<DtNickTitProp> retorno = new ArrayList<>();
+        Set set = this.propuestas.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            Propuesta p = (Propuesta) mentry.getValue();
+            if (p.getAutor().getNickname().equals(nick)) {
+                if (p.getEstadoActual().getEstado() == TipoE.Publicada || p.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
+                    DtNickTitProp dtP = new DtNickTitProp(p.getTituloP(), p.getAutor().getNickname());
+                    retorno.add(dtP);
+                }
+            }
+        }
+        return retorno;
+    }
+
+    @Override
+    public boolean ExtenderFinanciacion(String Titulo) {
+        Iterator it = this.getPropuestas().entrySet().iterator();
+        DBPropuesta DBP = new DBPropuesta();
+        while (it.hasNext()) {
+            Map.Entry mtry = (Map.Entry) it.next();
+            Propuesta prop = (Propuesta) mtry.getValue();
+            if (prop.getTituloP().compareTo(Titulo) == 0) {
+                EstadoPropuesta EP =  prop.getEstadoPublicado();
+                Calendar calendario = new GregorianCalendar();
+                calendario.add(Calendar.DAY_OF_YEAR, 30);
+                EP.setfechaInicio(calendario);
+                DBP.ModificarEstadoPublicadaPropuesta(prop.getTituloP() , calendario);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 
