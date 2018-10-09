@@ -929,6 +929,17 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public boolean AgregarFavorita(String titulo, String nick) {
         Boolean exito = this.dbPropuesta.AgregarFavoritas(nick, titulo);
+        if(exito){
+        Iterator it= this.propuestas.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry mentry=(Map.Entry) it.next();
+            Propuesta p=(Propuesta) mentry.getValue();
+            if(p.getTituloP().equals(titulo)){
+            Fabrica.getInstance().getIControladorUsuario().agregarfavorita(nick, p);
+            break;
+            }
+        }
+        }
         return exito;
     }
 
@@ -964,5 +975,21 @@ public class ControladorPropCat implements IPropCat {
             }
         }
         return listProp;
+    }
+    
+    public List<DtinfoPropuesta> ListarPropuestasCategoria(String nombrecat){
+        List<DtinfoPropuesta> propuestas=new ArrayList<>();
+        Map<String,Propuesta> prop=this.propuestas;
+        Set set=prop.entrySet();
+        Iterator it=set.iterator();
+        while(it.hasNext()){
+            Map.Entry mentry =(Map.Entry) it.next();
+            Propuesta p=(Propuesta) mentry.getValue();
+            if(p.getCategoria().getNombreC().equals(nombrecat)){
+                DtinfoPropuesta dtp=new DtinfoPropuesta(p);
+                propuestas.add(dtp);
+            }
+        }
+        return propuestas;
     }
 }
