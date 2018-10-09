@@ -32,6 +32,7 @@ public class Propuesta {
     private List<EstadoPropuesta> historialEstados;
     private List<Colaboracion> Colaboraciones;
     private Categoria categoria;
+    private List<Comentario> Comentarios;
 
     public Propuesta(String tituloP, String descripcion, String imagen, String lugar, Calendar fecha, float montoE, float montoTot, EstadoPropuesta estado, Categoria cate, TipoRetorno retorno, Proponente autor) {
         this.TituloP = tituloP;
@@ -47,6 +48,15 @@ public class Propuesta {
         this.Autor = autor;
         this.Colaboraciones = new ArrayList<>();
         this.historialEstados = new ArrayList<>();
+        this.Comentarios = new ArrayList<>();
+    }
+
+    public List<Comentario> getComentarios() {
+        return Comentarios;
+    }
+
+    public void setComentarios(List<Comentario> Comentarios) {
+        this.Comentarios = Comentarios;
     }
 
     public String getTituloP() {
@@ -177,6 +187,23 @@ public class Propuesta {
 
                 if (est.getEstado() == TipoE.Publicada) {
                     return est.getfechaInicio();
+                }
+            }
+        }
+        return null;
+    }
+    
+    
+       public EstadoPropuesta getEstadoPublicado() {
+        if (this.estadoActual.getEstado() == TipoE.Publicada) {
+            return this.estadoActual;
+        } else {
+            Iterator it = this.historialEstados.iterator();
+            while (it.hasNext()) {
+                EstadoPropuesta est = (EstadoPropuesta) it.next();
+
+                if (est.getEstado() == TipoE.Publicada) {
+                    return est;
                 }
             }
         }

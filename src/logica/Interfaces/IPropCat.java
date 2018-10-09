@@ -102,19 +102,27 @@ public interface IPropCat {
     public abstract List<DtNickTitProp> ListaEvaluarPropuesta();
 
     public abstract boolean EvaluarPropuesta(String titulo, TipoE tipo) throws Exception;
-    
+
     public abstract Usuario CargarFavoritas(Usuario usu, List<String> usufav);
-    
+
     public abstract List<DtinfoPropuesta> ListarPropuestasNoIngresadas(String nick);
-    
+
     public abstract List<DtinfoPropuesta> ListarPropuesta();
-    
-    public abstract boolean AgregarFavorita(String titulo,String nick);
-        
+
+    public abstract boolean AgregarFavorita(String titulo, String nick);
+
     public abstract List<DtinfoPropuesta> ListarPropuestaNOI();
 
     public abstract void EvaluarEstadosPropuestas();
-    
+
     public abstract List<DtPropuestaWeb> ListarPropuestasWeb(TipoE estado);
+
+    public abstract List<DtNickTitProp> listarPropuestasComentar();
+
+    public abstract void ComentarPropuesta(String TituloP, String nickColab, String texto) throws Exception;
+
+    public abstract boolean ExtenderFinanciacion(String Titulo);
+    
+    public abstract List<DtNickTitProp> ListarPropuestasX_DeProponenteX(String nick);
 
 }

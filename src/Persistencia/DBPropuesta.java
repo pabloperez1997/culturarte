@@ -359,4 +359,33 @@ public class DBPropuesta {
             return false;
         }
     }
+    
+   public boolean ModificarEstadoPublicadaPropuesta(String TituloP, Calendar fechaE) {
+        try {
+            PreparedStatement stat = conexion.prepareStatement("UPDATE estadopropuesta SET FechaInicio = ? WHERE TituloP = '" + TituloP + "' and Estado = 1");
+            Date fechaI = (Date) fechaE.getTime();
+            java.sql.Timestamp fechaII = new java.sql.Timestamp(fechaI.getTime());
+            stat.setTimestamp(1, fechaII);
+            stat.executeUpdate();
+            stat.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean AgregarComentario(String TituloP, String nickColab, String texto){
+    try{
+        PreparedStatement stat = conexion.prepareStatement("INSERT INTO comentarios(Usuario,Propuesta,texto) values (?,?,?)");
+        stat.setString(1, TituloP);
+        stat.setString(2, nickColab);
+        stat.setString(3, texto);
+        stat.executeUpdate();
+            stat.close();
+            return true;
+    } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
