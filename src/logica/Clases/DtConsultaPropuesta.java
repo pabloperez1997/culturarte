@@ -90,4 +90,12 @@ public class DtConsultaPropuesta {
     public float getMontoE() {
         return this.montoE;
     }
+
+    public boolean getCancelable() {
+        return this.esCancelable;
+    }
+
+    public boolean getExtendible() {
+        return this.esExtendible;
+    }
 }
