@@ -70,7 +70,7 @@ public class ControladorPropCat implements IPropCat {
     private Proponente uProponente;
     private Propuesta Propuesta;
     private DBColaboracion dbColaboracion = null;
-    private String carpetaImagenesPropuestas = new configuraciones().getCarpetaImagenesPropuestas();
+    private String carpetaImagenesPropuestas = new configuraciones().getCarpetaImagenes();
     convertidorDeIMG convertidor = new convertidorDeIMG();
 
     public static ControladorPropCat getInstance() {
@@ -498,7 +498,7 @@ public class ControladorPropCat implements IPropCat {
         Propuesta nuevaP;
         nuevaP = new Propuesta(tituloP, descripcion, imagen, lugar, fecha, montoE, montoTot, null, cat, retorno, p);
         this.propuestas.put(tituloP, nuevaP);
-        String ruta = new configuraciones().getCarpetaImagenesPropuestas();
+        String ruta = new configuraciones().getCarpetaImagenes();
         String url = ruta + "\\fotosdp\\" + imagen;
         try {
             DataImagen img = convertidor.convertirStringAImg(url, tituloP);
