@@ -346,7 +346,20 @@ public class Fabrica {
         IPC.setEstadoActualDatosDePrueba("El Lazarillo de Tormes", new EstadoPropuesta(TipoE.Publicada, new GregorianCalendar(2018, 07, 20, 02, 40, 0), true));
 
         IPC.setEstadoActualDatosDePrueba("Durazno Rock", new EstadoPropuesta(TipoE.Ingresada, new GregorianCalendar(2018, 07, 23, 2, 12, 0), true));
-
+  //------------------------------------------Comentarios Propuesta--------------------------------------------------//
+        try {
+            IPC.ComentarPropuesta("Cine en el Botánico", "novick", "Muy buena propuesta.");
+            IPC.ComentarPropuesta("Cine en el Botánico", "robinh", "Realmente una pena que la propuesta haya sido cancelada.");
+            IPC.ComentarPropuesta("Cine en el Botánico", "nicoJ", "No se lo pueden perder!");
+            
+            IPC.ComentarPropuesta("Religiosamente", "marcelot", "Todos al teatro de verano este 7 de Octubre!");
+            IPC.ComentarPropuesta("Religiosamente", "Mengano", "Arriba Momosapiens!!!");
+            IPC.ComentarPropuesta("Religiosamente", "sergiop", "Los conmino a todos a ir!");
+            IPC.ComentarPropuesta("Religiosamente", "novick", "Excelente propuesta. Ahí estaremos.");
+        } catch (Exception ex) {
+            Logger.getLogger(Fabrica.class.getName()).log(Level.SEVERE, null, ex);
+        }
+ 
 //    
         this.datosCargados = true;
 
