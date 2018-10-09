@@ -60,7 +60,7 @@ public class ControladorUsuario implements IControladorUsuario {
     private Colaborador Colaborador;
     codificador a = new codificador();
     configuraciones configuracion = new configuraciones();
-    private String carpetaImagenesPerfiles = configuracion.getCarpetaImagenesUsers() + "\\fPerfiles";
+    private String carpetaImagenesPerfiles = configuracion.getCarpetaImagenes() + "\\fPerfiles";
 
     public static ControladorUsuario getInstance() {
         if (instancia == null) {

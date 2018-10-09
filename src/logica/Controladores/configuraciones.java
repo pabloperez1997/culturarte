@@ -15,12 +15,7 @@ public class configuraciones {
     
     private String carpetaImagenesPropuestas = "C:\\Users\\gabri\\Documents\\NetBeansProjects\\culturarte";
 
-    public String getCarpetaImagenesUsers() {
-        return carpetaImagenesUsers;
+    public String getCarpetaImagenes() {
+        return carpetaImagenes;
     }
-
-    public String getCarpetaImagenesPropuestas() {
-        return carpetaImagenesPropuestas;
-    }
-
 }

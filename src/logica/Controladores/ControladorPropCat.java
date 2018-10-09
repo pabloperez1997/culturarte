@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
 import logica.Clases.Colaborador;
+import logica.Clases.Comentario;
 import logica.Clases.DtColaboraciones;
 import logica.Clases.DtConsultaPropuesta;
 import logica.Clases.DtConsultaPropuesta2;
@@ -69,7 +70,7 @@ public class ControladorPropCat implements IPropCat {
     private Proponente uProponente;
     private Propuesta Propuesta;
     private DBColaboracion dbColaboracion = null;
-    private String carpetaImagenesPropuestas = new configuraciones().getCarpetaImagenesPropuestas();
+    private String carpetaImagenesPropuestas = new configuraciones().getCarpetaImagenes();
     convertidorDeIMG convertidor = new convertidorDeIMG();
 
     public static ControladorPropCat getInstance() {
@@ -497,7 +498,7 @@ public class ControladorPropCat implements IPropCat {
         Propuesta nuevaP;
         nuevaP = new Propuesta(tituloP, descripcion, imagen, lugar, fecha, montoE, montoTot, null, cat, retorno, p);
         this.propuestas.put(tituloP, nuevaP);
-        String ruta = new configuraciones().getCarpetaImagenesPropuestas();
+        String ruta = new configuraciones().getCarpetaImagenes();
         String url = ruta + "\\fotosdp\\" + imagen;
         try {
             DataImagen img = convertidor.convertirStringAImg(url, tituloP);
@@ -992,4 +993,98 @@ public class ControladorPropCat implements IPropCat {
         }
         return propuestas;
     }
+    
+   
+    @Override
+    public List<DtNickTitProp> listarPropuestasComentar() {
+        
+
+        List<DtNickTitProp> listPropuestas = new ArrayList();
+
+        Iterator it = this.propuestas.entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Propuesta prop = (Propuesta) mentry.getValue();
+            if (prop.getEstadoActual().getEstado() == TipoE.Financiada) {
+                DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getAutor().getNickname());
+                listPropuestas.add(dtprop);
+            }
+        }
+        return listPropuestas;
+    }
+    
+    @Override
+     public void ComentarPropuesta(String TituloP, String nickColab, String texto)throws Exception{
+        Propuesta p= this.propuestas.get(TituloP);
+        Comentario c= new Comentario(TituloP, nickColab, texto);
+        
+        boolean colaboroenProp=false;  
+        
+        List<Comentario> comentariosProp = p.getComentarios();
+        Iterator it = comentariosProp.iterator();
+        while (it.hasNext()) {
+            Comentario comen = (Comentario) it.next();
+            if(comen.getNickColab().compareTo(nickColab)==0)
+            throw new Exception("Solo puede comentar una unica vez la propuesta");
+         
+        }    
+            
+        List<Colaboracion> colaboracionesProp= p.getColaboraciones();   
+        Iterator it1 = colaboracionesProp.iterator();
+        while (it1.hasNext()) {
+            Colaboracion colab = (Colaboracion) it1.next(); 
+            if(colab.getColaborador().getNickname().compareTo(nickColab)==0)
+                colaboroenProp=true;
+        }
+        
+        if(colaboroenProp==false)
+            throw new Exception("Debe colaborar en la propuesta " + TituloP + " para poder Comentarla");
+ 
+        p.getComentarios().add(c);
+        this.dbPropuesta.AgregarComentario(TituloP, nickColab, texto);
+   
+     }
+     
+     
+
+        @Override
+    public List<DtNickTitProp> ListarPropuestasX_DeProponenteX(String nick) {
+        this.EvaluarEstadosPropuestas();
+        List<DtNickTitProp> retorno = new ArrayList<>();
+        Set set = this.propuestas.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            Propuesta p = (Propuesta) mentry.getValue();
+            if (p.getAutor().getNickname().equals(nick)) {
+                if (p.getEstadoActual().getEstado() == TipoE.Publicada || p.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
+                    DtNickTitProp dtP = new DtNickTitProp(p.getTituloP(), p.getAutor().getNickname());
+                    retorno.add(dtP);
+                }
+            }
+        }
+        return retorno;
+    }
+
+    @Override
+    public boolean ExtenderFinanciacion(String Titulo) {
+        Iterator it = this.getPropuestas().entrySet().iterator();
+        DBPropuesta DBP = new DBPropuesta();
+        while (it.hasNext()) {
+            Map.Entry mtry = (Map.Entry) it.next();
+            Propuesta prop = (Propuesta) mtry.getValue();
+            if (prop.getTituloP().compareTo(Titulo) == 0) {
+                EstadoPropuesta EP =  prop.getEstadoPublicado();
+                Calendar calendario = new GregorianCalendar();
+                calendario.add(Calendar.DAY_OF_YEAR, 30);
+                EP.setfechaInicio(calendario);
+                DBP.ModificarEstadoPublicadaPropuesta(prop.getTituloP() , calendario);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
+
