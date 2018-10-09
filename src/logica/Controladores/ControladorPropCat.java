@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
 import logica.Clases.Colaborador;
+import logica.Clases.Comentario;
 import logica.Clases.DtColaboraciones;
 import logica.Clases.DtConsultaPropuesta;
 import logica.Clases.DtConsultaPropuesta2;
@@ -965,4 +966,57 @@ public class ControladorPropCat implements IPropCat {
         }
         return listProp;
     }
+    
+    
+   
+    @Override
+    public List<DtNickTitProp> listarPropuestasComentar() {
+        
+
+        List<DtNickTitProp> listPropuestas = new ArrayList();
+
+        Iterator it = this.propuestas.entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Propuesta prop = (Propuesta) mentry.getValue();
+            if (prop.getEstadoActual().getEstado() == TipoE.Financiada) {
+                DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getAutor().getNickname());
+                listPropuestas.add(dtprop);
+            }
+        }
+        return listPropuestas;
+    }
+    
+    @Override
+     public void ComentarPropuesta(String TituloP, String nickColab, String texto)throws Exception{
+        Propuesta p= this.propuestas.get(TituloP);
+        Comentario c= new Comentario(TituloP, nickColab, texto);
+        
+        boolean colaboroenProp=false;  
+        
+        List<Comentario> comentariosProp = p.getComentarios();
+        Iterator it = comentariosProp.iterator();
+        while (it.hasNext()) {
+            Comentario comen = (Comentario) it.next();
+            if(comen.getNickColab().compareTo(nickColab)==0)
+            throw new Exception("Solo puede comentar una unica vez la propuesta");
+         
+        }    
+            
+        List<Colaboracion> colaboracionesProp= p.getColaboraciones();   
+        Iterator it1 = colaboracionesProp.iterator();
+        while (it1.hasNext()) {
+            Colaboracion colab = (Colaboracion) it1.next(); 
+            if(colab.getColaborador().getNickname().compareTo(nickColab)==0)
+                colaboroenProp=true;
+        }
+        
+        if(colaboroenProp==false)
+            throw new Exception("Debe colaborar en la propuesta " + TituloP + " para poder Comentarla");
+ 
+        p.getComentarios().add(c);
+   
+     }
 }
+

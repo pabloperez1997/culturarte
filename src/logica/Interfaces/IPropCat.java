@@ -116,5 +116,9 @@ public interface IPropCat {
     public abstract void EvaluarEstadosPropuestas();
     
     public abstract List<DtPropuestaWeb> ListarPropuestasWeb(TipoE estado);
+    
+    public abstract List<DtNickTitProp> listarPropuestasComentar();
+    
+    public abstract void ComentarPropuesta(String TituloP, String nickColab, String texto)throws Exception;
 
 }
