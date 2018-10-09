@@ -11,15 +11,9 @@ package logica.Controladores;
  */
 public class configuraciones {
 
-    private String carpetaImagenesUsers = "C:\\Users\\Mehitor\\Documents\\NetBeansProjects\\culturarte";
-    private String carpetaImagenesPropuestas = "C:\\Users\\Mehitor\\Documents\\NetBeansProjects\\culturarte";
+    private String carpetaImagenes = "C:\\Users\\Lucas\\Documents\\NetBeansProjects\\culturarte";
 
-    public String getCarpetaImagenesUsers() {
-        return carpetaImagenesUsers;
+    public String getCarpetaImagenes() {
+        return carpetaImagenes;
     }
-
-    public String getCarpetaImagenesPropuestas() {
-        return carpetaImagenesPropuestas;
-    }
-
 }

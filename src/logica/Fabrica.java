@@ -86,7 +86,7 @@ public class Fabrica {
         IControladorUsuario ICU = this.getIControladorUsuario();
         IPropCat IPC = this.getControladorPropCat();
          configuraciones configuracion = new configuraciones();
-        String ruta = configuracion.getCarpetaImagenesUsers() + "\\fotosdp\\";
+        String ruta = configuracion.getCarpetaImagenes() + "\\fotosdp\\";
 //    
 //    DBUsuario d=new DBUsuario();
 //    d.limpiarBD();
