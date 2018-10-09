@@ -504,7 +504,7 @@ public class ConsultaPropuesta extends javax.swing.JInternalFrame {
 
         String titulo = jTablePropuestas.getValueAt(row, 0).toString();
         try {
-            DtConsultaPropuesta info = ICP.SeleccionarPropuesta(titulo);
+            DtConsultaPropuesta info = ICP.SeleccionarPropuesta(titulo,null);
 
             this.titulo = info.getTitulo();
             jTextPaneTiutlo.setText(info.getTitulo());

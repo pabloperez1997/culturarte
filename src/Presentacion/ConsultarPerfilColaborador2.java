@@ -272,7 +272,7 @@ public class ConsultarPerfilColaborador2 extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
        DtConsultaPropuesta dtp;
         try {
-            dtp = IPC.SeleccionarPropuesta((String) TablaP.getValueAt(TablaP.getSelectedRow(), 0));
+            dtp = IPC.SeleccionarPropuesta((String) TablaP.getValueAt(TablaP.getSelectedRow(), 0),null);
         /*
        Calendar c = dtp.getFechaR();
         int dia = c.get(Calendar.DAY_OF_MONTH);

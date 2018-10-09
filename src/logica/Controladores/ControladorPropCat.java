@@ -340,7 +340,7 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public DtConsultaPropuesta SeleccionarPropuesta(String titulo) throws Exception {
+    public DtConsultaPropuesta SeleccionarPropuesta(String titulo, String proponente) throws Exception {
 
         Propuesta prop = this.propuestas.get(titulo);
         if (prop != null) {
@@ -359,8 +359,18 @@ public class ControladorPropCat implements IPropCat {
 
             Date fecha = (Date) prop.getFecha().getTime();
             String fechaR = new SimpleDateFormat("dd/MMM/yyyy").format(fecha);
+            boolean cancelable = false;
+            boolean extendible = false;
+            if (prop.getAutor().getNickname().equals(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
+                cancelable = true;
+            } else if (prop.getAutor().getNickname().equals(proponente)) {
+                if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
+                    extendible = true;
+                }
+            }
 
-            return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick);
+            return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick,extendible,cancelable);
+
         } else {
             throw new Exception("La propuesta ingresada no esta en el sistema");
         }
@@ -978,6 +988,7 @@ public class ControladorPropCat implements IPropCat {
         return listProp;
     }
     
+    @Override
     public List<DtinfoPropuesta> ListarPropuestasCategoria(String nombrecat){
         List<DtinfoPropuesta> propuestas=new ArrayList<>();
         Map<String,Propuesta> prop=this.propuestas;
@@ -997,7 +1008,6 @@ public class ControladorPropCat implements IPropCat {
    
     @Override
     public List<DtNickTitProp> listarPropuestasComentar() {
-        
 
         List<DtNickTitProp> listPropuestas = new ArrayList();
 
@@ -1013,42 +1023,43 @@ public class ControladorPropCat implements IPropCat {
         }
         return listPropuestas;
     }
-    
+
     @Override
-     public void ComentarPropuesta(String TituloP, String nickColab, String texto)throws Exception{
-        Propuesta p= this.propuestas.get(TituloP);
-        Comentario c= new Comentario(TituloP, nickColab, texto);
-        
-        boolean colaboroenProp=false;  
-        
+    public void ComentarPropuesta(String TituloP, String nickColab, String texto) throws Exception {
+        Propuesta p = this.propuestas.get(TituloP);
+        Comentario c = new Comentario(TituloP, nickColab, texto);
+
+        boolean colaboroenProp = false;
+
         List<Comentario> comentariosProp = p.getComentarios();
         Iterator it = comentariosProp.iterator();
         while (it.hasNext()) {
             Comentario comen = (Comentario) it.next();
-            if(comen.getNickColab().compareTo(nickColab)==0)
-            throw new Exception("Solo puede comentar una unica vez la propuesta");
-         
-        }    
-            
-        List<Colaboracion> colaboracionesProp= p.getColaboraciones();   
+            if (comen.getNickColab().compareTo(nickColab) == 0) {
+                throw new Exception("Solo puede comentar una unica vez la propuesta");
+            }
+
+        }
+
+        List<Colaboracion> colaboracionesProp = p.getColaboraciones();
         Iterator it1 = colaboracionesProp.iterator();
         while (it1.hasNext()) {
-            Colaboracion colab = (Colaboracion) it1.next(); 
-            if(colab.getColaborador().getNickname().compareTo(nickColab)==0)
-                colaboroenProp=true;
+            Colaboracion colab = (Colaboracion) it1.next();
+            if (colab.getColaborador().getNickname().compareTo(nickColab) == 0) {
+                colaboroenProp = true;
+            }
         }
-        
-        if(colaboroenProp==false)
+
+        if (colaboroenProp == false) {
             throw new Exception("Debe colaborar en la propuesta " + TituloP + " para poder Comentarla");
- 
+        }
+
         p.getComentarios().add(c);
         this.dbPropuesta.AgregarComentario(TituloP, nickColab, texto);
-   
-     }
-     
-     
 
-        @Override
+    }
+
+    @Override
     public List<DtNickTitProp> ListarPropuestasX_DeProponenteX(String nick) {
         this.EvaluarEstadosPropuestas();
         List<DtNickTitProp> retorno = new ArrayList<>();
@@ -1075,11 +1086,11 @@ public class ControladorPropCat implements IPropCat {
             Map.Entry mtry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mtry.getValue();
             if (prop.getTituloP().compareTo(Titulo) == 0) {
-                EstadoPropuesta EP =  prop.getEstadoPublicado();
+                EstadoPropuesta EP = prop.getEstadoPublicado();
                 Calendar calendario = new GregorianCalendar();
                 calendario.add(Calendar.DAY_OF_YEAR, 30);
                 EP.setfechaInicio(calendario);
-                DBP.ModificarEstadoPublicadaPropuesta(prop.getTituloP() , calendario);
+                DBP.ModificarEstadoPublicadaPropuesta(prop.getTituloP(), calendario);
                 return true;
             }
         }
@@ -1087,4 +1098,3 @@ public class ControladorPropCat implements IPropCat {
     }
 
 }
-

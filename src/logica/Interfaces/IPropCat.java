@@ -33,7 +33,7 @@ public interface IPropCat {
 
     public abstract List<DtNickTitProp> listarPropuestaC();
 
-    public abstract DtConsultaPropuesta SeleccionarPropuesta(String titulo) throws Exception;
+    public abstract DtConsultaPropuesta SeleccionarPropuesta(String titulo,String proponente) throws Exception;
 
     public abstract Map<String, Propuesta> getPropuestas();
 
