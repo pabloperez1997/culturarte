@@ -988,6 +988,7 @@ public class ControladorPropCat implements IPropCat {
         return listProp;
     }
     
+    @Override
     public List<DtinfoPropuesta> ListarPropuestasCategoria(String nombrecat){
         List<DtinfoPropuesta> propuestas=new ArrayList<>();
         Map<String,Propuesta> prop=this.propuestas;
