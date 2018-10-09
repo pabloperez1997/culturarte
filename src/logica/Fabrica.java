@@ -27,6 +27,7 @@ import logica.Interfaces.IControladorUsuario;
 import logica.Clases.codificador;
 import logica.Clases.convertidorDeIMG;
 import logica.Controladores.configuraciones;
+
 /**
  *
  * @author Santiago.S
@@ -85,7 +86,7 @@ public class Fabrica {
     public void cargarDatosdePrueba() throws IOException {
         IControladorUsuario ICU = this.getIControladorUsuario();
         IPropCat IPC = this.getControladorPropCat();
-         configuraciones configuracion = new configuraciones();
+        configuraciones configuracion = new configuraciones();
         String ruta = configuracion.getCarpetaImagenes() + "\\fotosdp\\";
 //    
 //    DBUsuario d=new DBUsuario();
@@ -137,7 +138,7 @@ public class Fabrica {
         ICU.AgregarUsuarioProponente("kairoh", "Kairo", "Herrera", "kairoher@pilsenrock.com.uy", new GregorianCalendar(1840, 03, 25), foto, "Paraguay 1423", "", "", a.sha1("pass8"));
 
         foto = convertidor.convertirStringAImg(ruta + "durazno.png", "durazno.png");
-        ICU.AgregarUsuarioProponente("durazno", "Itendencia", "Durazno", "comunicacion@durazno.gub.uy", new GregorianCalendar(1980, 9, 31),foto, "8 de Octubre 1429", "Nuestros festivales que son orgullo del Uruguay, como cada enero con lo mejor del tango o el festival de la música "
+        ICU.AgregarUsuarioProponente("durazno", "Itendencia", "Durazno", "comunicacion@durazno.gub.uy", new GregorianCalendar(1980, 9, 31), foto, "8 de Octubre 1429", "Nuestros festivales que son orgullo del Uruguay, como cada enero con lo mejor del tango o el festival de la música "
                 + "tropical. La fiesta de los jóvenes, donde miles de ellos disfrutan de variados espectáculos al aire libre y se confunden para vivir "
                 + "tres días inolvidables, convocados por diversos géneros, como rock, tropical, murga y tango.", "http://durazno.gub.uy/portal/index.php", a.sha1("pass9"));
 
@@ -153,7 +154,6 @@ public class Fabrica {
         foto = convertidor.convertirStringAImg(ruta + "sergiop.jpg", "sergiop");
         ICU.AgregarUsuarioColaborador("sergiop", "Sergio", "Puglia", "puglia@alpanpan.com.uy", new GregorianCalendar(1950, 00, 28), foto, a.sha1("pass4"));
 
-        
         ICU.AgregarUsuarioColaborador("chino", "Alvaro", "Recoba", "chino@trico.org.uy", new GregorianCalendar(1976, 02, 17), null, a.sha1("pass5"));
 
         ICU.AgregarUsuarioColaborador("tonyp", "Antonio", "Pacheco", "eltony@manya.org.uy", new GregorianCalendar(1995, 01, 14), null, a.sha1("pass6"));
@@ -161,16 +161,12 @@ public class Fabrica {
         foto = convertidor.convertirStringAImg(ruta + "nicoJ.jpg", "nicoJ");
         ICU.AgregarUsuarioColaborador("nicoJ", "Nicolás", "Jodal", "jodal@artech.com.uy", new GregorianCalendar(1960, 07, 9), foto, a.sha1("pass7"));
 
-        
         ICU.AgregarUsuarioColaborador("juanP", "Juan", "Perez", "juanp@elpueblo.com", new GregorianCalendar(1970, 00, 01), null, a.sha1("pass8"));
 
-        
         ICU.AgregarUsuarioColaborador("Mengano", "Mengano", "Gómez", "menganog@elpueblo.com", new GregorianCalendar(1982, 01, 02), null, a.sha1("pass9"));
 
-        
         ICU.AgregarUsuarioColaborador("Perengano", "Perengano", "López", "pere@elpueblo.com", new GregorianCalendar(1985, 02, 03), null, a.sha1("pass10"));
 
-        
         ICU.AgregarUsuarioColaborador("Tiajaci", "Tía", "Jacinta", "jacinta@elpueblo.com", new GregorianCalendar(1990, 03, 04), null, a.sha1("pass11"));
 
 //-----------------------------------------------------Categorias------------------------------------//
@@ -346,12 +342,12 @@ public class Fabrica {
         IPC.setEstadoActualDatosDePrueba("El Lazarillo de Tormes", new EstadoPropuesta(TipoE.Publicada, new GregorianCalendar(2018, 07, 20, 02, 40, 0), true));
 
         IPC.setEstadoActualDatosDePrueba("Durazno Rock", new EstadoPropuesta(TipoE.Ingresada, new GregorianCalendar(2018, 07, 23, 2, 12, 0), true));
-  //------------------------------------------Comentarios Propuesta--------------------------------------------------//
+        //------------------------------------------Comentarios Propuesta--------------------------------------------------//
         try {
             IPC.ComentarPropuesta("Cine en el Botánico", "novick", "Muy buena propuesta.");
             IPC.ComentarPropuesta("Cine en el Botánico", "robinh", "Realmente una pena que la propuesta haya sido cancelada.");
             IPC.ComentarPropuesta("Cine en el Botánico", "nicoJ", "No se lo pueden perder!");
-            
+
             IPC.ComentarPropuesta("Religiosamente", "marcelot", "Todos al teatro de verano este 7 de Octubre!");
             IPC.ComentarPropuesta("Religiosamente", "Mengano", "Arriba Momosapiens!!!");
             IPC.ComentarPropuesta("Religiosamente", "sergiop", "Los conmino a todos a ir!");
@@ -359,7 +355,41 @@ public class Fabrica {
         } catch (Exception ex) {
             Logger.getLogger(Fabrica.class.getName()).log(Level.SEVERE, null, ex);
         }
- 
+        IPC.AgregarFavorita("Religiosamente", "hrubino");
+        IPC.AgregarFavorita("El Pimiento Indomable", "hrubino");
+        IPC.AgregarFavorita("Un día de Julio", "hrubino");
+        IPC.AgregarFavorita("Cine en el Botánico", "mbusca");
+        IPC.AgregarFavorita("El Pimiento Indomable", "mbusca");
+        IPC.AgregarFavorita("Pilsen Rock", "mbusca");
+        IPC.AgregarFavorita("Romeo y Julieta", "hectorg");
+        IPC.AgregarFavorita("El Lazarillo de Tormes", "hectorg");
+        IPC.AgregarFavorita("Religiosamente", "tabarec");
+        IPC.AgregarFavorita("Un día de Julio", "tabarec");
+        IPC.AgregarFavorita("Religiosamente", "cachilas");
+        IPC.AgregarFavorita("Romeo y Julieta", "juliob");
+        IPC.AgregarFavorita("El Lazarillo de Tormes", "juliob");
+        IPC.AgregarFavorita("Cine en el Botánico", "diegop");
+        IPC.AgregarFavorita("El Lazarillo de Tormes", "diegop");
+        IPC.AgregarFavorita("Religiosamente", "kairoh");
+        IPC.AgregarFavorita("Durazno Rock", "durazno");
+        IPC.AgregarFavorita("Cine en el Botánico", "robinh");
+        IPC.AgregarFavorita("Religiosamente", "marcelot");
+        IPC.AgregarFavorita("El Pimiento Indomable", "marcelot");
+        IPC.AgregarFavorita("Religiosamente", "novick");
+        IPC.AgregarFavorita("Pilsen Rock", "novick");
+        IPC.AgregarFavorita("El Pimiento Indomable", "sergiop");
+        IPC.AgregarFavorita("Romeo y Julieta", "segiop");
+        IPC.AgregarFavorita("Pilsen Rock", "chino");
+        IPC.AgregarFavorita("Pilsen Rock", "tonyp");
+        IPC.AgregarFavorita("Un día de Julio", "tonyp");
+        IPC.AgregarFavorita("Cine en el Botánico", "nicoJ");
+        IPC.AgregarFavorita("Pilsen Rock", "juanP");
+        IPC.AgregarFavorita("Religiosamente", "Mengano");
+        IPC.AgregarFavorita("Un día de Julio", "Mengano");
+        IPC.AgregarFavorita("Pilsen Rock", "Perengano");
+        IPC.AgregarFavorita("Un día de Julio", "Perengano");
+        IPC.AgregarFavorita("Religiosamente", "Tiajaci");
+        IPC.AgregarFavorita("El Lazarillo de Tormes", "Tiajaci");
 //    
         this.datosCargados = true;
 
@@ -392,6 +422,5 @@ public class Fabrica {
         IPC.getPropuestas().clear();//para limpiar el map dsp que borre todo
         ICU.eliminarCategorias();
 
-       
-    }   
+    }
 }
