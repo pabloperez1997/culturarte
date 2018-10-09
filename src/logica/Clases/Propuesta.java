@@ -192,9 +192,8 @@ public class Propuesta {
         }
         return null;
     }
-    
-    
-       public EstadoPropuesta getEstadoPublicado() {
+
+    public EstadoPropuesta getEstadoPublicado() {
         if (this.estadoActual.getEstado() == TipoE.Publicada) {
             return this.estadoActual;
         } else {
@@ -208,5 +207,16 @@ public class Propuesta {
             }
         }
         return null;
+    }
+
+    public boolean EsColaborador(String nick) {
+        Iterator it = this.Colaboraciones.iterator();
+        while (it.hasNext()) {
+            Colaboracion colab = (Colaboracion) it.next();
+            if (colab.getNickName().equals(nick)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
