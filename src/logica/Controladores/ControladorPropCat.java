@@ -370,7 +370,7 @@ public class ControladorPropCat implements IPropCat {
                     extendible = true;
                 }
             } else if (prop.EsColaborador(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
-                comentable = this.Comentable(prop, nick);
+                comentable = this.Comentable(prop, proponente);
             }
 
             return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable);
@@ -1105,9 +1105,9 @@ public class ControladorPropCat implements IPropCat {
         while (it.hasNext()) {
             Comentario com = (Comentario) it.next();
             if (com.getNickColab().equals(nick)) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }
