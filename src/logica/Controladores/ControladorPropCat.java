@@ -369,7 +369,7 @@ public class ControladorPropCat implements IPropCat {
                 if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
                     extendible = true;
                 }
-            } else if (prop.EsColaborador(nick) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
+            } else if (prop.EsColaborador(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
                 comentable = this.Comentable(prop, nick);
             }
 
