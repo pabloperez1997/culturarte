@@ -1016,6 +1016,7 @@ public class ControladorPropCat implements IPropCat {
             throw new Exception("Debe colaborar en la propuesta " + TituloP + " para poder Comentarla");
  
         p.getComentarios().add(c);
+        this.dbPropuesta.AgregarComentario(TituloP, nickColab, texto);
    
      }
      

@@ -374,5 +374,18 @@ public class DBPropuesta {
         return false;
     }
 
-
+    public boolean AgregarComentario(String TituloP, String nickColab, String texto){
+    try{
+        PreparedStatement stat = conexion.prepareStatement("INSERT INTO comentarios(Usuario,Propuesta,texto) values (?,?,?)");
+        stat.setString(1, TituloP);
+        stat.setString(2, nickColab);
+        stat.setString(3, texto);
+        stat.executeUpdate();
+            stat.close();
+            return true;
+    } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
