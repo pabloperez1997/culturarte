@@ -201,6 +201,14 @@ public class DBUsuario {
             statement.executeUpdate();
             statement.close();
 
+            statement = conexion.prepareStatement("TRUNCATE TABLE favoritas");
+            statement.executeUpdate();
+            statement.close();
+            
+            statement = conexion.prepareStatement("TRUNCATE TABLE comentarios");
+            statement.executeUpdate();
+            statement.close();
+            
             statement = conexion.prepareStatement("TRUNCATE TABLE usuario");
             statement.executeUpdate();
             statement.close();

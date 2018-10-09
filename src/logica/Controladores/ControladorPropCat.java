@@ -1110,4 +1110,16 @@ public class ControladorPropCat implements IPropCat {
         }
         return false;
     }
+    
+    @Override
+    public void CargarComentarios(){
+       
+        Set set = this.propuestas.entrySet();
+        Iterator it = set.iterator();
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Propuesta p= (Propuesta) mentry.getValue();
+            this.dbPropuesta.CargarComentarios(p.getTituloP());
+        }
+}
 }

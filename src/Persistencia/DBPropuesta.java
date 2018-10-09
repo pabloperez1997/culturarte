@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
 import logica.Clases.Colaborador;
+import logica.Clases.Comentario;
 import logica.Clases.DtColaboraciones;
 import logica.Clases.EstadoPropuesta;
 import logica.Clases.Proponente;
@@ -387,5 +388,25 @@ public class DBPropuesta {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    public void CargarComentarios(String TituloP){
+  
+        try {
+           PreparedStatement statement = conexion.prepareStatement("SELECT * FROM comentarios WHERE Propuesta='"+TituloP+"'");
+           ResultSet st = statement.executeQuery();
+
+            while (st.next()) {
+                Propuesta p= Fabrica.getInstance().getControladorPropCat().getPropuestas().get(TituloP);
+                String nickColab=st.getString("Usuario");
+                String texto=st.getString("texto");
+                Comentario c= new Comentario(TituloP, nickColab, texto);
+                p.getComentarios().add(c);
+            }
+            statement.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
     }
 }
