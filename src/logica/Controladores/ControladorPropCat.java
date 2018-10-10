@@ -1104,7 +1104,7 @@ public class ControladorPropCat implements IPropCat {
             if (prop.getTituloP().compareTo(Titulo) == 0) {
                 EstadoPropuesta EP = prop.getEstadoPublicado();
                 Calendar calendario = new GregorianCalendar();
-                calendario.add(Calendar.DAY_OF_YEAR, 30);
+               
                 EP.setfechaInicio(calendario);
                 this.dbPropuesta.ModificarEstadoPublicadaPropuesta(prop.getTituloP(), calendario);
                 return true;
