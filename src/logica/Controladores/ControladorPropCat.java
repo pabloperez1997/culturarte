@@ -1114,16 +1114,50 @@ public class ControladorPropCat implements IPropCat {
         }
         return true;
     }
-    
+
     @Override
-    public void CargarComentarios(){
-       
+    public void CargarComentarios() {
+
         Set set = this.propuestas.entrySet();
         Iterator it = set.iterator();
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
-            Propuesta p= (Propuesta) mentry.getValue();
+            Propuesta p = (Propuesta) mentry.getValue();
             this.dbPropuesta.CargarComentarios(p.getTituloP());
         }
-}
+    }
+
+    @Override
+    public boolean CancelarPropuesta(String titulo, String nick) {
+
+        Propuesta prop = this.propuestas.get(titulo);
+        
+        if (prop != null && prop.getAutor().getNickname().equals(nick) ) {
+            EstadoPropuesta estAnterior = prop.getEstadoActual();
+            estAnterior.setEsActual(false);
+            prop.setEstados(estAnterior);
+
+            EstadoPropuesta nuevoEstado = new EstadoPropuesta(TipoE.Cancelada, new GregorianCalendar(), true);
+
+            prop.setEstadoActual(nuevoEstado);
+
+            return this.dbPropuesta.EvaluarPropuestaBD(nuevoEstado, estAnterior, titulo);
+        }
+        return false;
+    }
+
+    @Override
+    public List<DtNickTitProp> ListarPropuestasCancelar(String proponente) {
+        List<DtNickTitProp> listProp = new ArrayList<>();
+        Iterator it = this.propuestas.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry mtry = (Map.Entry) it.next();
+            Propuesta prop = (Propuesta) mtry.getValue();
+            if (prop.getEstadoActual().getEstado() == TipoE.Financiada && prop.getAutor().getNickname().equals(proponente)) {
+                DtNickTitProp dtProp = new DtNickTitProp(prop.getTituloP(), prop.getCategoria().getNombreC());
+                listProp.add(dtProp);
+            }
+        }
+        return listProp;
+    }
 }

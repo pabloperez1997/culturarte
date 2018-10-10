@@ -33,7 +33,7 @@ public interface IPropCat {
 
     public abstract List<DtNickTitProp> listarPropuestaC();
 
-    public abstract DtConsultaPropuesta SeleccionarPropuesta(String titulo,String proponente) throws Exception;
+    public abstract DtConsultaPropuesta SeleccionarPropuesta(String titulo, String proponente) throws Exception;
 
     public abstract Map<String, Propuesta> getPropuestas();
 
@@ -74,7 +74,7 @@ public interface IPropCat {
     public abstract void altaCategoria(String nombre, String padre) throws Exception;
 
     public abstract Map<String, Categoria> getCategorias();
-    
+
     public abstract List<DtinfoPropuesta> ListarPropuestasDeProponenteX(String nick);
 
     public abstract EstadoPropuesta verEstadoPropuesta(String titulo);
@@ -116,7 +116,7 @@ public interface IPropCat {
     public abstract void EvaluarEstadosPropuestas();
 
     public abstract List<DtPropuestaWeb> ListarPropuestasWeb(TipoE estado);
-    
+
     public abstract List<DtinfoPropuesta> ListarPropuestasCategoria(String nombrecat);
 
     public abstract List<DtNickTitProp> listarPropuestasComentar();
@@ -124,9 +124,12 @@ public interface IPropCat {
     public abstract void ComentarPropuesta(String TituloP, String nickColab, String texto) throws Exception;
 
     public abstract boolean ExtenderFinanciacion(String Titulo);
-   
+
     public abstract List<DtNickTitProp> ListarPropuestasX_DeProponenteX(String nick);
-    
+
     public abstract void CargarComentarios();
 
+    public abstract List<DtNickTitProp> ListarPropuestasCancelar(String proponente);
+
+    public abstract boolean CancelarPropuesta(String titulo, String nick);
 }
