@@ -23,12 +23,13 @@ import logica.Interfaces.IPropCat;
  * @author gabri
  */
 public class ModificarPropuesta extends javax.swing.JInternalFrame {
+
     private IPropCat IPC;
-private DtinfoPropuesta prop;
+    private DtinfoPropuesta prop;
 
     public ModificarPropuesta() {
         initComponents();
-        prop=null;
+        prop = null;
         this.IPC = Fabrica.getInstance().getControladorPropCat();
         List<DtNickTitProp> listProp = IPC.listarPropuestas();
         DefaultTableModel modelo = (DefaultTableModel) TablaPropuestas.getModel();
@@ -258,11 +259,11 @@ private DtinfoPropuesta prop;
 
     private void ModificarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarDatosActionPerformed
         // TODO add your handling code here:
-        if(prop == null){
-            JOptionPane.showMessageDialog(null,"Porfavor elija una propuesta primero");
+        if (prop == null) {
+            JOptionPane.showMessageDialog(null, "Porfavor elija una propuesta primero");
             return;
         }
-        ModificarPropuesta2 mp2=new ModificarPropuesta2(prop);
+        ModificarPropuesta2 mp2 = new ModificarPropuesta2(prop);
         inicio.Escritorio.add(mp2);
         this.setVisible(false);
         mp2.toFront();
@@ -299,32 +300,32 @@ private DtinfoPropuesta prop;
 
     private void TablaPropuestasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaPropuestasMouseClicked
         // TODO add your handling code here:
-        DtinfoPropuesta dtp= IPC.SeleccionarPropuestaR((String) TablaPropuestas.getValueAt(TablaPropuestas.getSelectedRow(), 0));
-       Calendar c = dtp.getFechaReal();
+        DtinfoPropuesta dtp = IPC.SeleccionarPropuestaR((String) TablaPropuestas.getValueAt(TablaPropuestas.getSelectedRow(), 0));
+        Calendar c = dtp.getFechaReal();
         int dia = c.get(Calendar.DAY_OF_MONTH);
         int mes = c.get(Calendar.MONTH) + 1;
         int anio = c.get(Calendar.YEAR);
-       textcat.setText(dtp.getTipoEspec());
-       textTitulo1.setText(dtp.getTitulo());
-       TextDesc.setText(dtp.getDescripcion());
-       textprecio.setText(""+dtp.getPrecio());
-      textRetorno.setText(dtp.getTipoRetorno().name());
-      textlugar.setText(dtp.getLugar());
-      textmonto.setText(""+dtp.getMonto());
-      textfecha.setText(dia+"/"+mes+"/"+anio);
-       String fotos = System.getProperty("user.dir") + "\\fPropuestas\\" + dtp.getImagen();
+        textcat.setText(dtp.getTipoEspec());
+        textTitulo1.setText(dtp.getTitulo());
+        TextDesc.setText(dtp.getDescripcion());
+        textprecio.setText("" + dtp.getPrecio());
+        textRetorno.setText(dtp.getTipoRetorno().name());
+        textlugar.setText(dtp.getLugar());
+        textmonto.setText("" + dtp.getMonto());
+        textfecha.setText(dia + "/" + mes + "/" + anio);
+        String fotos = System.getProperty("user.dir") + "\\fPropuestas\\" + dtp.getImagen();
         ImageIcon fot = new ImageIcon(fotos);
         Icon icono = new ImageIcon(fot.getImage().getScaledInstance(foto.getWidth(), foto.getHeight(), Image.SCALE_DEFAULT));
         foto.setIcon(icono);
-      prop=dtp;
+        prop = dtp;
     }//GEN-LAST:event_TablaPropuestasMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        IPC.resetearPropuesta();
+
         this.setVisible(false);
-        
-        
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

@@ -20,16 +20,19 @@ import logica.Interfaces.IPropCat;
  * @author gabri
  */
 public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
-private IPropCat IPC;
-public DtinfoPropuesta dtp2;
+
+    private IPropCat IPC;
+    public DtinfoPropuesta dtp2;
+
     /**
      * Creates new form ModificarPropuesta2
+     * @param dtp
      */
     public ModificarPropuesta2(DtinfoPropuesta dtp) {
         initComponents();
-        IPC=Fabrica.getInstance().getControladorPropCat();
-        ((JTextField) this.fecha.getDateEditor()).setEditable(false); 
-        dtp2=dtp;
+        IPC = Fabrica.getInstance().getControladorPropCat();
+        ((JTextField) this.fecha.getDateEditor()).setEditable(false);
+        dtp2 = dtp;
     }
 
     /**
@@ -181,14 +184,14 @@ public DtinfoPropuesta dtp2;
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        IPC.resetearPropuesta();
+
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        IPC.resetearPropuesta();
-        ModificarPropuesta mp=new ModificarPropuesta();
+
+        ModificarPropuesta mp = new ModificarPropuesta();
         inicio.Escritorio.add(mp);
         this.setVisible(false);
         mp.toFront();
@@ -197,41 +200,41 @@ public DtinfoPropuesta dtp2;
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        String lugar=TextLugar.getText();
-        String desc=TextDesc.getText();
-        float monto=0;
-        if(TextMonto.getText().length()>0){
-        monto=Float.parseFloat(TextMonto.getText());
-        if(monto < this.dtp2.getMonto()){
-            JOptionPane.showMessageDialog(null,"Error: monto debe ser superior al existente");
+        String lugar = TextLugar.getText();
+        String desc = TextDesc.getText();
+        float monto = 0;
+        if (TextMonto.getText().length() > 0) {
+            monto = Float.parseFloat(TextMonto.getText());
+            if (monto < this.dtp2.getMonto()) {
+                JOptionPane.showMessageDialog(null, "Error: monto debe ser superior al existente");
+            }
         }
+        float precio = 0;
+        if (TextPrecio.getText().length() > 0) {
+            precio = Float.parseFloat(TextPrecio.getText());
         }
-        float precio=0;
-         if(TextPrecio.getText().length()>0){
-        precio=Float.parseFloat(TextPrecio.getText());
-         }
-         
-         Calendar fech=fecha.getCalendar();
-         if(fech != null){
-         int dia=fech.get(Calendar.DATE);
-         int mes=fech.get(Calendar.MONTH);
-         int anio=fech.get(Calendar.YEAR);
-         Calendar fecha=Calendar.getInstance();
-         int anio2=fecha.get(Calendar.YEAR);
-         int dia2=fecha.get(Calendar.DATE);
-         int mes2=fecha.get(Calendar.MONTH);
-        if(fech.getTime() == null || dia<=0 || dia>=32 || mes<=0 || mes>=13 || anio<1800 || anio>anio2 || dia > dia2 || mes > mes2 ){
-            JOptionPane.showMessageDialog(null,"Ingrese una fecha valida");
-            return;
+
+        Calendar fech = fecha.getCalendar();
+        if (fech != null) {
+            int dia = fech.get(Calendar.DATE);
+            int mes = fech.get(Calendar.MONTH);
+            int anio = fech.get(Calendar.YEAR);
+            Calendar fecha = Calendar.getInstance();
+            int anio2 = fecha.get(Calendar.YEAR);
+            int dia2 = fecha.get(Calendar.DATE);
+            int mes2 = fecha.get(Calendar.MONTH);
+            if (fech.getTime() == null || dia <= 0 || dia >= 32 || mes <= 0 || mes >= 13 || anio < 1800 || anio > anio2 || dia > dia2 || mes > mes2) {
+                JOptionPane.showMessageDialog(null, "Ingrese una fecha valida");
+                return;
+            }
         }
-         }
-        String imagen=foto.getRutaImagen();
-        DtinfoPropuesta dtp= new DtinfoPropuesta(dtp2.getTitulo(),desc,imagen,null,lugar,fech,precio,monto,null);
-        boolean actualizo=IPC.ActualizarDatosPropuesta(dtp);
-        if(actualizo){
-            JOptionPane.showMessageDialog(null,"Datos actualizados correctamente");
-        }else{
-            JOptionPane.showMessageDialog(null,"Error al actualizar");
+        String imagen = foto.getRutaImagen();
+        DtinfoPropuesta dtp = new DtinfoPropuesta(dtp2.getTitulo(), desc, imagen, null, lugar, fech, precio, monto, null);
+        boolean actualizo = IPC.ActualizarDatosPropuesta(dtp);
+        if (actualizo) {
+            JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al actualizar");
         }
         TextDesc.setText("");
         TextLugar.setText("");

@@ -358,12 +358,15 @@ public class ControladorPropCat implements IPropCat {
 
             }
 
+            Usuario usu = (Usuario) Fabrica.getInstance().getIControladorUsuario().ObtenerColaborador(proponente);
+
             Date fecha = (Date) prop.getFecha().getTime();
             String fechaR = new SimpleDateFormat("dd/MMM/yyyy").format(fecha);
+
             boolean cancelable = false;
             boolean extendible = false;
             boolean comentable = false;
-
+            boolean colaborable = false;
             if (prop.getAutor().getNickname().equals(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
                 cancelable = true;
             } else if (prop.getAutor().getNickname().equals(proponente)) {
@@ -372,9 +375,12 @@ public class ControladorPropCat implements IPropCat {
                 }
             } else if (prop.EsColaborador(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
                 comentable = this.Comentable(prop, proponente);
+            } else if (usu instanceof Colaborador && !prop.EsColaborador(proponente)) {
+                if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
+                    colaborable = true;
+                }
             }
-
-            return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable);
+            return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable,colaborable);
 
         } else {
             throw new Exception("La propuesta ingresada no esta en el sistema");
@@ -770,12 +776,6 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public void resetearPropuesta() {
-        Propuesta p = new Propuesta("", "", "", "", null, 0, 0, null, null, null, null);
-        this.Propuesta = p;
-    }
-
-    @Override
     public List<DtNickTitProp> ListaEvaluarPropuesta() {
         List<DtNickTitProp> listProp = new ArrayList<>();
 
@@ -1132,8 +1132,8 @@ public class ControladorPropCat implements IPropCat {
     public boolean CancelarPropuesta(String titulo, String nick) {
 
         Propuesta prop = this.propuestas.get(titulo);
-        
-        if (prop != null && prop.getAutor().getNickname().equals(nick) ) {
+
+        if (prop != null && prop.getAutor().getNickname().equals(nick)) {
             EstadoPropuesta estAnterior = prop.getEstadoActual();
             estAnterior.setEsActual(false);
             prop.setEstados(estAnterior);
