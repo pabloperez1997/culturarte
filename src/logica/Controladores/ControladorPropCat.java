@@ -55,7 +55,7 @@ import logica.Interfaces.IPropCat;
 import logica.Clases.DataImagen;
 import logica.Controladores.configuraciones;
 import logica.Clases.convertidorDeIMG;
-
+import logica.Clases.DtUsuario;
 /**
  *
  * @author Santiago.S
@@ -358,7 +358,7 @@ public class ControladorPropCat implements IPropCat {
 
             }
 
-            Usuario usu = (Usuario) Fabrica.getInstance().getIControladorUsuario().ObtenerColaborador(proponente);
+            DtUsuario usu = (DtUsuario) Fabrica.getInstance().getIControladorUsuario().ObtenerDTUsuario(proponente);
 
             Date fecha = (Date) prop.getFecha().getTime();
             String fechaR = new SimpleDateFormat("dd/MMM/yyyy").format(fecha);
@@ -375,7 +375,7 @@ public class ControladorPropCat implements IPropCat {
                 }
             } else if (prop.EsColaborador(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
                 comentable = this.Comentable(prop, proponente);
-            } else if (usu instanceof Colaborador && !prop.EsColaborador(proponente)) {
+            } else if (!usu.Esproponente() && !prop.EsColaborador(proponente)) {
                 if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
                     colaborable = true;
                 }
