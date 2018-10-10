@@ -95,8 +95,6 @@ public interface IPropCat {
 
     public abstract List<DtConsultaPropuesta2> ListaColaboradoresProp(String titulo);
 
-    public abstract void resetearPropuesta();
-
     public abstract boolean ActualizarDatosPropuesta(DtinfoPropuesta dtp);
 
     public abstract List<DtNickTitProp> ListaEvaluarPropuesta();
