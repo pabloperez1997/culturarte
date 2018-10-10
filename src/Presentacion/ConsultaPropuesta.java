@@ -504,7 +504,7 @@ public class ConsultaPropuesta extends javax.swing.JInternalFrame {
 
         String titulo = jTablePropuestas.getValueAt(row, 0).toString();
         try {
-            DtConsultaPropuesta info = ICP.SeleccionarPropuesta(titulo,null);
+            DtConsultaPropuesta info = ICP.SeleccionarPropuesta(titulo, null);
 
             this.titulo = info.getTitulo();
             jTextPaneTiutlo.setText(info.getTitulo());
@@ -519,7 +519,7 @@ public class ConsultaPropuesta extends javax.swing.JInternalFrame {
             jTextPaneMontoTot.setText(String.valueOf(info.getMontoTot()));
             jTextPaneRetorno.setText(info.getTipoRetorno());
 
-            String foto = System.getProperty("user.dir") + "\\fPropuestas\\" + info.getImagen();
+            String foto = System.getProperty("user.dir") + "\\fPropuestas\\" + info.getTitulo() + "\\" + info.getImagen();
             ImageIcon fot = new ImageIcon(foto);
             Icon icono = new ImageIcon(fot.getImage().getScaledInstance(jLabelFoto.getWidth(), jLabelFoto.getHeight(), Image.SCALE_DEFAULT));
             jLabelFoto.setIcon(icono);
@@ -579,7 +579,7 @@ public class ConsultaPropuesta extends javax.swing.JInternalFrame {
             this.setVisible(false);
             cons.toFront();
             cons.setVisible(true);
-            
+
         }
 
     }//GEN-LAST:event_jButton1MouseClicked
