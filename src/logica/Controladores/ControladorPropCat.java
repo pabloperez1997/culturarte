@@ -342,7 +342,6 @@ public class ControladorPropCat implements IPropCat {
 
     @Override
     public DtConsultaPropuesta SeleccionarPropuesta(String titulo, String proponente) throws Exception {
-
         Propuesta prop = this.propuestas.get(titulo);
         if (prop != null) {
             String estado;
