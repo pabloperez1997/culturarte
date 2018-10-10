@@ -514,7 +514,7 @@ public class ConsultaPropuesta extends javax.swing.JInternalFrame {
             jTextPaneFecha.setText(info.getFechaR());
             this.montoTot = info.getMontoActual();
             jTextPaneMontoRecaudado.setText(String.valueOf(info.getMontoActual()));
-            jTextPaneMontoE.setText(String.valueOf(info.getMontoE()+100));
+            jTextPaneMontoE.setText(String.valueOf(info.getMontoE()));
             jTextAreaDescripcion.setText(info.getDescripcion());
             jTextPaneMontoTot.setText(String.valueOf(info.getMontoTot()));
             jTextPaneRetorno.setText(info.getTipoRetorno());

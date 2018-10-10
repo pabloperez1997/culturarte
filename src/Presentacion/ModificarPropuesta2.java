@@ -26,13 +26,24 @@ public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form ModificarPropuesta2
+     *
      * @param dtp
      */
     public ModificarPropuesta2(DtinfoPropuesta dtp) {
         initComponents();
         IPC = Fabrica.getInstance().getControladorPropCat();
-        ((JTextField) this.fecha.getDateEditor()).setEditable(false);
+        fecha.setMinSelectableDate(new Date());
         dtp2 = dtp;
+        Calendar c = dtp2.getFechaReal();
+        int dia = c.get(Calendar.DAY_OF_MONTH);
+        int mes = c.get(Calendar.MONTH) + 1;
+        int anio = c.get(Calendar.YEAR);
+        this.TextFechaAnterior.setText(dia + "/" + mes + "/" + anio);
+        this.TextLugarAnterior.setText(dtp2.getLugar());
+        this.TextMontoTotAnterior.setText(String.valueOf(dtp2.getMonto()));
+        this.TextPrecioAnterior.setText(String.valueOf(dtp2.getPrecio()));
+        this.jTextAreaDescAnterior.setText(dtp2.getDescripcion());
+
     }
 
     /**
@@ -50,7 +61,7 @@ public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        TextLugar = new javax.swing.JTextField();
+        TextLugarAnterior = new javax.swing.JTextField();
         TextMonto = new javax.swing.JTextField();
         TextPrecio = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -62,9 +73,19 @@ public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         fecha = new com.toedter.calendar.JDateChooser();
+        TextLugar = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        TextMontoTotAnterior = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        TextPrecioAnterior = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        TextFechaAnterior = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextAreaDescAnterior = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(570, 500));
         setPreferredSize(new java.awt.Dimension(570, 500));
 
         jPanel1.setMinimumSize(new java.awt.Dimension(570, 500));
@@ -73,31 +94,32 @@ public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Ingrese los campos que quiere modificar");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, -1, -1));
 
-        jLabel2.setText("Lugar:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, -1, -1));
+        jLabel2.setText("Lugar anterior:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, -1, -1));
 
         jLabel3.setText("Monto total:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, -1, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, -1, -1));
 
         jLabel4.setText("Precio entrada:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, -1, -1));
 
         jLabel5.setText("Descripcion:");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, -1, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 300, -1, -1));
 
-        TextLugar.addActionListener(new java.awt.event.ActionListener() {
+        TextLugarAnterior.setEditable(false);
+        TextLugarAnterior.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextLugarActionPerformed(evt);
+                TextLugarAnteriorActionPerformed(evt);
             }
         });
-        TextLugar.addKeyListener(new java.awt.event.KeyAdapter() {
+        TextLugarAnterior.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                TextLugarKeyTyped(evt);
+                TextLugarAnteriorKeyTyped(evt);
             }
         });
-        jPanel1.add(TextLugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 208, -1));
+        jPanel1.add(TextLugarAnterior, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 50, 208, -1));
 
         TextMonto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,14 +131,14 @@ public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
                 TextMontoKeyTyped(evt);
             }
         });
-        jPanel1.add(TextMonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 208, -1));
+        jPanel1.add(TextMonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 140, 208, -1));
 
         TextPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 TextPrecioKeyTyped(evt);
             }
         });
-        jPanel1.add(TextPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 208, -1));
+        jPanel1.add(TextPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 200, 208, -1));
 
         TextDesc.setColumns(20);
         TextDesc.setLineWrap(true);
@@ -128,14 +150,14 @@ public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(TextDesc);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 190, 208, 100));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 320, 208, 100));
 
         jLabel6.setText("Fecha:");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, -1, -1));
-        jPanel1.add(foto, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 100, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 260, -1, -1));
+        jPanel1.add(foto, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 80, -1, -1));
 
         jLabel7.setText("Imagen:");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 70, -1, -1));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 50, -1, -1));
 
         jButton1.setText("Volver");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -143,7 +165,7 @@ public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 400, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 440, -1, -1));
 
         jButton2.setText("Salir");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -151,7 +173,7 @@ public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 400, -1, -1));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 440, -1, -1));
 
         jButton3.setText("Modificar Datos");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -159,20 +181,83 @@ public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 400, -1, -1));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 440, -1, -1));
 
         fecha.setToolTipText("");
-        jPanel1.add(fecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, 210, -1));
+        jPanel1.add(fecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 260, 210, -1));
+
+        TextLugar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextLugarActionPerformed(evt);
+            }
+        });
+        TextLugar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TextLugarKeyTyped(evt);
+            }
+        });
+        jPanel1.add(TextLugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 208, -1));
+
+        jLabel8.setText("Lugar:");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, -1, -1));
+
+        jLabel9.setText("Monto total anterior:");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, 20));
+
+        TextMontoTotAnterior.setEditable(false);
+        TextMontoTotAnterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextMontoTotAnteriorActionPerformed(evt);
+            }
+        });
+        TextMontoTotAnterior.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TextMontoTotAnteriorKeyTyped(evt);
+            }
+        });
+        jPanel1.add(TextMontoTotAnterior, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 110, 208, -1));
+
+        jLabel10.setText("Precio entrada anterior:");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, -1, 20));
+
+        TextPrecioAnterior.setEditable(false);
+        TextPrecioAnterior.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TextPrecioAnteriorKeyTyped(evt);
+            }
+        });
+        jPanel1.add(TextPrecioAnterior, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 170, 208, -1));
+
+        jLabel11.setText("Fecha anterior:");
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, -1, -1));
+
+        TextFechaAnterior.setEditable(false);
+        TextFechaAnterior.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TextFechaAnteriorKeyTyped(evt);
+            }
+        });
+        jPanel1.add(TextFechaAnterior, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 230, 208, -1));
+
+        jLabel12.setText("Descripcion anterior:");
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, -1, -1));
+
+        jTextAreaDescAnterior.setEditable(false);
+        jTextAreaDescAnterior.setColumns(20);
+        jTextAreaDescAnterior.setRows(5);
+        jScrollPane2.setViewportView(jTextAreaDescAnterior);
+
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 320, 210, 100));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 558, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -200,7 +285,7 @@ public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        String lugar = TextLugar.getText();
+        String lugar = TextLugarAnterior.getText();
         String desc = TextDesc.getText();
         float monto = 0;
         if (TextMonto.getText().length() > 0) {
@@ -215,19 +300,10 @@ public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
         }
 
         Calendar fech = fecha.getCalendar();
-        if (fech != null) {
-            int dia = fech.get(Calendar.DATE);
-            int mes = fech.get(Calendar.MONTH);
-            int anio = fech.get(Calendar.YEAR);
-            Calendar fecha = Calendar.getInstance();
-            int anio2 = fecha.get(Calendar.YEAR);
-            int dia2 = fecha.get(Calendar.DATE);
-            int mes2 = fecha.get(Calendar.MONTH);
-            if (fech.getTime() == null || dia <= 0 || dia >= 32 || mes <= 0 || mes >= 13 || anio < 1800 || anio > anio2 || dia > dia2 || mes > mes2) {
-                JOptionPane.showMessageDialog(null, "Ingrese una fecha valida");
-                return;
-            }
+        if (fech == null) {
+            JOptionPane.showMessageDialog(null, "Ingrese una fecha valida");
         }
+
         String imagen = foto.getRutaImagen();
         DtinfoPropuesta dtp = new DtinfoPropuesta(dtp2.getTitulo(), desc, imagen, null, lugar, fech, precio, monto, null);
         boolean actualizo = IPC.ActualizarDatosPropuesta(dtp);
@@ -237,17 +313,17 @@ public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Error al actualizar");
         }
         TextDesc.setText("");
-        TextLugar.setText("");
+        TextLugarAnterior.setText("");
         TextMonto.setText("");
         TextPrecio.setText("");
         fecha.setCalendar(null);
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void TextLugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextLugarActionPerformed
+    private void TextLugarAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextLugarAnteriorActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_TextLugarActionPerformed
+    }//GEN-LAST:event_TextLugarAnteriorActionPerformed
 
-    private void TextLugarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextLugarKeyTyped
+    private void TextLugarAnteriorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextLugarAnteriorKeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
         String d = "" + c;
@@ -256,7 +332,7 @@ public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
         } else {
             evt.consume();
         }
-    }//GEN-LAST:event_TextLugarKeyTyped
+    }//GEN-LAST:event_TextLugarAnteriorKeyTyped
 
     private void TextDescKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextDescKeyTyped
         // TODO add your handling code here:
@@ -283,6 +359,30 @@ public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
             evt.consume();
         }
     }//GEN-LAST:event_TextPrecioKeyTyped
+
+    private void TextLugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextLugarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextLugarActionPerformed
+
+    private void TextLugarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextLugarKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextLugarKeyTyped
+
+    private void TextMontoTotAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextMontoTotAnteriorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextMontoTotAnteriorActionPerformed
+
+    private void TextMontoTotAnteriorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextMontoTotAnteriorKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextMontoTotAnteriorKeyTyped
+
+    private void TextPrecioAnteriorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextPrecioAnteriorKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextPrecioAnteriorKeyTyped
+
+    private void TextFechaAnteriorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFechaAnteriorKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextFechaAnteriorKeyTyped
 
     /**
      * @param args the command line arguments
@@ -321,22 +421,33 @@ public class ModificarPropuesta2 extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea TextDesc;
+    private javax.swing.JTextField TextFechaAnterior;
     private javax.swing.JTextField TextLugar;
+    private javax.swing.JTextField TextLugarAnterior;
     private javax.swing.JTextField TextMonto;
+    private javax.swing.JTextField TextMontoTotAnterior;
     private javax.swing.JTextField TextPrecio;
+    private javax.swing.JTextField TextPrecioAnterior;
     private com.toedter.calendar.JDateChooser fecha;
     private rojerusan.RSFotoCircle foto;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextAreaDescAnterior;
     // End of variables declaration//GEN-END:variables
 }
