@@ -124,7 +124,9 @@ public interface IPropCat {
     public abstract void ComentarPropuesta(String TituloP, String nickColab, String texto) throws Exception;
 
     public abstract boolean ExtenderFinanciacion(String Titulo);
-    
+   
     public abstract List<DtNickTitProp> ListarPropuestasX_DeProponenteX(String nick);
+    
+    public abstract void CargarComentarios();
 
 }

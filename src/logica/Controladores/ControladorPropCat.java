@@ -973,10 +973,14 @@ public class ControladorPropCat implements IPropCat {
             if (prop.getEstadoActual().getEstado() == estado) {
 
                 Calendar fechaPub = prop.getFechaPublicacion();
-                Date fPubFin = this.FechaCambioEstado(fechaPub.getTime());
+                int dias = 0;
 
-                Date fechaActual = new GregorianCalendar().getTime();
-                int dias = (int) ((fPubFin.getTime() - fechaActual.getTime()) / 86400000);
+                if (fechaPub != null) {
+                    Date fPubFin = this.FechaCambioEstado(fechaPub.getTime());
+
+                    Date fechaActual = new GregorianCalendar().getTime();
+                    dias = (int) ((fPubFin.getTime() - fechaActual.getTime()) / 86400000);
+                }
 
                 int porcentaje = (int) ((this.CalcularMontoPropuesta(prop) * 100) / prop.getMontoTot());
                 DtPropuestaWeb dtpropW;
@@ -1110,4 +1114,16 @@ public class ControladorPropCat implements IPropCat {
         }
         return true;
     }
+    
+    @Override
+    public void CargarComentarios(){
+       
+        Set set = this.propuestas.entrySet();
+        Iterator it = set.iterator();
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Propuesta p= (Propuesta) mentry.getValue();
+            this.dbPropuesta.CargarComentarios(p.getTituloP());
+        }
+}
 }
