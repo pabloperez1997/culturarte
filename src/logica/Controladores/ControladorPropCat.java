@@ -35,6 +35,7 @@ import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
 import logica.Clases.Colaborador;
 import logica.Clases.Comentario;
+import logica.Clases.DTListaPropuestasR;
 import logica.Clases.DtColaboraciones;
 import logica.Clases.DtConsultaPropuesta;
 import logica.Clases.DtConsultaPropuesta2;
@@ -1159,5 +1160,23 @@ public class ControladorPropCat implements IPropCat {
             }
         }
         return listProp;
+    }
+    
+     @Override
+    public List<DTListaPropuestasR> listarPropuestasRWEB() {//commit
+        this.EvaluarEstadosPropuestas();
+
+        List<DTListaPropuestasR> listPropuestas = new ArrayList();
+
+        Iterator it = this.propuestas.entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Propuesta prop = (Propuesta) mentry.getValue();
+                DTListaPropuestasR dtprop = new DTListaPropuestasR(prop.getTituloP(), prop.getAutor().getNickname(), prop.getEstadoActual().getEstado());
+                listPropuestas.add(dtprop);
+            
+        }
+        return listPropuestas;
     }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import logica.Clases.Categoria;
 import logica.Clases.Colaborador;
+import logica.Clases.DTListaPropuestasR;
 import logica.Clases.DtColaboraciones;
 import logica.Clases.DtConsultaPropuesta;
 import logica.Clases.DtConsultaPropuesta2;
@@ -130,4 +131,6 @@ public interface IPropCat {
     public abstract List<DtNickTitProp> ListarPropuestasCancelar(String proponente);
 
     public abstract boolean CancelarPropuesta(String titulo, String nick);
+    
+    public abstract List<DTListaPropuestasR> listarPropuestasRWEB();
 }
