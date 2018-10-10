@@ -56,6 +56,7 @@ import logica.Clases.DataImagen;
 import logica.Controladores.configuraciones;
 import logica.Clases.convertidorDeIMG;
 import logica.Clases.DtUsuario;
+
 /**
  *
  * @author Santiago.S
@@ -358,7 +359,7 @@ public class ControladorPropCat implements IPropCat {
 
             }
 
-            DtUsuario usu = (DtUsuario) Fabrica.getInstance().getIControladorUsuario().ObtenerDTUsuario(proponente);
+            DtUsuario usu = null;
 
             Date fecha = (Date) prop.getFecha().getTime();
             String fechaR = new SimpleDateFormat("dd/MMM/yyyy").format(fecha);
@@ -367,20 +368,28 @@ public class ControladorPropCat implements IPropCat {
             boolean extendible = false;
             boolean comentable = false;
             boolean colaborable = false;
-            if (prop.getAutor().getNickname().equals(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
-                cancelable = true;
-            } else if (prop.getAutor().getNickname().equals(proponente)) {
-                if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
-                    extendible = true;
-                }
-            } else if (prop.EsColaborador(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
-                comentable = this.Comentable(prop, proponente);
-            } else if (!usu.Esproponente() && !prop.EsColaborador(proponente)) {
-                if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
-                    colaborable = true;
+
+            if (proponente != null) {
+                usu = (DtUsuario) Fabrica.getInstance().getIControladorUsuario().ObtenerDTUsuario(proponente);
+
+                if (prop.getAutor().getNickname().equals(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
+                    cancelable = true;
+                } else if (prop.getAutor().getNickname().equals(proponente)) {
+                    if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
+                        extendible = true;
+                    }
+                } else if (prop.EsColaborador(usu.getNickName()) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
+                    comentable = this.Comentable(prop, proponente);
+                } else if (usu != null) {
+                    if (!usu.Esproponente() && !prop.EsColaborador(usu.getNickName())) {
+                        if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
+                            colaborable = true;
+                        }
+                    }
                 }
             }
-            return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable,colaborable);
+            
+            return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable, colaborable);
 
         } else {
             throw new Exception("La propuesta ingresada no esta en el sistema");
@@ -1161,8 +1170,8 @@ public class ControladorPropCat implements IPropCat {
         }
         return listProp;
     }
-    
-     @Override
+
+    @Override
     public List<DTListaPropuestasR> listarPropuestasRWEB() {//commit
         this.EvaluarEstadosPropuestas();
 
@@ -1173,9 +1182,9 @@ public class ControladorPropCat implements IPropCat {
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mentry.getValue();
-                DTListaPropuestasR dtprop = new DTListaPropuestasR(prop.getTituloP(), prop.getAutor().getNickname(), prop.getEstadoActual().getEstado());
-                listPropuestas.add(dtprop);
-            
+            DTListaPropuestasR dtprop = new DTListaPropuestasR(prop.getTituloP(), prop.getAutor().getNickname(), prop.getEstadoActual().getEstado());
+            listPropuestas.add(dtprop);
+
         }
         return listPropuestas;
     }
