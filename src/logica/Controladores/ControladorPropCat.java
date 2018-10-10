@@ -972,11 +972,15 @@ public class ControladorPropCat implements IPropCat {
 
             if (prop.getEstadoActual().getEstado() == estado) {
 
-                Calendar fechaPub = prop.getFechaPublicacion();
-                Date fPubFin = this.FechaCambioEstado(fechaPub.getTime());
+                Calendar fechaPub = prop.getFechaPublicacion(); // solucionar error ingresada-cancelada
+                int dias = 0;
 
-                Date fechaActual = new GregorianCalendar().getTime();
-                int dias = (int) ((fPubFin.getTime() - fechaActual.getTime()) / 86400000);
+                if (fechaPub != null) {
+                    Date fPubFin = this.FechaCambioEstado(fechaPub.getTime());
+
+                    Date fechaActual = new GregorianCalendar().getTime();
+                    dias = (int) ((fPubFin.getTime() - fechaActual.getTime()) / 86400000);
+                }
 
                 int porcentaje = (int) ((this.CalcularMontoPropuesta(prop) * 100) / prop.getMontoTot());
                 DtPropuestaWeb dtpropW;
