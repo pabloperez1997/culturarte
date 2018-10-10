@@ -3,22 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package logica.Clases;
 
 import java.util.Calendar;
+import java.util.List;
 
 /**
- * 
+ *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
 public class DtinfoColaborador {
-  private String nickname;
+
+    private String nickname;
     private String nombre;
     private String apellido;
     private String correo;
     private Calendar fechaN;
     private String imagen;
+    private List<Colaboracion> colaboraciones;
 
     public DtinfoColaborador(String nickname, String nombre, String apellido, String correo, Calendar fechaN) {
         this.nickname = nickname;
@@ -27,21 +29,35 @@ public class DtinfoColaborador {
         this.correo = correo;
         this.fechaN = fechaN;
     }
+
     public DtinfoColaborador(Usuario aux) {
-        this.nickname=aux.getNickname();
-        this.nombre=aux.getNombre();
-        this.apellido=aux.getApellido();
-        this.correo=aux.getCorreo();
-        this.fechaN=aux.getFechaN();
-        this.imagen=aux.getImagen();
-        
+        this.nickname = aux.getNickname();
+        this.nombre = aux.getNombre();
+        this.apellido = aux.getApellido();
+        this.correo = aux.getCorreo();
+        this.fechaN = aux.getFechaN();
+        this.imagen = aux.getImagen();
+
+    }
+
+    public DtinfoColaborador(Colaborador aux) {
+        this.nickname = aux.getNickname();
+        this.nombre = aux.getNombre();
+        this.apellido = aux.getApellido();
+        this.correo = aux.getCorreo();
+        this.fechaN = aux.getFechaN();
+        this.imagen = aux.getImagen();
+        this.colaboraciones=aux.getColaboraciones();
+    }
+
+    public List<Colaboracion> getColaboraciones() {
+        return colaboraciones;
     }
 
     public String getImagen() {
         return imagen;
     }
 
-    
     public String getNickname() {
         return nickname;
     }

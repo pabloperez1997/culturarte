@@ -399,6 +399,24 @@ public class ControladorUsuario implements IControladorUsuario {
     public Colaborador getColaborador() {
         return this.Colaborador;
     }
+    @Override
+    public DtinfoColaborador getDtColaborador(String nick) {
+        DtinfoColaborador dtc=null;
+       Set set = Usuarios.entrySet();
+        Iterator iterator = set.iterator();
+        ArrayList<DtinfoColaborador> retorno = new ArrayList();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            if (mentry.getValue() instanceof Colaborador) {
+                Colaborador c=(Colaborador) mentry.getValue();
+                if(c.getNickname().equals(nick)){
+                    dtc=new DtinfoColaborador(c);
+                    break;
+                }
+            }
+    }
+        return dtc;
+    }
 
     public void setColaborador(Colaborador colaborador) {
         this.Colaborador = colaborador;
@@ -903,5 +921,17 @@ public class ControladorUsuario implements IControladorUsuario {
                 break;
             }
         }
+    }
+    
+    public List<DtColaboraciones> getMontoColaboracion(DtinfoColaborador dtc){
+        List<Colaboracion> col=dtc.getColaboraciones();
+        List<DtColaboraciones> col2=new ArrayList<>();
+        Iterator it=col.iterator();
+        while(it.hasNext()){
+            Colaboracion c=(Colaboracion) it.next();
+            DtColaboraciones dtc2=new DtColaboraciones(c);
+            col2.add(dtc2);
+        }
+        return col2;
     }
 }

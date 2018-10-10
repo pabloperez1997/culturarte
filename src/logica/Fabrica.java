@@ -96,7 +96,7 @@ public class Fabrica {
         //-----------------------------------------------------Proponentes------------------------------------//
         foto = convertidor.convertirStringAImg(ruta + "hrubino.jpg", "hrubino");
         ICU.AgregarUsuarioProponente("hrubino", "Horacio", "Rubino", "horacio.rubino@guambia.com.uy", new GregorianCalendar(1962, 01, 25), foto, "18 de Julio 1234", "Horacio Rubino Torres nace el 25 de " + "febrero de 1962, es conductor, actor y libretista.  Debuta en "
-                + "1982 en carnaval en Los \"Klaper´s\", donde estuvo cuatro" + " años, actuando y libretando. Luego para \"Gaby´s\" (6 años),"
+                + "1982 en carnaval en Los Klaper´s, donde estuvo cuatro" + " años, actuando y libretando. Luego para \"Gaby´s\" (6 años),"
                 + "escribió en categoría revistas y humoristas y desde el comienzo y hasta el presente"
                 + " en su propio conjunto Momosapiens. ", "https://twitter.com/horaciorubino", a.sha1("pass1"));
 
@@ -124,9 +124,9 @@ public class Fabrica {
                 + "Tanco en el año 2001.", "https://www.facebook.com/Tabar%C3%A9-Cardozo-55179094281/?ref=br_rs", a.sha1("pass4"));
 
         foto = convertidor.convertirStringAImg(ruta + "cachilas.jpg", "cachilas");
-        ICU.AgregarUsuarioProponente("cachilas", "Waldemar “Cachila”", "Silva", "Cachila.sil@c1080.org.uy", new GregorianCalendar(1947, 00, 01), foto, "Br. Artigas 4567", "Nace en el año 1947 en el conventillo \\\"Medio Mundo\\\" ubicado en pleno Barrio Sur. Es heredero parcialmente-junto"
-                + " al resto de sus hermanos- de la Comparsa \\\"Morenada\\\" (inactiva desde el fallecimiento de Juan Ángel Silva), en 1999 forma su "
-                + "propia Comparsa de negros y lubolos \\\"Cuareim 1080\\\". Director responsable, compositor y cantante de la misma. ",
+        ICU.AgregarUsuarioProponente("cachilas", "Waldemar “Cachila”", "Silva", "Cachila.sil@c1080.org.uy", new GregorianCalendar(1947, 00, 01), foto, "Br. Artigas 4567", "Nace en el año 1947 en el conventillo \"Medio Mundo\" ubicado en pleno Barrio Sur. Es heredero parcialmente-junto"
+                + " al resto de sus hermanos- de la Comparsa \"Morenada\" (inactiva desde el fallecimiento de Juan Ángel Silva), en 1999 forma su "
+                + "propia Comparsa de negros y lubolos \"Cuareim 1080\". Director responsable, compositor y cantante de la misma. ",
                 "https://www.facebook.com/C1080?ref=br_rs", a.sha1("pass5"));
 
         ICU.AgregarUsuarioProponente("juliob", "Julio", "Bocca", "juliobocca@sodre.com.uy", new GregorianCalendar(1967, 02, 16), null,
@@ -194,43 +194,43 @@ public class Fabrica {
         IPC.crearCategoriaDatosdePrueba("Stand-up", "Comedia");
 
 //-----------------------------------------------------Propuestas------------------------------------//
-        IPC.crearPropuestaDatosdePrueba("Cine en el Botánico", "El 16 de Diciembre a la hora 20 se proyectará la película \"Clever\", en el Jardín Botánico (Av. 19 de Abril 1181)\n"
-                + "en el marco de las actividades realizadas por el ciclo Cultura al Aire Libre. El largometraje uruguayo de ficción\n"
+        IPC.crearPropuestaDatosdePrueba("Cine en el Botánico", "El 16 de Diciembre a la hora 20 se proyectará la película \"Clever\", en el Jardín Botánico (Av. 19 de Abril 1181) "
+                + "en el marco de las actividades realizadas por el ciclo Cultura al Aire Libre. El largometraje uruguayo de ficción"
                 + "Clever es dirigido por Federico Borgia y Guillermo Madeiro. Es apto para mayores de 15 años.", IPC.ObtenerCategoria("Cine al Aire Libre"), new GregorianCalendar(2018, 8, 16),
                 "Jardín Botánico ", 200, 150000, TipoRetorno.porGanancias, ICU.ObtenerProponente("diegop"), "Culturarte.png");
 
-        IPC.crearPropuestaDatosdePrueba("Durazno Rock", "Una vez mas EspectaculosBA dice presente en DURAZNO ROCK! Mas de 400 personas nos acompañaron el\\r\\naño pasado y "
+        IPC.crearPropuestaDatosdePrueba("Durazno Rock", "Una vez mas EspectaculosBA dice presente en DURAZNO ROCK! Mas de 400 personas nos acompañaron el año pasado y "
                 + "este año se repite!! Este año con la presencia destacada de La Beriso!!", IPC.ObtenerCategoria("Festival"), new GregorianCalendar(2018, 11, 10),
                 "Durazno", 0, 100000, TipoRetorno.porGanancias, ICU.ObtenerProponente("durazno"), "Culturarte.png");
 
-        IPC.crearPropuestaDatosdePrueba("El Lazarillo de Tormes", "Vuelve unas de las producciones de El Galpón más aclamadas de los últimos tiempos. Esta obra se ha\\r\\npresentado "
-                + "en Miami, Nueva York, Washington, México, Guadalajara, Río de Janeiro y La Habana. En nuestro\\r\\npaís, El Lazarillo de Tormes fue nominado en los rubros mejor espectáculo "
-                + "y mejor dirección a los Premios\\r\\nFlorencio 1995, obteniendo su protagonista Héctor Guido el Florencio a Mejor actor de ese año.",
+        IPC.crearPropuestaDatosdePrueba("El Lazarillo de Tormes", "Vuelve unas de las producciones de El Galpón más aclamadas de los últimos tiempos. Esta obra se ha presentado "
+                + "en Miami, Nueva York, Washington, México, Guadalajara, Río de Janeiro y La Habana. En nuestro país, El Lazarillo de Tormes fue nominado en los rubros mejor espectáculo "
+                + "y mejor dirección a los Premios Florencio 1995, obteniendo su protagonista Héctor Guido el Florencio a Mejor actor de ese año.",
                 IPC.ObtenerCategoria("Teatro Dramático"), new GregorianCalendar(2018, 11, 03), "Teatro el Galpón", 350, 1750000, TipoRetorno.Entradas, ICU.ObtenerProponente("hectorg"), "Culturarte.png");
 
-        IPC.crearPropuestaDatosdePrueba("El Pimiento Indomable", "El Pimiento Indomable, formación compuesta por Kiko Veneno y el uruguayo Martín Buscaglia, presentará\\r\\neste 19 de Octubre, "
-                + "su primer trabajo. Bajo un título homónimo al del grupo, es un disco que según los\\r\\npropios protagonistas “no se parece al de ninguno de los dos por separado. Entre los "
-                + "títulos que se podrán\\r\\nescuchar se encuentran “Nadador salvador”, “América es más grande”, “Pescaito Enroscado” o “La reina del\\r\\nplacer", IPC.ObtenerCategoria("Concierto"), new GregorianCalendar(2018, 9, 19),
+        IPC.crearPropuestaDatosdePrueba("El Pimiento Indomable", "El Pimiento Indomable, formación compuesta por Kiko Veneno y el uruguayo Martín Buscaglia, presentará este 19 de Octubre, "
+                + "su primer trabajo. Bajo un título homónimo al del grupo, es un disco que según los propios protagonistas “no se parece al de ninguno de los dos por separado. Entre los "
+                + "títulos que se podrán escuchar se encuentran “Nadador salvador”, “América es más grande”, “Pescaito Enroscado” o “La reina del placer", IPC.ObtenerCategoria("Concierto"), new GregorianCalendar(2018, 9, 19),
                 "Teatro Solís", 400, 400000, TipoRetorno.porGanancias, ICU.ObtenerProponente("mbusca"), "El Pimiento Indomable.jpg");
 
-        IPC.crearPropuestaDatosdePrueba("Pilsen Rock", "La edición 2018 del Pilsen Rock se celebrará el 21 de Octubre en la Rural del Prado y contará con la\\r\\nparticipación de "
+        IPC.crearPropuestaDatosdePrueba("Pilsen Rock", "La edición 2018 del Pilsen Rock se celebrará el 21 de Octubre en la Rural del Prado y contará con la participación de "
                 + "más de 15 bandas nacionales. Quienes no puedan trasladarse al lugar, "
-                + "tendrán la posibilidad\\r\\nde disfrutar los shows a través de Internet, así como entrevistas en vivo a los músicos una vez finalizados los\\r\\nconciertos.",
+                + "tendrán la posibilidad de disfrutar los shows a través de Internet, así como entrevistas en vivo a los músicos una vez finalizados los conciertos.",
                 IPC.ObtenerCategoria("Festival"), new GregorianCalendar(2018, 9, 21), "Rural de Prado", 1000, 900000, TipoRetorno.EntGan, ICU.ObtenerProponente("kairoh"), "Pilsen Rock.jpg");
 
-        IPC.crearPropuestaDatosdePrueba("Religiosamente", "MOMOSAPIENS presenta Religiosamente. Mediante dos parodias y un hilo conductor que aborda la temática\\r\\nde la religión "
-                + "Momosapiens, mediante el humor y la reflexión, hilvana una historia que muestra al hombre\\r\\ninmerso en el tema religioso. El libreto está escrito utilizando diferentes"
-                + " lenguajes de humor, dando una\\r\\nvisión satírica y reflexiva desde distintos puntos de vista, logrando mediante situaciones paródicas armar una\\r\\npropuesta plena de"
+        IPC.crearPropuestaDatosdePrueba("Religiosamente", "MOMOSAPIENS presenta Religiosamente. Mediante dos parodias y un hilo conductor que aborda la temática de la religión "
+                + "Momosapiens, mediante el humor y la reflexión, hilvana una historia que muestra al hombre inmerso en el tema religioso. El libreto está escrito utilizando diferentes"
+                + " lenguajes de humor, dando una visión satírica y reflexiva desde distintos puntos de vista, logrando mediante situaciones paródicas armar una propuesta plena de"
                 + "arte carnavalero. ", IPC.ObtenerCategoria("Parodistas"), new GregorianCalendar(2018, 9, 07), "Teatro de Verano", 300, 300000, TipoRetorno.EntGan, ICU.ObtenerProponente("hrubino"), "Religiosamente.jpg");
 
-        IPC.crearPropuestaDatosdePrueba("Romeo y Julieta", "Romeo y Julieta de Kenneth MacMillan, uno de los ballets favoritos del director artístico Julio Bocca, se\\r\\npresentará nuevamente "
-                + "el 5 de Noviembre en el Auditorio Nacional del Sodre. Basada en la obra homónima\\r\\nde William Shakespeare, Romeo y Julieta es considerada la coreografía maestra del MacMillan. "
-                + "La producción\\r\\nde vestuario y escenografía se realizó en los Talleres del Auditorio Adela Reta, sobre los diseños originales.", IPC.ObtenerCategoria("Ballet"), new GregorianCalendar(2018, 10, 05),
+        IPC.crearPropuestaDatosdePrueba("Romeo y Julieta", "Romeo y Julieta de Kenneth MacMillan, uno de los ballets favoritos del director artístico Julio Bocca, se presentará nuevamente "
+                + "el 5 de Noviembre en el Auditorio Nacional del Sodre. Basada en la obra homónima de William Shakespeare, Romeo y Julieta es considerada la coreografía maestra del MacMillan. "
+                + "La producción de vestuario y escenografía se realizó en los Talleres del Auditorio Adela Reta, sobre los diseños originales.", IPC.ObtenerCategoria("Ballet"), new GregorianCalendar(2018, 10, 05),
                 "Auditorio Nacional del Sodre", 800, 750000, TipoRetorno.porGanancias, ICU.ObtenerProponente("juliob"), "Romeo y Julieta.jpg");
 
-        IPC.crearPropuestaDatosdePrueba("Un día de Julio", "La Catalina presenta el espectáculo Un Día de Julio en Landia. Un hombre misterioso y solitario vive\\r\\nencerrado entre las cuatro paredes "
-                + "de su casa. Intenta, con sus teorías extravagantes, cambiar el mundo\\r\\nexterior que le resulta inhabitable. Un día de Julio sucederá algo que cambiará su vida y la de su entorno "
-                + "para\\r\\nsiempre.", IPC.ObtenerCategoria("Murga"), new GregorianCalendar(2018, 10, 16), "Landia", 650, 300000, TipoRetorno.EntGan, ICU.ObtenerProponente("tabarec"), "Un día de Julio.jpg");
+        IPC.crearPropuestaDatosdePrueba("Un día de Julio", "La Catalina presenta el espectáculo Un Día de Julio en Landia. Un hombre misterioso y solitario vive encerrado entre las cuatro paredes "
+                + "de su casa. Intenta, con sus teorías extravagantes, cambiar el mundo exterior que le resulta inhabitable. Un día de Julio sucederá algo que cambiará su vida y la de su entorno "
+                + "para siempre.", IPC.ObtenerCategoria("Murga"), new GregorianCalendar(2018, 10, 16), "Landia", 650, 300000, TipoRetorno.EntGan, ICU.ObtenerProponente("tabarec"), "Un día de Julio.jpg");
 
         //------------------------------------------Seguidores--------------------------------------------------//
         try {

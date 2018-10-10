@@ -60,6 +60,8 @@ public interface IControladorUsuario {
 
     public abstract Colaborador getColaborador();
 
+    public abstract DtinfoColaborador getDtColaborador(String nick);
+
     public abstract DtinfoColaborador SeleccionarColaborador(String nickName);
 
     public abstract void CargarUsuarios();
@@ -107,4 +109,6 @@ public interface IControladorUsuario {
     public abstract DtUsuario ObtenerDTUsuario_Correo(String correoU);
 
     public abstract void agregarfavorita(String nick, Propuesta p);
+    
+    public abstract List<DtColaboraciones> getMontoColaboracion(DtinfoColaborador dtc);
 }

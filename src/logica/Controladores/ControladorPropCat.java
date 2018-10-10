@@ -1179,4 +1179,6 @@ public class ControladorPropCat implements IPropCat {
         }
         return listPropuestas;
     }
+    
+    
 }
