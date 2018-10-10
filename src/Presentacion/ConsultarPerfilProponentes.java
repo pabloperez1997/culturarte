@@ -383,8 +383,12 @@ public class ConsultarPerfilProponentes extends javax.swing.JInternalFrame {
                 SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
                 jLabelFecha.setText(f.format(fechaNaci));
                 String imagen = p.getImagen();
-                String foto = System.getProperty("user.dir") + "\\fPerfiles\\" + imagen;
-
+                String foto;
+                if (imagen.equals("nadie.png")) {
+                    foto = System.getProperty("user.dir") + "\\fPerfiles\\" + imagen;
+                } else {
+                    foto = System.getProperty("user.dir") + "\\fPerfiles\\" + p.getCorreo() + "\\" + imagen;
+                }
                 ImageIcon fot = new ImageIcon(foto);
                 Icon icono = new ImageIcon(fot.getImage().getScaledInstance(jLabelFoto.getWidth(), jLabelFoto.getHeight(), Image.SCALE_DEFAULT));
                 jLabelFoto.setIcon(icono);

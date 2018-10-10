@@ -78,6 +78,7 @@ public interface IControladorUsuario {
 
     public abstract Colaborador ObtenerColaborador(String nombreC);
 
+    
     public abstract void eliminarCategorias();
 
     public abstract boolean AgregarUsuarioColaboradorDatosdePrueba(String nickName, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password);
