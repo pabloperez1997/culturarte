@@ -303,7 +303,7 @@ public class Fabrica {
 
         IPC.agregarColaboracionDatosdePrueba("Un día de Julio", "tonyp", 30000, new GregorianCalendar(2018, 07, 15, 04, 48, 0), true);
         IPC.agregarColaboracionDatosdePrueba("Un día de Julio", "marcelot", 150000, new GregorianCalendar(2018, 07, 17, 15, 30, 0), false);
-
+        IPC.agregarColaboracionDatosdePrueba("Un día de Julio", "chino", 120000, new GregorianCalendar(2018, 07, 18, 01, 58, 0),false);
 //------------------------------------------Estado Propuesta--------------------------------------------------//
         IPC.nuevoEstadoPropuestaDatosdePrueba("Cine en el Botánico", TipoE.Ingresada, new GregorianCalendar(2018, 04, 15, 15, 30, 0));
         IPC.nuevoEstadoPropuestaDatosdePrueba("Cine en el Botánico", TipoE.Publicada, new GregorianCalendar(2018, 04, 17, 8, 30, 0));
