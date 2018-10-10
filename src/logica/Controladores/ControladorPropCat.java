@@ -972,7 +972,7 @@ public class ControladorPropCat implements IPropCat {
 
             if (prop.getEstadoActual().getEstado() == estado) {
 
-                Calendar fechaPub = prop.getFechaPublicacion(); // solucionar error ingresada-cancelada
+                Calendar fechaPub = prop.getFechaPublicacion();
                 int dias = 0;
 
                 if (fechaPub != null) {
