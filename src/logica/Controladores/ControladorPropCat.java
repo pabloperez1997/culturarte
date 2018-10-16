@@ -931,6 +931,24 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
+    public List<DtinfoPropuesta> ListarPropuestaNOI() {
+        this.EvaluarEstadosPropuestas();
+
+        List<DtinfoPropuesta> propuestas = new ArrayList<>();
+        Set set = this.propuestas.entrySet();
+        Iterator it = set.iterator();
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Propuesta p = (Propuesta) mentry.getValue();
+            if (p.getEstadoActual().getEstado() != TipoE.Ingresada) {
+                DtinfoPropuesta dtp = new DtinfoPropuesta(p);
+                propuestas.add(dtp);
+            }
+        }
+        return propuestas;
+    }
+
+    @Override
     public List<DtinfoPropuesta> ListarPropuesta() {
         this.EvaluarEstadosPropuestas();
 
@@ -1208,6 +1226,28 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public void DesactivarPropuesta(Propuesta prop) {
         this.dbPropuesta.DesactivarPropuesta(prop.getTituloP());
+    }
+
+    @Override
+    public List<DtConsultaPropuesta> getDtPropuestas() throws Exception {
+        Iterator it = this.getPropuestas().entrySet().iterator();
+        List<DtConsultaPropuesta> lista = new ArrayList<>();
+        while (it.hasNext()) {
+            Map.Entry mtry = (Map.Entry) it.next();
+
+            Propuesta prop = (Propuesta) mtry.getValue();
+
+            if (prop.getEstaActiva()) {
+
+                Date fecha = (Date) prop.getFecha().getTime();
+                String fechaR = new SimpleDateFormat("dd/MMM/yyyy").format(fecha);
+
+                DtConsultaPropuesta dtCP = this.SeleccionarPropuesta(prop.getTituloP(), null);
+                lista.add(dtCP);
+            }
+
+        }
+        return lista;
     }
 
 }

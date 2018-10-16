@@ -110,7 +110,7 @@ public interface IControladorUsuario {
 
     public abstract void agregarfavorita(String nick, Propuesta p);
 
-    public abstract List<DtColaboraciones> getMontoColaboracion(DtinfoColaborador dtc);
+    public abstract List<DtColaboraciones> getMontoColaboracion(String Colaborador);
 
     public abstract boolean DesactivarProponente(String nickProp)throws Exception;
 }

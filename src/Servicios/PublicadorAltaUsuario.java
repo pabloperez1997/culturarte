@@ -32,4 +32,9 @@ public class PublicadorAltaUsuario {
     public boolean AgregarUsuarioProponente(@WebParam(name = "nick") String nick, @WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido, @WebParam(name = "correo") String correo, @WebParam(name = "cal") Calendar cal, @WebParam(name = "imagen") DataImagen imagen, @WebParam(name = "direccion") String direccion, @WebParam(name = "biografia") String biografia, @WebParam(name = "sitio") String sitio, @WebParam(name = "hash") String hash) {
         return Fabrica.getInstance().getIControladorUsuario().AgregarUsuarioProponente(nick, nombre, apellido, correo, cal, imagen, direccion, biografia, sitio, hash);
     }
+
+    @WebMethod
+    public boolean AgregarUsuarioColaborador(@WebParam(name = "nick") String nick, @WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido, @WebParam(name = "correo") String correo, @WebParam(name = "cal") Calendar cal, @WebParam(name = "imagen") DataImagen imagen, @WebParam(name = "direccion") String direccion) {
+        return Fabrica.getInstance().getIControladorUsuario().AgregarUsuarioColaborador(nick, nombre, apellido, correo, cal, imagen, direccion);
+    }
 }

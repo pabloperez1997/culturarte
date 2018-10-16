@@ -19,12 +19,12 @@ import logica.Fabrica;
  */
 @WebService
 @SOAPBinding(style = SOAPBinding.Style.RPC)
-public class PublicarLogin {
+public class PublicadorLogin {
 
     private Endpoint endpoint = null;
 
-    public void publicarLoginCerrarSesion() {
-        endpoint = Endpoint.publish("http://127.0.0.1:8280/servicioLoginCerrarSesion", this);
+    public void publicarLogin() {
+        endpoint = Endpoint.publish("http://127.0.0.1:8280/servicioLogin", this);
     }
 
     //login

@@ -5,6 +5,7 @@
  */
 package Servicios;
 
+import DtServicios.DtListConsultaPropuesta;
 import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -40,4 +41,10 @@ public class PublicadorInicio {
 
         return new DtListPropuestaWeb(pub, fin, enF, noF, cancel);
     }
+
+    @WebMethod
+    public DtListConsultaPropuesta getDtPropuestas() throws Exception {
+        return new DtListConsultaPropuesta(Fabrica.getInstance().getControladorPropCat().getDtPropuestas());
+    }
+
 }

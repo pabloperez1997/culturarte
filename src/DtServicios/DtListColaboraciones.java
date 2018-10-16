@@ -6,21 +6,21 @@
 package DtServicios;
 
 import java.util.List;
-import logica.Clases.DtConsultaPropuesta2;
+import logica.Clases.DtColaboraciones;
 
 /**
  *
  * @author Martin
  */
-public class DtListConsultaPropuesta2 {
+public class DtListColaboraciones {
 
-    List<DtConsultaPropuesta2> lista;
+    List<DtColaboraciones> lista;
 
-    public DtListConsultaPropuesta2(List<DtConsultaPropuesta2> list) {
+    public DtListColaboraciones(List<DtColaboraciones> list) {
         this.lista = list;
     }
 
-    public List<DtConsultaPropuesta2> getLista() {
+    public List<DtColaboraciones> getLista() {
         return this.lista;
     }
 }

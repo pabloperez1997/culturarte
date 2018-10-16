@@ -961,8 +961,10 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
     @Override
-    public List<DtColaboraciones> getMontoColaboracion(DtinfoColaborador dtc) {
-        List<Colaboracion> col = dtc.getColaboraciones();
+    public List<DtColaboraciones> getMontoColaboracion(String colaborador) {
+
+        Colaborador colab = Fabrica.getInstance().getIControladorUsuario().ObtenerColaborador(colaborador);
+        List<Colaboracion> col = colab.getColaboraciones();
         List<DtColaboraciones> col2 = new ArrayList<>();
         Iterator it = col.iterator();
         while (it.hasNext()) {

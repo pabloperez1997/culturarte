@@ -102,6 +102,8 @@ public interface IPropCat {
 
     public abstract List<DtinfoPropuesta> ListarPropuestasNoIngresadas(String nick);
 
+    public abstract List<DtinfoPropuesta> ListarPropuestaNOI();
+
     public abstract List<DtinfoPropuesta> ListarPropuesta();
 
     public abstract boolean AgregarFavorita(String titulo, String nick);
@@ -129,4 +131,6 @@ public interface IPropCat {
     public abstract List<DTListaPropuestasR> listarPropuestasRWEB();
 
     public abstract void DesactivarPropuesta(Propuesta prop);
+
+    public abstract List<DtConsultaPropuesta> getDtPropuestas() throws Exception;
 }
