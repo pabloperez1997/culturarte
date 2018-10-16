@@ -7,7 +7,7 @@ package logica.Clases;
 
 import java.util.Calendar;
 import java.util.Date;
-
+import logica.Clases.TipoE;
 /**
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
@@ -25,7 +25,8 @@ public class DtinfoPropuesta {
     private String estado;
     private TipoRetorno tipoRetorno;
 
-    public DtinfoPropuesta(String Titulo, String Descripcion, String imagen, String TipoEspec, String Lugar, Calendar FechaReal, float Precio, float Monto,  TipoRetorno tipoRetorno) {
+
+    public DtinfoPropuesta(String Titulo, String Descripcion, String imagen, String TipoEspec, String Lugar, Calendar FechaReal, float Precio, float Monto, TipoRetorno tipoRetorno) {
         this.Titulo = Titulo;
         this.Descripcion = Descripcion;
         this.imagen = imagen;
@@ -45,8 +46,8 @@ public class DtinfoPropuesta {
         this.Monto = p.getMontoTot();
         this.TipoEspec = p.getCategoria().getNombreC();
         this.imagen = p.getImagen();
-        this.Precio=p.getMontoE();
-        this.estado=p.getEstadoActual().getEstado().name();
+        this.Precio = p.getMontoE();
+        this.estado = p.getEstadoActual().getEstado().name();
     }
 
     public String getTitulo() {
@@ -89,5 +90,4 @@ public class DtinfoPropuesta {
         return tipoRetorno;
     }
 
-    
 }

@@ -60,6 +60,8 @@ public interface IControladorUsuario {
 
     public abstract Colaborador getColaborador();
 
+    public abstract DtinfoColaborador getDtColaborador(String nick);
+
     public abstract DtinfoColaborador SeleccionarColaborador(String nickName);
 
     public abstract void CargarUsuarios();
@@ -78,7 +80,6 @@ public interface IControladorUsuario {
 
     public abstract Colaborador ObtenerColaborador(String nombreC);
 
-    
     public abstract void eliminarCategorias();
 
     public abstract boolean AgregarUsuarioColaboradorDatosdePrueba(String nickName, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password);
@@ -108,4 +109,8 @@ public interface IControladorUsuario {
     public abstract DtUsuario ObtenerDTUsuario_Correo(String correoU);
 
     public abstract void agregarfavorita(String nick, Propuesta p);
+
+    public abstract List<DtColaboraciones> getMontoColaboracion(DtinfoColaborador dtc);
+
+    public abstract boolean DesactivarProponente(String nickProp)throws Exception;
 }

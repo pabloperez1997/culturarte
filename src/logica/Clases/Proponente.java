@@ -19,19 +19,22 @@ public class Proponente extends Usuario {
     private String direccion;
     private String sitioweb;
     private Map<String, Propuesta> Propuestas;
+    private boolean activo;
+    private Calendar fDesactivacion;
 
-    public Proponente(String biografia, String direccion, String sitioweb, String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen,String password) {
-        super(nickname, nombre, apellido, correo, fechaN, imagen,password);
+    public Proponente(String biografia, String direccion, String sitioweb, String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password, boolean activo, Calendar fDesac) {
+        super(nickname, nombre, apellido, correo, fechaN, imagen, password);
         this.biografia = biografia;
         this.direccion = direccion;
         this.sitioweb = sitioweb;
         this.Propuestas = new HashMap<>();
+        this.activo = activo;
+        this.fDesactivacion = fDesac;
     }
 
     public String getSitioweb() {
         return sitioweb;
     }
-    
 
     public void setSitioweb(String sitioweb) {
         this.sitioweb = sitioweb;
@@ -71,5 +74,21 @@ public class Proponente extends Usuario {
 
     public Map<String, Propuesta> getPropuestasRealizadas() {
         return this.Propuestas;
+    }
+
+    public boolean getEstaActivo() {
+        return this.activo;
+    }
+
+    public void setEstaActiva(boolean valor) {
+        this.activo = valor;
+    }
+
+    public void setFDesactivacion(Calendar fDesc) {
+        this.fDesactivacion = fDesc;
+    }
+
+    public Calendar getFDesactivacion() {
+        return this.fDesactivacion;
     }
 }

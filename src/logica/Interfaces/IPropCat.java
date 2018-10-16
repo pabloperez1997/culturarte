@@ -52,8 +52,6 @@ public interface IPropCat {
 
     public abstract DtinfoPropuesta SeleccionarPropuestaR(String titulo);
 
-    public abstract DtinfoPropuesta RetornarPropuestaR(String titulo);
-
     public abstract List<DtinfoColaborador> ListarColaboradores(String titulo);
 
     public abstract boolean agregarColaboracion(boolean Entrada, Float monto) throws Exception;
@@ -76,9 +74,7 @@ public interface IPropCat {
 
     public abstract Map<String, Categoria> getCategorias();
 
-    public abstract List<DtinfoPropuesta> ListarPropuestasDeProponenteX(String nick);
-
-    public abstract EstadoPropuesta verEstadoPropuesta(String titulo);
+    public abstract List<DtinfoPropuesta> ListarPropuestasDeProponenteX(String nick) throws Exception;
 
     public abstract void CargarColaboraciones();
 
@@ -92,9 +88,9 @@ public interface IPropCat {
 
     public abstract List<DtColaboraciones> listarColaboraciones(String titulo) throws Exception;
 
-    public abstract boolean eliminarColaboracion(String titulo, String nick);
+    public abstract boolean eliminarColaboracion(String titulo, String nick) throws Exception;
 
-    public abstract List<DtConsultaPropuesta2> ListaColaboradoresProp(String titulo);
+    public abstract List<DtConsultaPropuesta2> ListaColaboradoresProp(String titulo) throws Exception;
 
     public abstract boolean ActualizarDatosPropuesta(DtinfoPropuesta dtp);
 
@@ -109,8 +105,6 @@ public interface IPropCat {
     public abstract List<DtinfoPropuesta> ListarPropuesta();
 
     public abstract boolean AgregarFavorita(String titulo, String nick);
-
-    public abstract List<DtinfoPropuesta> ListarPropuestaNOI();
 
     public abstract void EvaluarEstadosPropuestas();
 
@@ -130,7 +124,9 @@ public interface IPropCat {
 
     public abstract List<DtNickTitProp> ListarPropuestasCancelar(String proponente);
 
-    public abstract boolean CancelarPropuesta(String titulo, String nick);
-    
+    public abstract boolean CancelarPropuesta(String titulo, String nick) throws Exception;
+
     public abstract List<DTListaPropuestasR> listarPropuestasRWEB();
+
+    public abstract void DesactivarPropuesta(Propuesta prop);
 }

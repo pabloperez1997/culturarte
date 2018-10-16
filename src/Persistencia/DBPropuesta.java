@@ -60,7 +60,7 @@ public class DBPropuesta {
 
     public boolean agregarPropuesta(Propuesta nuevaP, EstadoPropuesta nuevoEst) {
         try {
-            PreparedStatement stat = conexion.prepareStatement("INSERT INTO propuesta (TituloP, nombreC, proponente, descripcion, imagen, fechaR, lugar, montoE, montoTot, retornos) VALUES (?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement stat = conexion.prepareStatement("INSERT INTO propuesta (TituloP, nombreC, proponente, descripcion, imagen, fechaR, lugar, montoE, montoTot, retornos,activo) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
 
             Calendar calen = nuevaP.getFecha();
             Date fechaR = (Date) calen.getTime();
@@ -76,6 +76,7 @@ public class DBPropuesta {
             stat.setFloat(8, nuevaP.getMontoE());
             stat.setFloat(9, nuevaP.getMontoTot());
             stat.setInt(10, nuevaP.getRetorno().ordinal());
+            stat.setBoolean(11, true);
             stat.executeUpdate();
             stat.close();
 
@@ -165,7 +166,7 @@ public class DBPropuesta {
 
                 Categoria cat = Fabrica.getInstance().getControladorPropCat().getCategorias().get(rs.getString("nombreC"));
                 Proponente prop = (Proponente) Fabrica.getInstance().getIControladorUsuario().getUsuarios().get(rs.getString("proponente"));
-                Propuesta nuevaP = new Propuesta(rs.getString("tituloP"), rs.getString("descripcion"), rs.getString("imagen"), rs.getString("lugar"), fechaRR, rs.getFloat("montoE"), rs.getFloat("montoTot"), null, cat, tip, prop);
+                Propuesta nuevaP = new Propuesta(rs.getString("tituloP"), rs.getString("descripcion"), rs.getString("imagen"), rs.getString("lugar"), fechaRR, rs.getFloat("montoE"), rs.getFloat("montoTot"), null, cat, tip, prop, rs.getBoolean("activo"));
 
                 cat.getPropuestas().put(nuevaP.getTituloP(), nuevaP);
                 prop.getPropuestasRealizadas().put(nuevaP.getTituloP(), nuevaP);
@@ -235,7 +236,7 @@ public class DBPropuesta {
 
     public boolean agregarPropuestaDatosdePrueba(Propuesta nuevaP) {
         try {
-            PreparedStatement stat = conexion.prepareStatement("INSERT INTO propuesta" + "(TituloP, nombreC, proponente, descripcion, imagen, fechaR, lugar, montoE, montoTot, retornos) values (?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement stat = conexion.prepareStatement("INSERT INTO propuesta" + "(TituloP, nombreC, proponente, descripcion, imagen, fechaR, lugar, montoE, montoTot, retornos,activo) values (?,?,?,?,?,?,?,?,?,?,?)");
             Calendar fechR = nuevaP.getFecha();
             java.util.Date dateR = (java.util.Date) fechR.getTime();
             java.sql.Date dateRR = new java.sql.Date(dateR.getTime());
@@ -250,6 +251,7 @@ public class DBPropuesta {
             stat.setFloat(8, nuevaP.getMontoE());
             stat.setFloat(9, nuevaP.getMontoTot());
             stat.setInt(10, nuevaP.getRetorno().ordinal());
+            stat.setBoolean(11, true);
             stat.executeUpdate();
             stat.close();
 
@@ -320,6 +322,19 @@ public class DBPropuesta {
         return true;
     }
 
+    public boolean DesactivarPropuesta(String tituloP) {
+        try {
+            PreparedStatement stat = conexion.prepareStatement("UPDATE propuesta SET activo = ? WHERE TituloP = '" + tituloP + "'");
+            stat.setBoolean(1, false);
+            stat.executeUpdate();
+            stat.close();
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean EvaluarPropuestaBD(EstadoPropuesta Nuevo, EstadoPropuesta Anterior, String titulo) {
 
         try {
@@ -346,22 +361,22 @@ public class DBPropuesta {
 
         return false;
     }
-    
-    public boolean AgregarFavoritas(String nick,String TituloP){
-    try{
-        PreparedStatement stat = conexion.prepareStatement("INSERT INTO favoritas(Usuario,Propuesta) values (?,?)");
-        stat.setString(1, nick);
-        stat.setString(2, TituloP);
-        stat.executeUpdate();
+
+    public boolean AgregarFavoritas(String nick, String TituloP) {
+        try {
+            PreparedStatement stat = conexion.prepareStatement("INSERT INTO favoritas(Usuario,Propuesta) values (?,?)");
+            stat.setString(1, nick);
+            stat.setString(2, TituloP);
+            stat.executeUpdate();
             stat.close();
             return true;
-    } catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-    
-   public boolean ModificarEstadoPublicadaPropuesta(String TituloP, Calendar fechaE) {
+
+    public boolean ModificarEstadoPublicadaPropuesta(String TituloP, Calendar fechaE) {
         try {
             PreparedStatement stat = conexion.prepareStatement("UPDATE estadopropuesta SET FechaInicio = ? WHERE TituloP = '" + TituloP + "' and Estado = 1");
             Date fechaI = (Date) fechaE.getTime();
@@ -375,38 +390,39 @@ public class DBPropuesta {
         return false;
     }
 
-    public boolean AgregarComentario(String TituloP, String nickColab, String texto){
-    try{
-        PreparedStatement stat = conexion.prepareStatement("INSERT INTO comentarios(Usuario,Propuesta,texto) values (?,?,?)");
-        stat.setString(1, nickColab);
-        stat.setString(2, TituloP);
-        stat.setString(3, texto);
-        stat.executeUpdate();
+    public boolean AgregarComentario(String TituloP, String nickColab, String texto) {
+        try {
+            PreparedStatement stat = conexion.prepareStatement("INSERT INTO comentarios(Usuario,Propuesta,texto) values (?,?,?)");
+            stat.setString(1, nickColab);
+            stat.setString(2, TituloP);
+            stat.setString(3, texto);
+            stat.executeUpdate();
             stat.close();
             return true;
-    } catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-    
-    public void CargarComentarios(String TituloP){
-  
+
+    public void CargarComentarios(String TituloP) {
+
         try {
-           PreparedStatement statement = conexion.prepareStatement("SELECT * FROM comentarios WHERE Propuesta='"+TituloP+"'");
-           ResultSet st = statement.executeQuery();
+            PreparedStatement statement = conexion.prepareStatement("SELECT * FROM comentarios WHERE Propuesta='" + TituloP + "'");
+            ResultSet st = statement.executeQuery();
 
             while (st.next()) {
-                Propuesta p= Fabrica.getInstance().getControladorPropCat().getPropuestas().get(TituloP);
-                String nickColab=st.getString("Usuario");
-                String texto=st.getString("texto");
-                Comentario c= new Comentario(TituloP, nickColab, texto);
+                Propuesta p = Fabrica.getInstance().getControladorPropCat().getPropuestas().get(TituloP);
+                String nickColab = st.getString("Usuario");
+                String texto = st.getString("texto");
+                Colaborador colab = Fabrica.getInstance().getIControladorUsuario().ObtenerColaborador(nickColab);
+                Comentario c = new Comentario(colab, texto);
                 p.getComentarios().add(c);
             }
             statement.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        
+
     }
 }

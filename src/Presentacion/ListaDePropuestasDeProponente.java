@@ -42,24 +42,30 @@ public class ListaDePropuestasDeProponente extends javax.swing.JInternalFrame {
     private List<DtinfoPropuesta> propuestas;
     private DtinfoPropuesta propSeleccionada;
 
-    public ListaDePropuestasDeProponente(String proponente, String title){
+    public ListaDePropuestasDeProponente(String proponente, String title) {
         super(title);
         Fabrica fab = Fabrica.getInstance();
         this.ICP = fab.getControladorPropCat();
         initComponents();
         jPanelColaboradores.setVisible(false);
         this.nickProponente = proponente;
-        propuestas = this.ICP.ListarPropuestasDeProponenteX(nickProponente);
-        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        modelo.setRowCount(0);
-        for (int i = 0; i < propuestas.size(); i++) {
-            DtinfoPropuesta p = propuestas.get(i);
-            Date f = (Date) p.getFechaReal().getTime();
-            SimpleDateFormat fecha = new SimpleDateFormat("dd/MMM/yyyy");
-            EstadoPropuesta estado = ICP.verEstadoPropuesta(p.getTitulo());
-            Object[] dat = {p.getTitulo(), p.getTipoEspec(), estado.getEstado(), p.getMonto(), p.getLugar(), fecha.format(f)};
-            modelo.addRow(dat);
+
+        try {
+            propuestas = this.ICP.ListarPropuestasDeProponenteX(nickProponente);
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            modelo.setRowCount(0);
+            for (int i = 0; i < propuestas.size(); i++) {
+                DtinfoPropuesta p = propuestas.get(i);
+                Date f = (Date) p.getFechaReal().getTime();
+                SimpleDateFormat fecha = new SimpleDateFormat("dd/MMM/yyyy");
+                String estado = p.getEstado();
+                Object[] dat = {p.getTitulo(), p.getTipoEspec(), estado, p.getMonto(), p.getLugar(), fecha.format(f)};
+                modelo.addRow(dat);
+            }
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(null, e.getMessage());
         }
+
         jComboBox.addItem("Todas");
         jComboBox.addItem("Canceladas");
         jComboBox.addItem("Publicadas");
@@ -345,42 +351,46 @@ public class ListaDePropuestasDeProponente extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String seleccion = jComboBox.getSelectedItem().toString();
-        propuestas = this.ICP.ListarPropuestasDeProponenteX(nickProponente);
-        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        if (seleccion == "Todas") {
-            modelo.setRowCount(0);
-            for (int i = 0; i < propuestas.size(); i++) {
-                DtinfoPropuesta p = propuestas.get(i);
-                Date f = (Date) p.getFechaReal().getTime();
-                SimpleDateFormat fecha = new SimpleDateFormat("dd/MMM/yyyy");
-                EstadoPropuesta estado = ICP.verEstadoPropuesta(p.getTitulo());
-                Object[] dat = {p.getTitulo(), p.getTipoEspec(), estado.getEstado(), p.getMonto(), p.getLugar(), fecha.format(f)};
-                modelo.addRow(dat);
-            }
-        } else {
-            if (seleccion.equals("Canceladas")) {
-                seleccion = "Cancelada";
-            } else if (seleccion.equals("Publicadas")) {
-                seleccion = "Publicada";
-            } else if (seleccion.equals("En financiacion")) {
-                seleccion = "enFinanciacion";
-            } else if (seleccion.equals("Financiada")) {
-                seleccion = "Financiada";
-            } else if (seleccion.equals("No finalizada")) {
-                seleccion = "noFinanciada";
-            }
-
-            modelo.setRowCount(0);
-            for (int x = 0; x < propuestas.size(); x++) {
-                if (seleccion.equals(propuestas.get(x).getEstado())) {
-                    DtinfoPropuesta p = propuestas.get(x);
+        try {
+            propuestas = this.ICP.ListarPropuestasDeProponenteX(nickProponente);
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            if (seleccion == "Todas") {
+                modelo.setRowCount(0);
+                for (int i = 0; i < propuestas.size(); i++) {
+                    DtinfoPropuesta p = propuestas.get(i);
                     Date f = (Date) p.getFechaReal().getTime();
                     SimpleDateFormat fecha = new SimpleDateFormat("dd/MMM/yyyy");
-                    EstadoPropuesta estado = ICP.verEstadoPropuesta(p.getTitulo());
-                    Object[] dat = {p.getTitulo(), p.getTipoEspec(), estado.getEstado(), p.getMonto(), p.getLugar(), fecha.format(f)};
+                    String estado = p.getEstado();
+                    Object[] dat = {p.getTitulo(), p.getTipoEspec(), estado, p.getMonto(), p.getLugar(), fecha.format(f)};
                     modelo.addRow(dat);
                 }
+            } else {
+                if (seleccion.equals("Canceladas")) {
+                    seleccion = "Cancelada";
+                } else if (seleccion.equals("Publicadas")) {
+                    seleccion = "Publicada";
+                } else if (seleccion.equals("En financiacion")) {
+                    seleccion = "enFinanciacion";
+                } else if (seleccion.equals("Financiada")) {
+                    seleccion = "Financiada";
+                } else if (seleccion.equals("No finalizada")) {
+                    seleccion = "noFinanciada";
+                }
+
+                modelo.setRowCount(0);
+                for (int x = 0; x < propuestas.size(); x++) {
+                    if (seleccion.equals(propuestas.get(x).getEstado())) {
+                        DtinfoPropuesta p = propuestas.get(x);
+                        Date f = (Date) p.getFechaReal().getTime();
+                        SimpleDateFormat fecha = new SimpleDateFormat("dd/MMM/yyyy");
+                        String estado = p.getEstado();
+                        Object[] dat = {p.getTitulo(), p.getTipoEspec(), estado, p.getMonto(), p.getLugar(), fecha.format(f)};
+                        modelo.addRow(dat);
+                    }
+                }
             }
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

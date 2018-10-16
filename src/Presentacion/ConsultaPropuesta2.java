@@ -23,19 +23,22 @@ public class ConsultaPropuesta2 extends javax.swing.JInternalFrame {
     public ConsultaPropuesta2(String titulo) {
         initComponents();
 
-        this.ListColab = Fabrica.getInstance().getControladorPropCat().ListaColaboradoresProp(titulo);
-        DefaultTableModel modelo = (DefaultTableModel) jTableColaboradores.getModel();
+        try {
+            this.ListColab = Fabrica.getInstance().getControladorPropCat().ListaColaboradoresProp(titulo);
+            DefaultTableModel modelo = (DefaultTableModel) jTableColaboradores.getModel();
 
-        modelo.setRowCount(0);
+            modelo.setRowCount(0);
 
-        for (int i = 0; i < this.ListColab.size(); i++) {
+            for (int i = 0; i < this.ListColab.size(); i++) {
 
-            DtConsultaPropuesta2 col = (DtConsultaPropuesta2) this.ListColab.get(i);
-            Object[] datos = {col.getNickColab(), col.getNombreColab(), col.getApellidoColab(), col.getMontoColab(), col.getFechaR()};
+                DtConsultaPropuesta2 col = (DtConsultaPropuesta2) this.ListColab.get(i);
+                Object[] datos = {col.getNickColab(), col.getNombreColab(), col.getApellidoColab(), col.getMontoColab(), col.getFechaR()};
 
-            modelo.addRow(datos);
+                modelo.addRow(datos);
+            }
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(null, e.getMessage());
         }
-
     }
 
     /**

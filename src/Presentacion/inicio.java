@@ -5,6 +5,10 @@
  */
 package Presentacion;
 
+import Servicios.PublicadorAltaPropuesta;
+import Servicios.PublicadorConsultarPropuesta;
+import Servicios.PublicadorExtenderCancelarComentarPropuesta;
+import Servicios.PublicadorInicio;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -41,6 +45,8 @@ public class inicio extends javax.swing.JFrame {
         ICU.CargarFavoritas();
         IPC.CargarComentarios();
         this.setTitle("Culturarte");
+        
+        this.PublicarServicios();
     }
 
     /**
@@ -60,6 +66,7 @@ public class inicio extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItemVerSeguidores = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -127,6 +134,14 @@ public class inicio extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItemVerSeguidores);
+
+        jMenuItem13.setText("DesactivarProponente");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem13);
 
         jMenuBar1.add(jMenu1);
 
@@ -396,6 +411,13 @@ public class inicio extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        DesactivarProponente prop = new DesactivarProponente();
+        Escritorio.add(prop);
+        prop.toFront();
+        prop.setVisible(true);
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -431,6 +453,21 @@ public class inicio extends javax.swing.JFrame {
         });
     }
 
+    public void PublicarServicios() {
+        PublicadorExtenderCancelarComentarPropuesta pubECCP = new PublicadorExtenderCancelarComentarPropuesta();
+        pubECCP.publicarExtenderCancelarComentarPropuesta();
+        
+        PublicadorAltaPropuesta pubAP = new PublicadorAltaPropuesta();
+        pubAP.publicar();
+        
+        PublicadorConsultarPropuesta pubCP = new PublicadorConsultarPropuesta();
+        pubCP.publicarConsultaPropuesta();
+        
+        PublicadorInicio pubI = new PublicadorInicio();
+        pubI.publicarInicio();
+        
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JPanel Escritorio;
     private javax.swing.JMenu jMenu1;
@@ -442,6 +479,7 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

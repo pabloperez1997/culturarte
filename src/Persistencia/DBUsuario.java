@@ -51,7 +51,7 @@ public class DBUsuario {
             statement.setString(8, null);
             statement.setString(9, null);
             statement.setBoolean(10, false);
-            statement.setString(11,p.getPassword());
+            statement.setString(11, p.getPassword());
             statement.executeUpdate();
             statement.close();
             return true;
@@ -63,11 +63,12 @@ public class DBUsuario {
 
     public boolean agregarProponente(Proponente p) {
         try {
-            PreparedStatement statement = conexion.prepareStatement("INSERT INTO usuario " + "(nickName, nombre, apellido,correo,fechaN,imagen,direccion,biografia,sitioWeb,esProponente,contrasenia) values(?,?,?,?,?,?,?,?,?,?,?)");
-            Calendar calendar = p.getFechaN();
+            PreparedStatement statement = conexion.prepareStatement("INSERT INTO usuario " + "(nickName, nombre, apellido,correo,fechaN,imagen,direccion,biografia,sitioWeb,esProponente,contrasenia,activo,fDesactivacion) values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
             Calendar calen = p.getFechaN();
             Date fechaN = (Date) calen.getTime();
             java.sql.Date sDate = new java.sql.Date(fechaN.getTime());
+
             statement.setString(1, p.getNickname());
             statement.setString(2, p.getNombre());
             statement.setString(3, p.getApellido());
@@ -78,7 +79,18 @@ public class DBUsuario {
             statement.setString(8, p.getBiografia());
             statement.setString(9, p.getsitioweb());
             statement.setBoolean(10, true);
-            statement.setString(11,p.getPassword());
+            statement.setString(11, p.getPassword());
+            statement.setBoolean(12, p.getEstaActivo());
+
+            if (!p.getEstaActivo()) {
+                Calendar cal = p.getFDesactivacion();
+                Date fDesact = (Date) cal.getTime();
+                java.sql.Date fDate = new java.sql.Date(fDesact.getTime());
+                statement.setDate(13, fDate);
+            } else {
+                statement.setDate(13, null);
+            }
+
             statement.executeUpdate();
             statement.close();
             return true;
@@ -134,12 +146,22 @@ public class DBUsuario {
                 String dir = st.getString(7);
                 String biog = st.getString(8);
                 String web = st.getString(9);
-                String pass= st.getString(11);
+                String pass = st.getString(11);
+                boolean activo = st.getBoolean(12);
+
+                Calendar cal = null;
+
+                if (!activo && st.getInt(10) == 1) {
+                    Date fDes = st.getDate(13);
+                    cal = Calendar.getInstance();
+                    cal.setTime(fDes);
+                }
+
                 if (st.getInt(10) == 1) {
-                    Proponente p = new Proponente(biog, dir, web, nick, nombre, apellido, correo, c, img,pass);
+                    Proponente p = new Proponente(biog, dir, web, nick, nombre, apellido, correo, c, img, pass, activo, cal);
                     usuarios.put(nick, p);
                 } else {
-                    Colaborador col = new Colaborador(nick, nombre, apellido, correo, c, img,pass);
+                    Colaborador col = new Colaborador(nick, nombre, apellido, correo, c, img, pass);
                     usuarios.put(nick, col);
                 }
             }
@@ -204,11 +226,11 @@ public class DBUsuario {
             statement = conexion.prepareStatement("TRUNCATE TABLE favoritas");
             statement.executeUpdate();
             statement.close();
-            
+
             statement = conexion.prepareStatement("TRUNCATE TABLE comentarios");
             statement.executeUpdate();
             statement.close();
-            
+
             statement = conexion.prepareStatement("TRUNCATE TABLE usuario");
             statement.executeUpdate();
             statement.close();
@@ -225,11 +247,12 @@ public class DBUsuario {
         }
 
     }
-    public List<String> CargarFavoritas(String nick){
-        List<String> favoritas=new ArrayList<>();
+
+    public List<String> CargarFavoritas(String nick) {
+        List<String> favoritas = new ArrayList<>();
         try {
-           PreparedStatement statement = conexion.prepareStatement("SELECT * FROM favoritas WHERE Usuario='"+nick+"'");
-           ResultSet st = statement.executeQuery();
+            PreparedStatement statement = conexion.prepareStatement("SELECT * FROM favoritas WHERE Usuario='" + nick + "'");
+            ResultSet st = statement.executeQuery();
 
             while (st.next()) {
                 favoritas.add(st.getString("Propuesta"));
@@ -240,5 +263,24 @@ public class DBUsuario {
             return null;
         }
         return favoritas;
+    }
+
+    public boolean setNuevoEstadoProponente(String nick, boolean estado, Calendar fDesc) {
+
+        try {
+            PreparedStatement statment = conexion.prepareStatement("UPDATE usuario SET activo=?,fDesactivacion=? WHERE nickName = '" + nick + "'");
+            statment.setBoolean(1, estado);
+            Calendar cal = fDesc;
+            Date fDesact = (Date) cal.getTime();
+            java.sql.Date fDate = new java.sql.Date(fDesact.getTime());
+            statment.setDate(2, fDate);
+            statment.executeUpdate();
+            statment.close();
+
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
     }
 }

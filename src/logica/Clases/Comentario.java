@@ -10,30 +10,21 @@ package logica.Clases;
  * @author PabloDesk
  */
 public class Comentario {
-    private String TituloP;
-    private String nickColab;
+
+    private Colaborador colaborador;
     private String Texto;
-    
-    public Comentario(String TituloP, String nickColab, String Texto) {
-        this.TituloP = TituloP;
-        this.nickColab = nickColab;
+
+    public Comentario(Colaborador nickColab, String Texto) {
+        this.colaborador = nickColab;
         this.Texto = Texto;
     }
-    
-    public String getTituloP() {
-        return TituloP;
+
+    public Colaborador getColaborador() {
+        return colaborador;
     }
 
-    public void setTituloP(String TituloP) {
-        this.TituloP = TituloP;
-    }
-
-    public String getNickColab() {
-        return nickColab;
-    }
-
-    public void setNickColab(String nickColab) {
-        this.nickColab = nickColab;
+    public void setColaborador(Colaborador Colab) {
+        this.colaborador = Colab;
     }
 
     public String getTexto() {
@@ -43,7 +34,4 @@ public class Comentario {
     public void setTexto(String Texto) {
         this.Texto = Texto;
     }
-
-    
-    
 }

@@ -102,7 +102,7 @@ public class ControladorPropCat implements IPropCat {
             Map.Entry mentry = (Map.Entry) iterator.next();
             Propuesta aux = (Propuesta) mentry.getValue();
 
-            if (aux.getEstadoActual().getEstado() == TipoE.Publicada) {
+            if (aux.getEstadoActual().getEstado() == TipoE.Publicada && aux.getEstaActiva()) {
                 DtNickTitProp aux2 = new DtNickTitProp(aux);
                 retorno.add(aux2);
             }
@@ -119,6 +119,8 @@ public class ControladorPropCat implements IPropCat {
         this.uProponente = fabrica.getIControladorUsuario().ObtenerProponente(nombreP);
         if (this.uProponente == null) {
             throw new Exception("El usuario no existe en el sistema");
+        } else if (!this.uProponente.getEstaActivo()) {
+            throw new Exception("EL usuario esta desactivado");
         }
 
         this.catRecordada = this.categorias.get(tipoEsp);
@@ -186,7 +188,7 @@ public class ControladorPropCat implements IPropCat {
         } else {
             urlImagen = "Culturarte.png";
         }
-        Propuesta nuevaP = new Propuesta(tituloP, descripcion, urlImagen, lugar, fecha, montoE, montoTot, estado, this.catRecordada, retorno, this.uProponente);
+        Propuesta nuevaP = new Propuesta(tituloP, descripcion, urlImagen, lugar, fecha, montoE, montoTot, estado, this.catRecordada, retorno, this.uProponente, true);
         boolean agregada = this.dbPropuesta.agregarPropuesta(nuevaP, estado);
         if (agregada) {
             this.propuestas.put(tituloP, nuevaP);
@@ -227,25 +229,31 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public List<DtinfoPropuesta> ListarPropuestasDeProponenteX(String nick) {
+    public List<DtinfoPropuesta> ListarPropuestasDeProponenteX(String nick) throws Exception {
         this.EvaluarEstadosPropuestas();
 
-        List<DtinfoPropuesta> retorno = new ArrayList<>();
-        Set set = this.propuestas.entrySet();
-        Iterator iterator = set.iterator();
-        while (iterator.hasNext()) {
-            Map.Entry mentry = (Map.Entry) iterator.next();
-            Propuesta p = (Propuesta) mentry.getValue();
-            if (p.getAutor().getNickname().equals(nick)) {
-                DtinfoPropuesta dtP = new DtinfoPropuesta(p);
-                retorno.add(dtP);
+        Proponente prop = Fabrica.getInstance().getIControladorUsuario().ObtenerProponente(nick);
+
+        if (prop != null && prop.getEstaActivo()) {
+            List<DtinfoPropuesta> retorno = new ArrayList<>();
+            Set set = this.propuestas.entrySet();
+            Iterator iterator = set.iterator();
+            while (iterator.hasNext()) {
+                Map.Entry mentry = (Map.Entry) iterator.next();
+                Propuesta p = (Propuesta) mentry.getValue();
+                if (p.getAutor().getNickname().equals(nick)) {
+                    DtinfoPropuesta dtP = new DtinfoPropuesta(p);
+                    retorno.add(dtP);
+                }
             }
+            return retorno;
+        } else {
+            throw new Exception("El proponente no existe o fue desactivado");
         }
-        return retorno;
     }
 
     @Override
-    public List<DtNickTitProp> listarPropuestas() {//commit
+    public List<DtNickTitProp> listarPropuestas() {
         this.EvaluarEstadosPropuestas();
 
         List<DtNickTitProp> listPropuestas = new ArrayList();
@@ -255,25 +263,9 @@ public class ControladorPropCat implements IPropCat {
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mentry.getValue();
-            DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getCategoria().getNombreC());
-            listPropuestas.add(dtprop);
-        }
-        return listPropuestas;
-    }
 
-    @Override
-    public List<DtNickTitProp> listarPropuestasR() {//commit
-        this.EvaluarEstadosPropuestas();
-
-        List<DtNickTitProp> listPropuestas = new ArrayList();
-
-        Iterator it = this.propuestas.entrySet().iterator();
-
-        while (it.hasNext()) {
-            Map.Entry mentry = (Map.Entry) it.next();
-            Propuesta prop = (Propuesta) mentry.getValue();
-            if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
-                DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getAutor().getNickname());
+            if (prop.getEstaActiva()) {
+                DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getCategoria().getNombreC());
                 listPropuestas.add(dtprop);
             }
         }
@@ -281,11 +273,26 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public EstadoPropuesta verEstadoPropuesta(String titulo) {
+    public List<DtNickTitProp> listarPropuestasR() {
         this.EvaluarEstadosPropuestas();
 
-        EstadoPropuesta estActual = this.propuestas.get(titulo).getEstadoActual();
-        return estActual;
+        List<DtNickTitProp> listPropuestas = new ArrayList();
+
+        Iterator it = this.propuestas.entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Propuesta prop = (Propuesta) mentry.getValue();
+            if (prop.getEstaActiva()) {
+                if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
+                    DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getAutor().getNickname());
+                    listPropuestas.add(dtprop);
+                }
+            }
+
+            return listPropuestas;
+        }
+        return null;
     }
 
     @Override
@@ -300,27 +307,10 @@ public class ControladorPropCat implements IPropCat {
             Map.Entry mentry = (Map.Entry) iterator.next();
             Propuesta aux = (Propuesta) mentry.getValue();
             if (aux.getTituloP().compareTo(titulo) == 0) {
-
-                retorno = new DtinfoPropuesta(aux.getTituloP(), aux.getDescripcionP(), aux.getImagen(), aux.getCategoria().getNombreC(), aux.getLugar(), aux.getFecha(), aux.getMontoE(), aux.getMontoTot(), aux.getRetorno());
-                this.Propuesta = aux;
-            }
-        }
-        return retorno;
-    }
-
-    @Override
-    public DtinfoPropuesta RetornarPropuestaR(String titulo) {
-        this.EvaluarEstadosPropuestas();
-
-        Map<String, Propuesta> prop = this.propuestas;
-        Set set = prop.entrySet();
-        Iterator iterator = set.iterator();
-        DtinfoPropuesta retorno = null;
-        while (iterator.hasNext()) {
-            Map.Entry mentry = (Map.Entry) iterator.next();
-            Propuesta aux = (Propuesta) mentry.getValue();
-            if (aux.getTituloP().compareTo(titulo) == 0) {
-                retorno = new DtinfoPropuesta(aux.getTituloP(), aux.getDescripcionP(), aux.getImagen(), aux.getCategoria().getNombreC(), aux.getLugar(), aux.getFecha(), aux.getMontoE(), aux.getMontoTot(), aux.getRetorno());
+                if (aux.getEstaActiva()) {
+                    retorno = new DtinfoPropuesta(aux.getTituloP(), aux.getDescripcionP(), aux.getImagen(), aux.getCategoria().getNombreC(), aux.getLugar(), aux.getFecha(), aux.getMontoE(), aux.getMontoTot(), aux.getRetorno());
+                    this.Propuesta = aux;
+                }
             }
         }
         return retorno;
@@ -344,59 +334,62 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public DtConsultaPropuesta SeleccionarPropuesta(String titulo, String proponente) throws Exception {
         Propuesta prop = this.propuestas.get(titulo);
+
         if (prop != null) {
-            String estado;
-            estado = prop.getEstadoActual().getEstado().name();
-            float monto = this.CalcularMontoPropuesta(prop);
-            String nick = prop.getAutor().getNickname();
-            String tipoR;
+            if (prop.getEstaActiva()) {
+                String estado;
+                estado = prop.getEstadoActual().getEstado().name();
+                float monto = this.CalcularMontoPropuesta(prop);
+                String nick = prop.getAutor().getNickname();
+                String tipoR;
 
-            if (prop.getRetorno() == TipoRetorno.EntGan) {
-                tipoR = "Entradas y Porcentaje";
-            } else {
-                tipoR = prop.getRetorno().name();
+                if (prop.getRetorno() == TipoRetorno.EntGan) {
+                    tipoR = "Entradas y Porcentaje";
+                } else {
+                    tipoR = prop.getRetorno().name();
 
-            }
+                }
 
-            DtUsuario usu = null;
+                DtUsuario usu = null;
 
-            Date fecha = (Date) prop.getFecha().getTime();
-            String fechaR = new SimpleDateFormat("dd/MMM/yyyy").format(fecha);
+                Date fecha = (Date) prop.getFecha().getTime();
+                String fechaR = new SimpleDateFormat("dd/MMM/yyyy").format(fecha);
 
-            boolean cancelable = false;
-            boolean extendible = false;
-            boolean comentable = false;
-            boolean colaborable = false;
+                boolean cancelable = false;
+                boolean extendible = false;
+                boolean comentable = false;
+                boolean colaborable = false;
 
-            if (proponente != null) {
-                usu = (DtUsuario) Fabrica.getInstance().getIControladorUsuario().ObtenerDTUsuario(proponente);
+                if (proponente != null) {
+                    usu = (DtUsuario) Fabrica.getInstance().getIControladorUsuario().ObtenerDTUsuario(proponente);
 
-                if (prop.getAutor().getNickname().equals(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
-                    cancelable = true;
-                } else if (prop.getAutor().getNickname().equals(proponente)) {
-                    if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
-                        extendible = true;
-                    }
-                } else if (prop.EsColaborador(usu.getNickName()) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
-                    comentable = this.Comentable(prop, proponente);
-                } else if (usu != null) {
-                    if (!usu.Esproponente() && !prop.EsColaborador(usu.getNickName())) {
+                    if (prop.getAutor().getNickname().equals(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
+                        cancelable = true;
+                    } else if (prop.getAutor().getNickname().equals(proponente)) {
                         if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
-                            colaborable = true;
+                            extendible = true;
+                        }
+                    } else if (prop.EsColaborador(usu.getNickName()) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
+                        comentable = this.Comentable(prop, proponente);
+                    } else if (usu != null) {
+                        if (!usu.Esproponente() && !prop.EsColaborador(usu.getNickName())) {
+                            if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
+                                colaborable = true;
+                            }
                         }
                     }
                 }
-            }
-            
-            return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable, colaborable);
 
+                return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable, colaborable);
+            }
         } else {
             throw new Exception("La propuesta ingresada no esta en el sistema");
         }
+        return null;
     }
 
     @Override
-    
+
     public Map<String, Propuesta> getPropuestas() {
         return this.propuestas;
     }
@@ -405,22 +398,14 @@ public class ControladorPropCat implements IPropCat {
     public List<DtinfoPropuesta> DarPropuestasCol(Colaborador c) {
         this.EvaluarEstadosPropuestas();
 
-        List<DtinfoPropuesta> resultado = new ArrayList<DtinfoPropuesta>();
+        List<DtinfoPropuesta> resultado = new ArrayList<>();
         Iterator it = c.getColaboraciones().iterator();
         while (it.hasNext()) {
             Colaboracion col = (Colaboracion) it.next();
-            Set set = this.propuestas.entrySet();
-            Iterator it2 = set.iterator();
-            while (it2.hasNext()) {
-                Map.Entry mentry2 = (Map.Entry) it2.next();
-                Propuesta prop = (Propuesta) mentry2.getValue();
-                if (prop.getTituloP().equals(col.getTituloP())) {
-                    DtinfoPropuesta dtp = new DtinfoPropuesta(prop);
-                    resultado.add(dtp);
-                    break;
-                }
+            if (col.getPropuesta().getEstaActiva()) {
+                DtinfoPropuesta dtip = new DtinfoPropuesta(col.getPropuesta());
+                resultado.add(dtip);
             }
-
         }
         return resultado;
     }
@@ -452,6 +437,10 @@ public class ControladorPropCat implements IPropCat {
         IControladorUsuario ICU = Fabrica.getInstance().getIControladorUsuario();
         Calendar calendario = new GregorianCalendar();
         DBColaboracion DBC = new DBColaboracion();
+
+        if (!this.getPropuesta().getEstaActiva()) {
+            throw new Exception("La propuesta pertenece a un usuario desactivado");
+        }
 
         List<Colaboracion> colaboraciones = this.getPropuesta().getColaboraciones();
         List<Colaboracion> colaboracionesC = ICU.getColaborador().getColaboraciones();
@@ -494,6 +483,7 @@ public class ControladorPropCat implements IPropCat {
             }
 
             DBC.agregarColaboracion(Entrada, monto);
+            this.Propuesta = null;
             return true;
         } else {
             throw new Exception("El monto que ingreso ha superado el limite del monto total, ingrese un monto menor o igual a: $" + (this.getPropuesta().getMontoTot() - TotalColaboracion));
@@ -506,7 +496,8 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public List<DtinfoColaborador> ListarColaboradores(String titulo) {
+    public List<DtinfoColaborador> ListarColaboradores(String titulo
+    ) {
         List<DtinfoColaborador> retorno = new ArrayList<>();
         Propuesta a = this.propuestas.get(titulo);
         List<Colaboracion> colaboraciones = a.getColaboraciones();
@@ -521,12 +512,16 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public boolean crearPropuestaDatosdePrueba(String tituloP, String descripcion, Categoria cat, Calendar fecha, String lugar, float montoE, float montoTot, TipoRetorno retorno, Proponente p, String imagen) {
+    public boolean crearPropuestaDatosdePrueba(String tituloP, String descripcion,
+            Categoria cat, Calendar fecha,
+            String lugar, float montoE, float montoTot, TipoRetorno retorno,
+            Proponente p, String imagen
+    ) {
         if (this.getPropuestas().get(tituloP) != null) {
             return false;
         }
         Propuesta nuevaP;
-        nuevaP = new Propuesta(tituloP, descripcion, imagen, lugar, fecha, montoE, montoTot, null, cat, retorno, p);
+        nuevaP = new Propuesta(tituloP, descripcion, imagen, lugar, fecha, montoE, montoTot, null, cat, retorno, p, true);
         this.propuestas.put(tituloP, nuevaP);
         String ruta = new configuraciones().getCarpetaImagenes();
         String url = ruta + "\\fotosdp\\" + imagen;
@@ -545,12 +540,14 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public Categoria ObtenerCategoria(String nomCat) {
+    public Categoria ObtenerCategoria(String nomCat
+    ) {
         return (Categoria) this.categorias.get(nomCat);
     }
 
     @Override
-    public boolean crearCategoriaDatosdePrueba(String nomCat, String nomPadre) {
+    public boolean crearCategoriaDatosdePrueba(String nomCat, String nomPadre
+    ) {
 
         boolean agregada = this.dbPropuesta.agregarCategoria(nomCat, nomPadre);
 
@@ -568,7 +565,10 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public boolean agregarColaboracionDatosdePrueba(String TituloP, String nickName, float monto, Calendar fechaRealiz, boolean Entrada) {
+    public boolean agregarColaboracionDatosdePrueba(String TituloP, String nickName,
+            float monto, Calendar fechaRealiz,
+            boolean Entrada
+    ) {
         Fabrica fabrica = Fabrica.getInstance();
         IControladorUsuario ICU = fabrica.getIControladorUsuario();
         IPropCat IPC = fabrica.getControladorPropCat();
@@ -589,7 +589,9 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public boolean nuevoEstadoPropuestaDatosdePrueba(String TituloP, TipoE estado, Calendar fecha) {
+    public boolean nuevoEstadoPropuestaDatosdePrueba(String TituloP, TipoE estado,
+            Calendar fecha
+    ) {
 
         EstadoPropuesta estadop = new EstadoPropuesta(estado, fecha, false);
         Propuesta p = (Propuesta) this.propuestas.get(TituloP);
@@ -694,58 +696,68 @@ public class ControladorPropCat implements IPropCat {
 
     @Override
     public List<DtColaboraciones> listarColaboraciones(String titulo) throws Exception {
-        List<DtColaboraciones> retorno = new ArrayList<DtColaboraciones>();
+        List<DtColaboraciones> retorno = new ArrayList<>();
         Propuesta prop = this.propuestas.get(titulo);
-        List<Colaboracion> colaboraciones = prop.getColaboraciones();
-        Iterator it = colaboraciones.iterator();
-        while (it.hasNext()) {
-            Colaboracion col = (Colaboracion) it.next();
-            DtColaboraciones dtcol = new DtColaboraciones(col);
-            retorno.add(dtcol);
-        }
-        if (retorno.size() < 1) {
-            throw new Exception("No existen colaboraciones en la propuesta " + titulo);
+        if (prop.getEstaActiva()) {
+            List<Colaboracion> colaboraciones = prop.getColaboraciones();
+            Iterator it = colaboraciones.iterator();
+            while (it.hasNext()) {
+                Colaboracion col = (Colaboracion) it.next();
+                DtColaboraciones dtcol = new DtColaboraciones(col);
+                retorno.add(dtcol);
+            }
+            if (retorno.size() < 1) {
+                throw new Exception("No existen colaboraciones en la propuesta " + titulo);
+            } else {
+                return retorno;
+            }
         } else {
-            return retorno;
+            throw new Exception("La propuesta Seleccionada pertenece a un usuario desactivado");
         }
     }
 
     @Override
-    public boolean eliminarColaboracion(String titulo, String nick) {
-        boolean ok = false;
+    public boolean eliminarColaboracion(String titulo, String nick) throws Exception {
+        boolean ok;
         Propuesta a = this.propuestas.get(titulo);
-        List<Colaboracion> col = a.getColaboraciones();
-        for (int i = 0; i < a.getColaboraciones().size(); i++) {
-            Colaboracion c = col.get(i);
-            if (col.get(i).getNickName().equals(nick)) {
-                ok = c.borrarme();
+        if (a.getEstaActiva()) {
+            List<Colaboracion> col = a.getColaboraciones();
+            for (int i = 0; i < a.getColaboraciones().size(); i++) {
+                Colaboracion c = col.get(i);
+                if (col.get(i).getNickName().equals(nick)) {
+                    ok = c.borrarme();
+                }
             }
-        }
-        try {
-            ok = this.dbColaboracion.eliminarColaboracion(titulo, nick);
-            if (ok) {
+            try {
+                ok = this.dbColaboracion.eliminarColaboracion(titulo, nick);
+                return ok;
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorPropCat.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(ControladorPropCat.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            throw new Exception("La propuesta pertenece a un usuario actualmente desactivado");
         }
-        return ok;
+        return false;
     }
 
     @Override
-    public List<DtConsultaPropuesta2> ListaColaboradoresProp(String titulo) {
+    public List<DtConsultaPropuesta2> ListaColaboradoresProp(String titulo) throws Exception {
         List<DtConsultaPropuesta2> listColab = new ArrayList<>();
 
         Propuesta prop = this.getPropuestas().get(titulo);
+        if (prop.getEstaActiva()) {
+            Iterator it = prop.getColaboraciones().iterator();
 
-        Iterator it = prop.getColaboraciones().iterator();
-
-        while (it.hasNext()) {
-            Colaboracion colab = (Colaboracion) it.next();
-            Date fecha = (Date) colab.getFechaRealiz().getTime();
-            String fechaR = new SimpleDateFormat("dd/MMM/yyyy").format(fecha);
-            listColab.add(new DtConsultaPropuesta2(colab.getNickName(), colab.getColaborador().getNombre(), colab.getColaborador().getNombre(), colab.getMontoC(), fechaR));
+            while (it.hasNext()) {
+                Colaboracion colab = (Colaboracion) it.next();
+                Date fecha = (Date) colab.getFechaRealiz().getTime();
+                String fechaR = new SimpleDateFormat("dd/MMM/yyyy").format(fecha);
+                listColab.add(new DtConsultaPropuesta2(colab.getNickName(), colab.getColaborador().getNombre(), colab.getColaborador().getNombre(), colab.getMontoC(), fechaR));
+            }
+            return listColab;
+        } else {
+            throw new Exception("El autor actualmente desactivo su cuenta");
         }
-        return listColab;
     }
 
     @Override
@@ -796,11 +808,10 @@ public class ControladorPropCat implements IPropCat {
             Propuesta prop = (Propuesta) mtry.getValue();
 
             if (prop.getEstadoActual().getEstado() == TipoE.Ingresada) {
-
-                DtNickTitProp dtProp = new DtNickTitProp(prop.getTituloP(), prop.getAutor().getNickname());
-
-                listProp.add(dtProp);
-
+                if (prop.getEstaActiva()) {
+                    DtNickTitProp dtProp = new DtNickTitProp(prop.getTituloP(), prop.getAutor().getNickname());
+                    listProp.add(dtProp);
+                }
             }
         }
         return listProp;
@@ -907,10 +918,12 @@ public class ControladorPropCat implements IPropCat {
         while (iterator.hasNext()) {
             Map.Entry mentry = (Map.Entry) iterator.next();
             Propuesta p = (Propuesta) mentry.getValue();
-            if (p.getAutor().getNickname().equals(nick)) {
-                if (p.getEstadoActual().getEstado() != TipoE.Ingresada) {
-                    DtinfoPropuesta dtP = new DtinfoPropuesta(p);
-                    retorno.add(dtP);
+            if (p.getEstaActiva()) {
+                if (p.getAutor().getNickname().equals(nick)) {
+                    if (p.getEstadoActual().getEstado() != TipoE.Ingresada) {
+                        DtinfoPropuesta dtP = new DtinfoPropuesta(p);
+                        retorno.add(dtP);
+                    }
                 }
             }
         }
@@ -927,23 +940,7 @@ public class ControladorPropCat implements IPropCat {
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta p = (Propuesta) mentry.getValue();
-            DtinfoPropuesta dtp = new DtinfoPropuesta(p);
-            propuestas.add(dtp);
-        }
-        return propuestas;
-    }
-
-    @Override
-    public List<DtinfoPropuesta> ListarPropuestaNOI() {
-        this.EvaluarEstadosPropuestas();
-
-        List<DtinfoPropuesta> propuestas = new ArrayList<>();
-        Set set = this.propuestas.entrySet();
-        Iterator it = set.iterator();
-        while (it.hasNext()) {
-            Map.Entry mentry = (Map.Entry) it.next();
-            Propuesta p = (Propuesta) mentry.getValue();
-            if (p.getEstadoActual().getEstado() != TipoE.Ingresada) {
+            if (p.getEstaActiva()) {
                 DtinfoPropuesta dtp = new DtinfoPropuesta(p);
                 propuestas.add(dtp);
             }
@@ -979,28 +976,29 @@ public class ControladorPropCat implements IPropCat {
         while (it.hasNext()) {
             Map.Entry mtry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mtry.getValue();
+            if (prop.getEstaActiva()) {
+                if (prop.getEstadoActual().getEstado() == estado) {
 
-            if (prop.getEstadoActual().getEstado() == estado) {
+                    Calendar fechaPub = prop.getFechaPublicacion();
+                    int dias = 0;
 
-                Calendar fechaPub = prop.getFechaPublicacion();
-                int dias = 0;
+                    if (fechaPub != null) {
+                        Date fPubFin = this.FechaCambioEstado(fechaPub.getTime());
 
-                if (fechaPub != null) {
-                    Date fPubFin = this.FechaCambioEstado(fechaPub.getTime());
+                        Date fechaActual = new GregorianCalendar().getTime();
+                        dias = (int) ((fPubFin.getTime() - fechaActual.getTime()) / 86400000);
+                    }
 
-                    Date fechaActual = new GregorianCalendar().getTime();
-                    dias = (int) ((fPubFin.getTime() - fechaActual.getTime()) / 86400000);
+                    int porcentaje = (int) ((this.CalcularMontoPropuesta(prop) * 100) / prop.getMontoTot());
+                    DtPropuestaWeb dtpropW;
+
+                    if (prop.getEstadoActual().getEstado() == TipoE.Cancelada || prop.getEstadoActual().getEstado() == TipoE.Financiada || prop.getEstadoActual().getEstado() == TipoE.noFinanciada) {
+                        dtpropW = new DtPropuestaWeb(prop.getTituloP(), prop.getDescripcionP(), 0, this.CalcularMontoPropuesta(prop), porcentaje, prop.getColaboraciones().size());
+                    } else {
+                        dtpropW = new DtPropuestaWeb(prop.getTituloP(), prop.getDescripcionP(), dias, this.CalcularMontoPropuesta(prop), porcentaje, prop.getColaboraciones().size());
+                    }
+                    listProp.add(dtpropW);
                 }
-
-                int porcentaje = (int) ((this.CalcularMontoPropuesta(prop) * 100) / prop.getMontoTot());
-                DtPropuestaWeb dtpropW;
-
-                if (prop.getEstadoActual().getEstado() == TipoE.Cancelada || prop.getEstadoActual().getEstado() == TipoE.Financiada || prop.getEstadoActual().getEstado() == TipoE.noFinanciada) {
-                    dtpropW = new DtPropuestaWeb(prop.getTituloP(), prop.getDescripcionP(), 0, this.CalcularMontoPropuesta(prop), porcentaje, prop.getColaboraciones().size());
-                } else {
-                    dtpropW = new DtPropuestaWeb(prop.getTituloP(), prop.getDescripcionP(), dias, this.CalcularMontoPropuesta(prop), porcentaje, prop.getColaboraciones().size());
-                }
-                listProp.add(dtpropW);
             }
         }
         return listProp;
@@ -1015,9 +1013,11 @@ public class ControladorPropCat implements IPropCat {
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta p = (Propuesta) mentry.getValue();
-            if (p.getCategoria().getNombreC().equals(nombrecat)) {
-                DtinfoPropuesta dtp = new DtinfoPropuesta(p);
-                propuestas.add(dtp);
+            if (p.getEstaActiva()) {
+                if (p.getCategoria().getNombreC().equals(nombrecat)) {
+                    DtinfoPropuesta dtp = new DtinfoPropuesta(p);
+                    propuestas.add(dtp);
+                }
             }
         }
         return propuestas;
@@ -1033,9 +1033,11 @@ public class ControladorPropCat implements IPropCat {
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mentry.getValue();
-            if (prop.getEstadoActual().getEstado() == TipoE.Financiada) {
-                DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getAutor().getNickname());
-                listPropuestas.add(dtprop);
+            if (prop.getEstaActiva()) {
+                if (prop.getEstadoActual().getEstado() == TipoE.Financiada) {
+                    DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getAutor().getNickname());
+                    listPropuestas.add(dtprop);
+                }
             }
         }
         return listPropuestas;
@@ -1044,7 +1046,9 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public void ComentarPropuesta(String TituloP, String nickColab, String texto) throws Exception {
         Propuesta p = this.propuestas.get(TituloP);
-        Comentario c = new Comentario(TituloP, nickColab, texto);
+        Colaborador colab = Fabrica.getInstance().getIControladorUsuario().ObtenerColaborador(nickColab);
+
+        Comentario c = new Comentario(colab, texto);
 
         boolean colaboroenProp = false;
 
@@ -1052,7 +1056,7 @@ public class ControladorPropCat implements IPropCat {
         Iterator it = comentariosProp.iterator();
         while (it.hasNext()) {
             Comentario comen = (Comentario) it.next();
-            if (comen.getNickColab().compareTo(nickColab) == 0) {
+            if (comen.getColaborador().getNickname().compareTo(nickColab) == 0) {
                 throw new Exception("Solo puede comentar una unica vez la propuesta");
             }
 
@@ -1061,8 +1065,8 @@ public class ControladorPropCat implements IPropCat {
         List<Colaboracion> colaboracionesProp = p.getColaboraciones();
         Iterator it1 = colaboracionesProp.iterator();
         while (it1.hasNext()) {
-            Colaboracion colab = (Colaboracion) it1.next();
-            if (colab.getColaborador().getNickname().compareTo(nickColab) == 0) {
+            Colaboracion col = (Colaboracion) it1.next();
+            if (col.getColaborador().getNickname().compareTo(nickColab) == 0) {
                 colaboroenProp = true;
             }
         }
@@ -1085,10 +1089,12 @@ public class ControladorPropCat implements IPropCat {
         while (iterator.hasNext()) {
             Map.Entry mentry = (Map.Entry) iterator.next();
             Propuesta p = (Propuesta) mentry.getValue();
-            if (p.getAutor().getNickname().equals(nick)) {
-                if (p.getEstadoActual().getEstado() == TipoE.Publicada || p.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
-                    DtNickTitProp dtP = new DtNickTitProp(p.getTituloP(), p.getAutor().getNickname());
-                    retorno.add(dtP);
+            if (p.getEstaActiva()) {
+                if (p.getAutor().getNickname().equals(nick)) {
+                    if (p.getEstadoActual().getEstado() == TipoE.Publicada || p.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
+                        DtNickTitProp dtP = new DtNickTitProp(p.getTituloP(), p.getAutor().getNickname());
+                        retorno.add(dtP);
+                    }
                 }
             }
         }
@@ -1102,13 +1108,15 @@ public class ControladorPropCat implements IPropCat {
         while (it.hasNext()) {
             Map.Entry mtry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mtry.getValue();
-            if (prop.getTituloP().compareTo(Titulo) == 0) {
-                EstadoPropuesta EP = prop.getEstadoPublicado();
-                Calendar calendario = new GregorianCalendar();
-                
-                EP.setfechaInicio(calendario);
-                this.dbPropuesta.ModificarEstadoPublicadaPropuesta(prop.getTituloP(), calendario);
-                return true;
+            if (prop.getEstaActiva()) {
+                if (prop.getTituloP().compareTo(Titulo) == 0) {
+                    EstadoPropuesta EP = prop.getEstadoPublicado();
+                    Calendar calendario = new GregorianCalendar();
+
+                    EP.setfechaInicio(calendario);
+                    this.dbPropuesta.ModificarEstadoPublicadaPropuesta(prop.getTituloP(), calendario);
+                    return true;
+                }
             }
         }
         return false;
@@ -1118,7 +1126,7 @@ public class ControladorPropCat implements IPropCat {
         Iterator it = prop.getComentarios().iterator();
         while (it.hasNext()) {
             Comentario com = (Comentario) it.next();
-            if (com.getNickColab().equals(nick)) {
+            if (com.getColaborador().getNickname().equals(nick)) {
                 return false;
             }
         }
@@ -1138,20 +1146,25 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public boolean CancelarPropuesta(String titulo, String nick) {
+    public boolean CancelarPropuesta(String titulo, String nick) throws Exception {
 
         Propuesta prop = this.propuestas.get(titulo);
 
+        Proponente autor = Fabrica.getInstance().getIControladorUsuario().ObtenerProponente(nick);
         if (prop != null && prop.getAutor().getNickname().equals(nick)) {
-            EstadoPropuesta estAnterior = prop.getEstadoActual();
-            estAnterior.setEsActual(false);
-            prop.setEstados(estAnterior);
+            if (prop.getEstaActiva() && autor.getEstaActivo()) {
+                EstadoPropuesta estAnterior = prop.getEstadoActual();
+                estAnterior.setEsActual(false);
+                prop.setEstados(estAnterior);
 
-            EstadoPropuesta nuevoEstado = new EstadoPropuesta(TipoE.Cancelada, new GregorianCalendar(), true);
+                EstadoPropuesta nuevoEstado = new EstadoPropuesta(TipoE.Cancelada, new GregorianCalendar(), true);
 
-            prop.setEstadoActual(nuevoEstado);
+                prop.setEstadoActual(nuevoEstado);
 
-            return this.dbPropuesta.EvaluarPropuestaBD(nuevoEstado, estAnterior, titulo);
+                return this.dbPropuesta.EvaluarPropuestaBD(nuevoEstado, estAnterior, titulo);
+            } else {
+                throw new Exception("El Autor de esta propuesta desactivo su perfil");
+            }
         }
         return false;
     }
@@ -1163,9 +1176,11 @@ public class ControladorPropCat implements IPropCat {
         while (it.hasNext()) {
             Map.Entry mtry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mtry.getValue();
-            if (prop.getEstadoActual().getEstado() == TipoE.Financiada && prop.getAutor().getNickname().equals(proponente)) {
-                DtNickTitProp dtProp = new DtNickTitProp(prop.getTituloP(), prop.getCategoria().getNombreC());
-                listProp.add(dtProp);
+            if (prop.getEstaActiva()) {
+                if (prop.getEstadoActual().getEstado() == TipoE.Financiada && prop.getAutor().getNickname().equals(proponente)) {
+                    DtNickTitProp dtProp = new DtNickTitProp(prop.getTituloP(), prop.getCategoria().getNombreC());
+                    listProp.add(dtProp);
+                }
             }
         }
         return listProp;
@@ -1182,10 +1197,17 @@ public class ControladorPropCat implements IPropCat {
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mentry.getValue();
-            DTListaPropuestasR dtprop = new DTListaPropuestasR(prop.getTituloP(), prop.getAutor().getNickname(), prop.getEstadoActual().getEstado());
-            listPropuestas.add(dtprop);
-
+            if (prop.getEstaActiva()) {
+                DTListaPropuestasR dtprop = new DTListaPropuestasR(prop.getTituloP(), prop.getAutor().getNickname(), prop.getEstadoActual().getEstado());
+                listPropuestas.add(dtprop);
+            }
         }
         return listPropuestas;
     }
+
+    @Override
+    public void DesactivarPropuesta(Propuesta prop) {
+        this.dbPropuesta.DesactivarPropuesta(prop.getTituloP());
+    }
+
 }

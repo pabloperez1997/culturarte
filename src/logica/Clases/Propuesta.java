@@ -33,8 +33,9 @@ public class Propuesta {
     private List<Colaboracion> Colaboraciones;
     private Categoria categoria;
     private List<Comentario> Comentarios;
+    private boolean activa;
 
-    public Propuesta(String tituloP, String descripcion, String imagen, String lugar, Calendar fecha, float montoE, float montoTot, EstadoPropuesta estado, Categoria cate, TipoRetorno retorno, Proponente autor) {
+    public Propuesta(String tituloP, String descripcion, String imagen, String lugar, Calendar fecha, float montoE, float montoTot, EstadoPropuesta estado, Categoria cate, TipoRetorno retorno, Proponente autor, boolean activo) {
         this.TituloP = tituloP;
         this.descripcionP = descripcion;
         this.imagen = imagen;
@@ -49,6 +50,7 @@ public class Propuesta {
         this.Colaboraciones = new ArrayList<>();
         this.historialEstados = new ArrayList<>();
         this.Comentarios = new ArrayList<>();
+        this.activa = activo;
     }
 
     public List<Comentario> getComentarios() {
@@ -218,5 +220,13 @@ public class Propuesta {
             }
         }
         return false;
+    }
+
+    public boolean getEstaActiva() {
+        return this.activa;
+    }
+
+    public void setEstaActiva(boolean valor) {
+        this.activa = valor;
     }
 }

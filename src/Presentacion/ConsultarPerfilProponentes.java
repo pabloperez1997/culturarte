@@ -399,16 +399,21 @@ public class ConsultarPerfilProponentes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        ListaDePropuestasDeProponente a = new ListaDePropuestasDeProponente(this.proponenteSeleccionado, "Lista de propuestas de " + this.proponenteSeleccionado);
-        inicio.Escritorio.add(a);
-        int cantidad = ICP.ListarPropuestasDeProponenteX(this.proponenteSeleccionado).size();
-        if (cantidad == 0) {
-            JOptionPane.showMessageDialog(null, "Este usuario no contiene propuestas", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
+        try {
+            ListaDePropuestasDeProponente a = new ListaDePropuestasDeProponente(this.proponenteSeleccionado, "Lista de propuestas de " + this.proponenteSeleccionado);
+            inicio.Escritorio.add(a);
+
+            int cantidad = ICP.ListarPropuestasDeProponenteX(this.proponenteSeleccionado).size();
+            if (cantidad == 0) {
+                JOptionPane.showMessageDialog(null, "Este usuario no contiene propuestas", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            this.setVisible(false);
+            a.toFront();
+            a.setVisible(true);
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(null, e.getMessage());
         }
-        this.setVisible(false);
-        a.toFront();
-        a.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

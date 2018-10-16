@@ -23,6 +23,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import static java.nio.file.StandardOpenOption.CREATE;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -125,8 +126,10 @@ public class ControladorUsuario implements IControladorUsuario {
 
             if (mentry.getValue() instanceof Proponente) {
                 Proponente aux = (Proponente) mentry.getValue();
-                DtUsuario usu = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
-                listProp.add(usu);
+                if (aux.getEstaActivo()) {
+                    DtUsuario usu = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
+                    listProp.add(usu);
+                }
             }
         }
 
@@ -176,7 +179,7 @@ public class ControladorUsuario implements IControladorUsuario {
                     Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-                 this.Usuarios.put(nickName, c);
+            this.Usuarios.put(nickName, c);
             boolean res = this.dbUsuario.agregarColaborador(c);
             return res;
         }
@@ -191,7 +194,7 @@ public class ControladorUsuario implements IControladorUsuario {
             throw new IllegalStateException("La carpeta de imagenes no fue configurada");
         }
         final File fileImagenes = new File(this.carpetaImagenesPerfiles);
-        
+
         String pathStr = this.carpetaImagenesPerfiles + File.separatorChar + correo;
         final File dirUsuario = new File(pathStr);
         if (!dirUsuario.isDirectory()) {
@@ -205,13 +208,14 @@ public class ControladorUsuario implements IControladorUsuario {
     @Override
     public boolean AgregarUsuarioProponente(String nickName, String nombre, String apellido, String correo, Calendar fechaN, DataImagen imagen, String direccion, String biografia, String sitioWeb, String password) {
         Proponente c = null;
+
         if (this.Usuarios.get(nickName) != null) {
             return false;
         } else {
             if (imagen == null) {
-                c = new Proponente(biografia, direccion, sitioWeb, nickName, nombre, apellido, correo, fechaN, "nadie.png", password);
+                c = new Proponente(biografia, direccion, sitioWeb, nickName, nombre, apellido, correo, fechaN, "nadie.png", password, true, null);
             } else {
-                c = new Proponente(biografia, direccion, sitioWeb, nickName, nombre, apellido, correo, fechaN, imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo(), password);
+                c = new Proponente(biografia, direccion, sitioWeb, nickName, nombre, apellido, correo, fechaN, imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo(), password, true, null);
                 try {
                     grabarFoto(correo, imagen);
                 } catch (IOException ex) {
@@ -270,8 +274,10 @@ public class ControladorUsuario implements IControladorUsuario {
             Map.Entry mentry = (Map.Entry) iterator.next();
             if (mentry.getValue() instanceof Proponente) {
                 Proponente aux = (Proponente) mentry.getValue();
-                DtProponente aux2 = new DtProponente(aux.getBiografia(), aux.getDireccion(), aux.getSitioweb(), aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
-                retorno.add(aux2);
+                if (aux.getEstaActivo()) {
+                    DtProponente aux2 = new DtProponente(aux.getBiografia(), aux.getDireccion(), aux.getSitioweb(), aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
+                    retorno.add(aux2);
+                }
             }
         }
         return retorno;
@@ -327,6 +333,7 @@ public class ControladorUsuario implements IControladorUsuario {
             if (mentry.getValue() instanceof Colaborador) {
                 Colaborador c2 = (Colaborador) mentry.getValue();
                 if (c2.getNickname().equals(nick)) {
+
                     dtpropuestas = this.IPC.DarPropuestasCol(c2);
                     break;
                 }
@@ -400,6 +407,25 @@ public class ControladorUsuario implements IControladorUsuario {
         return this.Colaborador;
     }
 
+    @Override
+    public DtinfoColaborador getDtColaborador(String nick) {
+        DtinfoColaborador dtc = null;
+        Set set = Usuarios.entrySet();
+        Iterator iterator = set.iterator();
+        ArrayList<DtinfoColaborador> retorno = new ArrayList();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            if (mentry.getValue() instanceof Colaborador) {
+                Colaborador c = (Colaborador) mentry.getValue();
+                if (c.getNickname().equals(nick)) {
+                    dtc = new DtinfoColaborador(c);
+                    break;
+                }
+            }
+        }
+        return dtc;
+    }
+
     public void setColaborador(Colaborador colaborador) {
         this.Colaborador = colaborador;
     }
@@ -418,7 +444,9 @@ public class ControladorUsuario implements IControladorUsuario {
                 if ((((Usuario) mentry.getValue()).getNickname().compareTo(nickName) == 0)) {
                     List<Colaboracion> col = ((Colaborador) mentry.getValue()).getColaboraciones();
                     for (int i = 0; i < col.size(); i++) {
-                        retorno.add(new DtColaboraciones(col.get(i).getNickName(), col.get(i).getMontoC(), col.get(i).getFechaRealiz(), col.get(i).getEntradas(), col.get(i).getTituloP()));
+                        if (col.get(i).getPropuesta().getEstaActiva()) {
+                            retorno.add(new DtColaboraciones(col.get(i).getNickName(), col.get(i).getMontoC(), col.get(i).getFechaRealiz(), col.get(i).getEntradas(), col.get(i).getTituloP()));
+                        }
                     }
                     return retorno;
                 }
@@ -471,7 +499,7 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
     @Override
-    public ArrayList<DtUsuario> ListarUsuarios() {    
+    public ArrayList<DtUsuario> ListarUsuarios() {
         Set set = Usuarios.entrySet();
         Iterator iterator = set.iterator();
         ArrayList<DtUsuario> retorno = new ArrayList();
@@ -483,8 +511,11 @@ public class ControladorUsuario implements IControladorUsuario {
                     DtUsuario aux2 = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
                     retorno.add(aux2);
                 } else {
-                    DtUsuario aux2 = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
-                    retorno.add(aux2);
+                    Proponente prop = (Proponente) aux;
+                    if (prop.getEstaActivo()) {
+                        DtUsuario aux2 = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
+                        retorno.add(aux2);
+                    }
                 }
 
             }
@@ -634,7 +665,7 @@ public class ControladorUsuario implements IControladorUsuario {
         if (this.Usuarios.get(nickName) != null) {
             return false;
         } else {
-            Proponente c = new Proponente(biografia, direccion, sitioWeb, nickName, nombre, apellido, correo, fechaN, imagen, password);
+            Proponente c = new Proponente(biografia, direccion, sitioWeb, nickName, nombre, apellido, correo, fechaN, imagen, password, true, null);
             String fotoLocal = c.getImagen();
             if (!"".equals(c.getImagen())) {
                 File fLocal = new File(fotoLocal);
@@ -693,7 +724,10 @@ public class ControladorUsuario implements IControladorUsuario {
             Usuario usu = (Usuario) mtry.getValue();
 
             if (usu instanceof Proponente) {
-                listU.add(new DtSeguidor(usu.getNickname(), usu.getNombre(), usu.getApellido(), "Proponente"));
+                Proponente prop = (Proponente) usu;
+                if (prop.getEstaActivo()) {
+                    listU.add(new DtSeguidor(usu.getNickname(), usu.getNombre(), usu.getApellido(), "Proponente"));
+                }
             } else {
                 listU.add(new DtSeguidor(usu.getNickname(), usu.getNombre(), usu.getApellido(), "Colaborador"));
             }
@@ -714,7 +748,10 @@ public class ControladorUsuario implements IControladorUsuario {
             Usuario usu = (Usuario) mtry.getValue();
 
             if (usu instanceof Proponente) {
-                listU.add(new DtSeguidor(usu.getNickname(), usu.getNombre(), usu.getApellido(), "Proponente"));
+                Proponente prop = (Proponente) usu;
+                if (prop.getEstaActivo()) {
+                    listU.add(new DtSeguidor(usu.getNickname(), usu.getNombre(), usu.getApellido(), "Proponente"));
+                }
             } else {
                 listU.add(new DtSeguidor(usu.getNickname(), usu.getNombre(), usu.getApellido(), "Colaborador"));
             }
@@ -730,11 +767,14 @@ public class ControladorUsuario implements IControladorUsuario {
         Usuario usu = this.Usuarios.get(nick);
 
         if (usu instanceof Proponente) {
-            return new DtNickTitProp(usu.getNombre(), usu.getApellido());
+            Proponente prop = (Proponente) usu;
+            if (prop.getEstaActivo()) {
+                return new DtNickTitProp(usu.getNombre(), usu.getApellido());
+            }
         } else {
             throw new Exception("El usuario no es un proponente");
         }
-
+        return null;
     }
 
     @Override
@@ -753,8 +793,12 @@ public class ControladorUsuario implements IControladorUsuario {
                     if (aux instanceof Colaborador) {
                         dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
                     } else {
-                        Proponente p=(Proponente) aux;
-                        dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true,p.getBiografia(),p.getsitioweb(),p.getDireccion());
+                        Proponente p = (Proponente) aux;
+                        if (p.getEstaActivo()) {
+                            dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true, p.getBiografia(), p.getsitioweb(), p.getDireccion());
+                        } else {
+                            return null;
+                        }
                     }
                     break;
                 }
@@ -786,8 +830,11 @@ public class ControladorUsuario implements IControladorUsuario {
                         DtUsuario dtu = new DtUsuario(aux2.getNickname(), aux2.getNombre(), aux2.getApellido(), aux2.getCorreo(), aux2.getFechaN(), aux2.getImagen(), aux2.getPassword(), false);
                         seguidores.add(dtu);
                     } else {
-                        DtUsuario dtu = new DtUsuario(aux2.getNickname(), aux2.getNombre(), aux2.getApellido(), aux2.getCorreo(), aux2.getFechaN(), aux2.getImagen(), aux2.getPassword(), true);
-                        seguidores.add(dtu);
+                        Proponente prop = (Proponente) aux2;
+                        if (prop.getEstaActivo()) {
+                            DtUsuario dtu = new DtUsuario(aux2.getNickname(), aux2.getNombre(), aux2.getApellido(), aux2.getCorreo(), aux2.getFechaN(), aux2.getImagen(), aux2.getPassword(), true);
+                            seguidores.add(dtu);
+                        }
                     }
                 }
             }
@@ -816,8 +863,11 @@ public class ControladorUsuario implements IControladorUsuario {
                         DtUsuario dtu = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
                         seguidores.add(dtu);
                     } else {
-                        DtUsuario dtu = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
-                        seguidores.add(dtu);
+                        Proponente prop = (Proponente) aux;
+                        if (prop.getEstaActivo()) {
+                            DtUsuario dtu = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
+                            seguidores.add(dtu);
+                        }
                     }
                 }
             }
@@ -842,9 +892,11 @@ public class ControladorUsuario implements IControladorUsuario {
                 while (it2.hasNext()) {
                     Map.Entry mentry2 = (Map.Entry) it2.next();
                     Propuesta p = (Propuesta) mentry2.getValue();
-                    //la transformo a dt y la agrego al resultado
-                    DtinfoPropuesta dtp = new DtinfoPropuesta(p);
-                    favoritas.add(dtp);
+                    if (p.getEstaActiva()) {
+                        //la transformo a dt y la agrego al resultado
+                        DtinfoPropuesta dtp = new DtinfoPropuesta(p);
+                        favoritas.add(dtp);
+                    }
                 }
             }
         }
@@ -861,7 +913,7 @@ public class ControladorUsuario implements IControladorUsuario {
             Usuario aux = (Usuario) mentry.getValue();
             List<String> favoritas = this.dbUsuario.CargarFavoritas(aux.getNickname());
             //le agrego las propuestas favoritas
-            aux=this.IPC.CargarFavoritas(aux, favoritas);
+            aux = this.IPC.CargarFavoritas(aux, favoritas);
         }
     }
 
@@ -881,7 +933,10 @@ public class ControladorUsuario implements IControladorUsuario {
                     if (aux instanceof Colaborador) {
                         dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
                     } else {
-                        dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
+                        Proponente prop = (Proponente) aux;
+                        if (prop.getEstaActivo()) {
+                            dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
+                        }
                     }
                     break;
                 }
@@ -890,18 +945,62 @@ public class ControladorUsuario implements IControladorUsuario {
         return dtc;
 
     }
-    
+
     @Override
-    public void agregarfavorita(String nick,Propuesta p){
+    public void agregarfavorita(String nick, Propuesta p) {
         Set set = Usuarios.entrySet();
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
             Map.Entry mentry = (Map.Entry) iterator.next();
-            Usuario u=(Usuario) mentry.getValue();
-            if (u.getNickname().equals(nick)){
+            Usuario u = (Usuario) mentry.getValue();
+            if (u.getNickname().equals(nick)) {
                 u.getFavoritas().put(p.getTituloP(), p);
                 break;
             }
         }
     }
+
+    @Override
+    public List<DtColaboraciones> getMontoColaboracion(DtinfoColaborador dtc) {
+        List<Colaboracion> col = dtc.getColaboraciones();
+        List<DtColaboraciones> col2 = new ArrayList<>();
+        Iterator it = col.iterator();
+        while (it.hasNext()) {
+            Colaboracion c = (Colaboracion) it.next();
+            DtColaboraciones dtc2 = new DtColaboraciones(c);
+            col2.add(dtc2);
+        }
+        return col2;
+    }
+
+    @Override
+    public boolean DesactivarProponente(String nickname) throws Exception {
+
+        Proponente prop = this.ObtenerProponente(nickname);
+        if (prop != null) {
+            if (!prop.getEstaActivo()) {
+                throw new Exception("El proponente ya fue Desactivado");
+            } else {
+                prop.setEstaActiva(false);
+                prop.setFDesactivacion(new GregorianCalendar());
+                boolean ok = this.dbUsuario.setNuevoEstadoProponente(nickname, false, prop.getFDesactivacion());
+                Iterator it = prop.getPropuestas().entrySet().iterator();
+
+                while (it.hasNext()) {
+                    Map.Entry mtry = (Map.Entry) it.next();
+                    Propuesta propuesta = (Propuesta) mtry.getValue();
+
+                    if (propuesta.getEstaActiva()) { // deberian estar todas activas (true)
+                        propuesta.setEstaActiva(false);
+                        Fabrica.getInstance().getControladorPropCat().DesactivarPropuesta(propuesta);
+
+                    }
+                }
+            }
+            return true;
+        } else {
+            throw new Exception("El Proponente que desea desactivar no existe");
+        }
+    }
+
 }

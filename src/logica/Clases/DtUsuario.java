@@ -50,10 +50,6 @@ public class DtUsuario {
         this.direccion = dir;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
     public boolean isEsproponente() {
         return esproponente;
     }
