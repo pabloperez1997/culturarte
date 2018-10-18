@@ -10,10 +10,14 @@ import Servicios.PublicadorConsultarPropuesta;
 import Servicios.PublicadorExtenderCancelarComentarPropuesta;
 import Servicios.PublicadorInicio;
 import java.beans.PropertyVetoException;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import logica.Controladores.configuraciones;
 import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
@@ -45,7 +49,7 @@ public class inicio extends javax.swing.JFrame {
         ICU.CargarFavoritas();
         IPC.CargarComentarios();
         this.setTitle("Culturarte");
-        
+
         this.PublicarServicios();
     }
 
@@ -454,18 +458,43 @@ public class inicio extends javax.swing.JFrame {
     }
 
     public void PublicarServicios() {
+        String URL;
+
         PublicadorExtenderCancelarComentarPropuesta pubECCP = new PublicadorExtenderCancelarComentarPropuesta();
-        pubECCP.publicarExtenderCancelarComentarPropuesta();
-        
+        URL = this.LeerProperties("ECCPropuesta");
+        pubECCP.publicarExtenderCancelarComentarPropuesta(URL);
+
         PublicadorAltaPropuesta pubAP = new PublicadorAltaPropuesta();
-        pubAP.publicar();
-        
+        URL = this.LeerProperties("AltaPropuesta");
+        pubAP.publicar(URL);
+
         PublicadorConsultarPropuesta pubCP = new PublicadorConsultarPropuesta();
-        pubCP.publicarConsultaPropuesta();
-        
+        URL = this.LeerProperties("ConsultaPropuesta");
+        pubCP.publicarConsultaPropuesta(URL);
+
         PublicadorInicio pubI = new PublicadorInicio();
-        pubI.publicarInicio();
+        URL = this.LeerProperties("Inicio");
+        pubI.publicarInicio(URL);
+
+    }
+
+    public String LeerProperties(String caso) {
+        String URL = "";
+        Properties prop = new Properties();
+
+        InputStream archivo = null;
+        configuraciones config = new configuraciones();
         
+        try { //C:\\Users\\Martin\\Documents\\PA\\Tarea 1\\culturarte
+            archivo = new FileInputStream("..\\config\\config.properties");
+            prop.load(archivo);
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        //      http://     127.0.0.1               :      8280                        /servicio        Login
+        URL = "http://" + prop.getProperty("Ip") + ":" + prop.getProperty("Porth") + "/servicio" + prop.getProperty(caso);
+        return URL;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -23,8 +23,8 @@ public class PublicadorLogin {
 
     private Endpoint endpoint = null;
 
-    public void publicarLogin() {
-        endpoint = Endpoint.publish("http://127.0.0.1:8280/servicioLogin", this);
+    public void publicarLogin(String URL) {
+        endpoint = Endpoint.publish(URL, this);
     }
 
     //login

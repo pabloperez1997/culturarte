@@ -26,8 +26,8 @@ public class PublicadorConsultarPropuesta {
     
     private Endpoint endpoint = null;
     
-    public void publicarConsultaPropuesta() {
-        endpoint = Endpoint.publish("http://127.0.0.1:8280/servicioConsultaP", this);
+    public void publicarConsultaPropuesta(String URL) {
+        endpoint = Endpoint.publish(URL, this);
     }
     
     @WebMethod

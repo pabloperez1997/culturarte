@@ -23,8 +23,8 @@ public class PublicadorExtenderCancelarComentarPropuesta {
 
     private Endpoint endpoint = null;
 
-    public void publicarExtenderCancelarComentarPropuesta() {
-        endpoint = Endpoint.publish("http://127.0.0.1:8280/servicioECC", this);
+    public void publicarExtenderCancelarComentarPropuesta(String URL) {
+        endpoint = Endpoint.publish(URL, this);
     }
 
     // Cancelar Propuesta

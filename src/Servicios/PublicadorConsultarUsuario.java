@@ -26,8 +26,8 @@ public class PublicadorConsultarUsuario {
 
     private Endpoint endpoint = null;
 
-    public void publicarConsultaPropuesta() {
-        endpoint = Endpoint.publish("http://127.0.0.1:8280/servicioAltaUsuario", this);
+    public void publicarConsultaPropuesta(String URL) {
+        endpoint = Endpoint.publish(URL, this);
     }
 
     @WebMethod
@@ -55,8 +55,6 @@ public class PublicadorConsultarUsuario {
         return new DtListColaboraciones(Fabrica.getInstance().getIControladorUsuario().getMontoColaboracion(colaborador));
     }
 
-    
-    
     @WebMethod
     public DtListUsuario ObtenerSeguidos(@WebParam(name = "nickname") String nickname) {
         return new DtListUsuario(Fabrica.getInstance().getIControladorUsuario().ObtenerSeguidos(nickname));
@@ -72,4 +70,8 @@ public class PublicadorConsultarUsuario {
         return new DtListInfoPropuesta(Fabrica.getInstance().getIControladorUsuario().obtenerfavoritas(nickname));
     }
 
+    @WebMethod
+    public boolean DesactivarProponente(@WebParam(name = "nick") String nick) throws Exception {
+        return Fabrica.getInstance().getIControladorUsuario().DesactivarProponente(nick);
+    }
 }

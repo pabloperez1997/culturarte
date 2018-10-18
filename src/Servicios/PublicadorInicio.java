@@ -27,8 +27,8 @@ public class PublicadorInicio {
 
     private Endpoint endpoint = null;
 
-    public void publicarInicio() {
-        endpoint = Endpoint.publish("http://127.0.0.1:8280/servicioInicio", this);
+    public void publicarInicio(String URL) {
+        endpoint = Endpoint.publish(URL, this);
     }
 
     @WebMethod

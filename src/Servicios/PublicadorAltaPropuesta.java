@@ -16,6 +16,7 @@ import logica.Clases.DataImagen;
 import logica.Clases.TipoRetorno;
 import logica.Fabrica;
 import DtServicios.DtCategorias;
+
 /**
  *
  * @author Martin
@@ -26,8 +27,8 @@ public class PublicadorAltaPropuesta {
 
     private Endpoint endpoint = null;
 
-    public void publicar() {
-        endpoint = Endpoint.publish("http://127.0.0.1:8280/servicioAltaP", this);
+    public void publicar(String URL) {
+        endpoint = Endpoint.publish(URL, this);
     }
 
     @WebMethod
@@ -38,5 +39,10 @@ public class PublicadorAltaPropuesta {
     @WebMethod
     public boolean CrearPropuesta(@WebParam(name = "tituloP") String tituloP, @WebParam(name = "descripcion") String descripcion, @WebParam(name = "lugar") String lugar, @WebParam(name = "imagen") DataImagen imagen, @WebParam(name = "fecha") Calendar fecha, @WebParam(name = "montoE") float montoE, @WebParam(name = "montoTot") float montoTot, @WebParam(name = "retorno") TipoRetorno retorno) throws Exception {
         return Fabrica.getInstance().getControladorPropCat().crearPropuesta(tituloP, descripcion, lugar, imagen, fecha, montoE, montoTot, retorno);
+    }
+
+    @WebMethod
+    public boolean SeleccionarUC(@WebParam(name = "nick") String nick, @WebParam(name = "categoria") String categoria)throws Exception {
+        return Fabrica.getInstance().getControladorPropCat().seleccionarUC(nick, categoria);
     }
 }

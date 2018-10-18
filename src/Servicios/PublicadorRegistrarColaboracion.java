@@ -25,8 +25,8 @@ public class PublicadorRegistrarColaboracion {
 
     private Endpoint endpoint = null;
 
-    public void publicarRegistrarColaboracion() {
-        endpoint = Endpoint.publish("http://127.0.0.1:8280/servicioAltaUsuario", this);
+    public void publicarRegistrarColaboracion(String URL) {
+        endpoint = Endpoint.publish(URL, this);
     }
 
     @WebMethod
