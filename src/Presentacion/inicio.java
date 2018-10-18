@@ -486,7 +486,7 @@ public class inicio extends javax.swing.JFrame {
         configuraciones config = new configuraciones();
         
         try { //C:\\Users\\Martin\\Documents\\PA\\Tarea 1\\culturarte
-            archivo = new FileInputStream("..\\config\\config.properties");
+            archivo = new FileInputStream("C:\\Users\\Martin\\Documents\\PA\\Tarea 1\\culturarte\\config\\config.properties");
             prop.load(archivo);
 
         } catch (IOException e) {
