@@ -11,7 +11,6 @@ import Servicios.PublicadorConsultarPropuesta;
 import Servicios.PublicadorConsultarUsuario;
 import Servicios.PublicadorExtenderCancelarComentarPropuesta;
 import Servicios.PublicadorInicio;
-import Servicios.PublicadorLogin;
 import Servicios.PublicadorRegistrarColaboracion;
 import java.beans.PropertyVetoException;
 import java.io.FileInputStream;
@@ -479,11 +478,7 @@ public class inicio extends javax.swing.JFrame {
         PublicadorConsultarUsuario conslU = new PublicadorConsultarUsuario();
         URL = this.LeerProperties("ConsultaUsuario");
         conslU.publicarConsultarUsuario(URL);
-        
-        PublicadorLogin pubL = new PublicadorLogin();
-        URL = this.LeerProperties("Login");
-        pubL.publicarLogin(URL);
-        
+                
         PublicadorRegistrarColaboracion pubRC = new PublicadorRegistrarColaboracion();
         URL = this.LeerProperties("RegistrarColaboracion");
         pubRC.publicarRegistrarColaboracion(URL);
