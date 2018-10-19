@@ -15,7 +15,6 @@ import javax.xml.ws.Endpoint;
 import logica.Clases.DataImagen;
 import logica.Clases.TipoRetorno;
 import logica.Fabrica;
-import DtServicios.DtCategorias;
 
 /**
  *

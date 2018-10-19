@@ -7,11 +7,14 @@ package logica.Clases;
 
 import java.util.Calendar;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
  *
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author Martin
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DtinfoColaborador {
 
     private String nickname;
@@ -47,7 +50,7 @@ public class DtinfoColaborador {
         this.correo = aux.getCorreo();
         this.fechaN = aux.getFechaN();
         this.imagen = aux.getImagen();
-        this.colaboraciones=aux.getColaboraciones();
+        this.colaboraciones = aux.getColaboraciones();
     }
 
     public List<Colaboracion> getColaboraciones() {

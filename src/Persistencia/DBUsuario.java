@@ -77,7 +77,7 @@ public class DBUsuario {
             statement.setString(6, p.getImagen());
             statement.setString(7, p.getDireccion());
             statement.setString(8, p.getBiografia());
-            statement.setString(9, p.getsitioweb());
+            statement.setString(9, p.getSitioweb());
             statement.setBoolean(10, true);
             statement.setString(11, p.getPassword());
             statement.setBoolean(12, p.getEstaActivo());

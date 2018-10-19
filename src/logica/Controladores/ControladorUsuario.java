@@ -795,7 +795,7 @@ public class ControladorUsuario implements IControladorUsuario {
                     } else {
                         Proponente p = (Proponente) aux;
                         if (p.getEstaActivo()) {
-                            dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true, p.getBiografia(), p.getsitioweb(), p.getDireccion());
+                            dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true, p.getBiografia(), p.getSitioweb(), p.getDireccion());
                         } else {
                             return null;
                         }

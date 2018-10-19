@@ -24,7 +24,7 @@ public class PublicadorAltaUsuario {
 
     private Endpoint endpoint = null;
 
-    public void publicarConsultaPropuesta(String URL) {
+    public void publicarAltaUsuario(String URL) {
         endpoint = Endpoint.publish(URL, this);
     }
 

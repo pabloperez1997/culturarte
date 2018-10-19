@@ -7,11 +7,14 @@ package DtServicios;
 
 import java.util.List;
 import logica.Clases.DTListaPropuestasR;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
  *
  * @author Martin
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DtListPropuestasRWEB {
 
     private List<DTListaPropuestasR> lista;

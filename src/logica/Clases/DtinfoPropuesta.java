@@ -6,12 +6,14 @@
 package logica.Clases;
 
 import java.util.Calendar;
-import java.util.Date;
-import logica.Clases.TipoE;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 /**
  *
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author Martin
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DtinfoPropuesta {
 
     private String Titulo;
@@ -24,7 +26,6 @@ public class DtinfoPropuesta {
     private float Monto;
     private String estado;
     private TipoRetorno tipoRetorno;
-
 
     public DtinfoPropuesta(String Titulo, String Descripcion, String imagen, String TipoEspec, String Lugar, Calendar FechaReal, float Precio, float Monto, TipoRetorno tipoRetorno) {
         this.Titulo = Titulo;

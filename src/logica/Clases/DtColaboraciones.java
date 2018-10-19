@@ -7,10 +7,14 @@ package logica.Clases;
 
 import java.util.Calendar;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 /**
  *
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author Martin
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DtColaboraciones {
 
     private String UColaborador;

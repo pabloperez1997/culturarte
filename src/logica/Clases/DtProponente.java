@@ -6,19 +6,22 @@
 package logica.Clases;
 
 import java.util.Calendar;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
  *
- * @author Lucas
+ * @author Martin
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DtProponente extends DtUsuario {
 
     private String biografia;
     private String direccion;
     private String sitioweb;
 
-    public DtProponente(String biografia, String direccion, String sitioweb, String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password,boolean esproponente) {
-        super(nickname, nombre, apellido, correo, fechaN, imagen, password,esproponente);
+    public DtProponente(String biografia, String direccion, String sitioweb, String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password, boolean esproponente) {
+        super(nickname, nombre, apellido, correo, fechaN, imagen, password, esproponente);
         this.biografia = biografia;
         this.direccion = direccion;
         this.sitioweb = sitioweb;

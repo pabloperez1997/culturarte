@@ -6,6 +6,7 @@
 package Servicios;
 
 import DtServicios.DtListConsultaPropuesta;
+import DtServicios.DtListPropuestaWeb;
 import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -15,7 +16,6 @@ import javax.xml.ws.Endpoint;
 import logica.Clases.TipoE;
 import logica.Fabrica;
 import logica.Clases.DtPropuestaWeb;
-import DtServicios.DtListPropuestaWeb;
 
 /**
  *

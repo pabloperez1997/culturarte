@@ -5,9 +5,9 @@
  */
 package Servicios;
 
-import DtServicios.DtListColaboraciones;
-import DtServicios.DtListInfoPropuesta;
 import DtServicios.DtListUsuario;
+import DtServicios.DtListInfoPropuesta;
+import DtServicios.DtListColaboraciones;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -26,7 +26,7 @@ public class PublicadorConsultarUsuario {
 
     private Endpoint endpoint = null;
 
-    public void publicarConsultaPropuesta(String URL) {
+    public void publicarConsultarUsuario(String URL) {
         endpoint = Endpoint.publish(URL, this);
     }
 

@@ -7,11 +7,14 @@ package DtServicios;
 
 import java.util.List;
 import logica.Clases.DtNickTitProp;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
  *
  * @author Martin
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DtListNickTitProp {
 
     List<DtNickTitProp> ListPropuestas;

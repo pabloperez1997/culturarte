@@ -32,14 +32,6 @@ public class Proponente extends Usuario {
         this.fDesactivacion = fDesac;
     }
 
-    public String getSitioweb() {
-        return sitioweb;
-    }
-
-    public void setSitioweb(String sitioweb) {
-        this.sitioweb = sitioweb;
-    }
-
     public Map<String, Propuesta> getPropuestas() {
         return Propuestas;
     }
@@ -56,7 +48,7 @@ public class Proponente extends Usuario {
         return this.biografia;
     }
 
-    public String getsitioweb() {
+    public String getSitioweb() {
         return this.sitioweb;
     }
 
@@ -68,7 +60,7 @@ public class Proponente extends Usuario {
         this.biografia = Biografia;
     }
 
-    public void setsitioweb(String Sitioweb) {
+    public void setSitioweb(String Sitioweb) {
         this.sitioweb = Sitioweb;
     }
 

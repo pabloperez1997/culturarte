@@ -6,9 +6,13 @@
 package Presentacion;
 
 import Servicios.PublicadorAltaPropuesta;
+import Servicios.PublicadorAltaUsuario;
 import Servicios.PublicadorConsultarPropuesta;
+import Servicios.PublicadorConsultarUsuario;
 import Servicios.PublicadorExtenderCancelarComentarPropuesta;
 import Servicios.PublicadorInicio;
+import Servicios.PublicadorLogin;
+import Servicios.PublicadorRegistrarColaboracion;
 import java.beans.PropertyVetoException;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -468,6 +472,22 @@ public class inicio extends javax.swing.JFrame {
         URL = this.LeerProperties("AltaPropuesta");
         pubAP.publicar(URL);
 
+        PublicadorAltaUsuario altaU = new PublicadorAltaUsuario();
+        URL = this.LeerProperties("AltaUsuario");
+        altaU.publicarAltaUsuario(URL);
+        
+        PublicadorConsultarUsuario conslU = new PublicadorConsultarUsuario();
+        URL = this.LeerProperties("ConsultaUsuario");
+        conslU.publicarConsultarUsuario(URL);
+        
+        PublicadorLogin pubL = new PublicadorLogin();
+        URL = this.LeerProperties("Login");
+        pubL.publicarLogin(URL);
+        
+        PublicadorRegistrarColaboracion pubRC = new PublicadorRegistrarColaboracion();
+        URL = this.LeerProperties("RegistrarColaboracion");
+        pubRC.publicarRegistrarColaboracion(URL);
+        
         PublicadorConsultarPropuesta pubCP = new PublicadorConsultarPropuesta();
         URL = this.LeerProperties("ConsultaPropuesta");
         pubCP.publicarConsultaPropuesta(URL);
@@ -483,7 +503,6 @@ public class inicio extends javax.swing.JFrame {
         Properties prop = new Properties();
 
         InputStream archivo = null;
-        configuraciones config = new configuraciones();
         
         try { //C:\\Users\\Martin\\Documents\\PA\\Tarea 1\\culturarte
             archivo = new FileInputStream("C:\\Users\\Martin\\Documents\\PA\\Tarea 1\\culturarte\\config\\config.properties");

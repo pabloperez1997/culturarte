@@ -6,11 +6,14 @@
 package logica.Clases;
 
 import java.util.Calendar;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
  *
- * @author Lucas
+ * @author Martin
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DtUsuario {
 
     private String nickname;
@@ -21,9 +24,6 @@ public class DtUsuario {
     private String imagen;
     private String password;
     private boolean esproponente;
-    private String biografia;
-    private String sitio;
-    private String direccion;
 
     public DtUsuario(String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password, boolean EsProponente) {
         this.nickname = nickname;
@@ -45,25 +45,10 @@ public class DtUsuario {
         this.imagen = imagen;
         this.password = password;
         this.esproponente = EsProponente;
-        this.biografia = bio;
-        this.sitio = sit;
-        this.direccion = dir;
     }
 
     public boolean isEsproponente() {
         return esproponente;
-    }
-
-    public String getBiografia() {
-        return biografia;
-    }
-
-    public String getSitio() {
-        return sitio;
-    }
-
-    public String getDireccion() {
-        return direccion;
     }
 
     public boolean Esproponente() {

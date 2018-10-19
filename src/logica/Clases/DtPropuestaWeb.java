@@ -5,10 +5,14 @@
  */
 package logica.Clases;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 /**
  *
  * @author Martin
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DtPropuestaWeb {
 
     private final String tituloP;
@@ -51,5 +55,4 @@ public class DtPropuestaWeb {
         return colaboradores;
     }
 
-   
 }

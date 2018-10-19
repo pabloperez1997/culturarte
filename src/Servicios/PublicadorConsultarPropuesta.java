@@ -5,6 +5,7 @@
  */
 package Servicios;
 
+import DtServicios.DtListNickTitProp;
 import DtServicios.DtListConsultaPropuesta2;
 import DtServicios.DtListInfoPropuesta;
 import javax.jws.WebMethod;
@@ -12,7 +13,6 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.ws.Endpoint;
-import DtServicios.DtListNickTitProp;
 import logica.Clases.DtConsultaPropuesta;
 import logica.Fabrica;
 
