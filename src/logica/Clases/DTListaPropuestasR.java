@@ -5,16 +5,20 @@
  */
 package logica.Clases;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 /**
  *
- * @author Santiago.S
+ * @author Martin
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DTListaPropuestasR {
 
     private String Titulo;
     private String Proponente;
     private TipoE Estado;
-    
+
     public DTListaPropuestasR() {
         this.Titulo = null;
         this.Proponente = null;
@@ -40,7 +44,7 @@ public class DTListaPropuestasR {
     public String getProponente() {
         return Proponente;
     }
-    
+
     public TipoE getEstadoActual() {
         return Estado;
     }

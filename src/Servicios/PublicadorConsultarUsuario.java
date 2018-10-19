@@ -41,6 +41,8 @@ public class PublicadorConsultarUsuario {
         return new DtListInfoPropuesta(Fabrica.getInstance().getControladorPropCat().ListarPropuestasNoIngresadas(nickname));
     }
 
+    
+
     @WebMethod
     public DtListInfoPropuesta ListarPropuestasDeProponenteX(@WebParam(name = "nickname") String nickname) throws Exception {
         return new DtListInfoPropuesta(Fabrica.getInstance().getControladorPropCat().ListarPropuestasDeProponenteX(nickname));
@@ -77,6 +79,11 @@ public class PublicadorConsultarUsuario {
     }
 
     @WebMethod
+    public boolean AgregarFavortio(@WebParam(name = "titulo") String titulo, @WebParam(name = "nick") String nick) {
+        return Fabrica.getInstance().getControladorPropCat().AgregarFavorita(titulo, nick);
+    }
+
+    @WebMethod
     public boolean DesactivarProponente(@WebParam(name = "nick") String nick) throws Exception {
         return Fabrica.getInstance().getIControladorUsuario().DesactivarProponente(nick);
     }
@@ -89,5 +96,15 @@ public class PublicadorConsultarUsuario {
     @WebMethod
     public DtUsuario ObtenerDtUsuario_Correo(@WebParam(name = "login") String login) {
         return Fabrica.getInstance().getIControladorUsuario().ObtenerDTUsuario_Correo(login);
+    }
+
+    @WebMethod
+    public boolean SeguirUsuario(@WebParam(name = "nick1") String nick1, @WebParam(name = "nick2") String nick2) throws Exception {
+        return Fabrica.getInstance().getIControladorUsuario().seguirUsuario(nick1, nick2);
+    }
+
+    @WebMethod
+    public boolean DejarSeguirUsuario(@WebParam(name = "nick1") String nick1, @WebParam(name = "nick2") String nick2) throws Exception {
+        return Fabrica.getInstance().getIControladorUsuario().dejarseguirUsuario(nick1, nick2);
     }
 }

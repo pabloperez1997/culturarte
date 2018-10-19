@@ -9,7 +9,6 @@ import Servicios.PublicadorAltaPropuesta;
 import Servicios.PublicadorAltaUsuario;
 import Servicios.PublicadorConsultarPropuesta;
 import Servicios.PublicadorConsultarUsuario;
-import Servicios.PublicadorExtenderCancelarComentarPropuesta;
 import Servicios.PublicadorInicio;
 import Servicios.PublicadorRegistrarColaboracion;
 import java.beans.PropertyVetoException;
@@ -20,7 +19,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import logica.Controladores.configuraciones;
 import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
@@ -462,10 +460,6 @@ public class inicio extends javax.swing.JFrame {
 
     public void PublicarServicios() {
         String URL;
-
-        PublicadorExtenderCancelarComentarPropuesta pubECCP = new PublicadorExtenderCancelarComentarPropuesta();
-        URL = this.LeerProperties("ECCPropuesta");
-        pubECCP.publicarExtenderCancelarComentarPropuesta(URL);
 
         PublicadorAltaPropuesta pubAP = new PublicadorAltaPropuesta();
         URL = this.LeerProperties("AltaPropuesta");
