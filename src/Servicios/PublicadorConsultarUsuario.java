@@ -13,6 +13,7 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.ws.Endpoint;
+import logica.Clases.DtUsuario;
 import logica.Fabrica;
 import logica.Clases.DtinfoColaborador;
 
@@ -28,6 +29,11 @@ public class PublicadorConsultarUsuario {
 
     public void publicarConsultarUsuario(String URL) {
         endpoint = Endpoint.publish(URL, this);
+    }
+
+    @WebMethod
+    public DtListUsuario ListarUsuarios() {
+        return new DtListUsuario(Fabrica.getInstance().getIControladorUsuario().ListarUsuarios());
     }
 
     @WebMethod
@@ -73,5 +79,15 @@ public class PublicadorConsultarUsuario {
     @WebMethod
     public boolean DesactivarProponente(@WebParam(name = "nick") String nick) throws Exception {
         return Fabrica.getInstance().getIControladorUsuario().DesactivarProponente(nick);
+    }
+
+    @WebMethod
+    public DtUsuario ObtenerDtUsuario(@WebParam(name = "login") String login) {
+        return Fabrica.getInstance().getIControladorUsuario().ObtenerDTUsuario(login);
+    }
+
+    @WebMethod
+    public DtUsuario ObtenerDtUsuario_Correo(@WebParam(name = "login") String login) {
+        return Fabrica.getInstance().getIControladorUsuario().ObtenerDTUsuario_Correo(login);
     }
 }

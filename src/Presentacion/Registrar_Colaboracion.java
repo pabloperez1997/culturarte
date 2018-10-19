@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import logica.Clases.Colaborador;
+import logica.Clases.DTListaPropuestasR;
 import logica.Clases.DtinfoColaborador;
 import logica.Clases.DtinfoPropuesta;
 import logica.Clases.DtNickTitProp;
@@ -438,17 +439,17 @@ public class Registrar_Colaboracion extends javax.swing.JInternalFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Titulo de la propuesta", "Nickname del proponente"
+                "Titulo de la propuesta", "Nickname del proponente", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -491,7 +492,7 @@ public class Registrar_Colaboracion extends javax.swing.JInternalFrame {
                                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addComponent(jButton1)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 28, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(169, 169, 169)
                 .addComponent(jLabel1)
@@ -501,7 +502,7 @@ public class Registrar_Colaboracion extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(1023, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -555,11 +556,11 @@ public class Registrar_Colaboracion extends javax.swing.JInternalFrame {
         Fabrica fabrica = Fabrica.getInstance();
         IPropCat controladorPC = fabrica.getControladorPropCat();
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        List<DtNickTitProp> lista = controladorPC.listarPropuestasR();
+        List<DTListaPropuestasR> lista = controladorPC.listarPropuestasRWEB();
         modelo.setRowCount(0);
         for (int i = 0; i < lista.size(); i++) {
-            DtNickTitProp p = (DtNickTitProp) lista.get(i);
-            Object[] dat = {p.getTituloP(), p.getProponente()};
+            DTListaPropuestasR p = (DTListaPropuestasR) lista.get(i);
+            Object[] dat = {p.getTituloP(), p.getProponente(), p.getEstadoActual()};
             modelo.addRow(dat);
         }
         IControladorUsuario controladorU = fabrica.getIControladorUsuario();
@@ -578,6 +579,7 @@ public class Registrar_Colaboracion extends javax.swing.JInternalFrame {
         IPropCat CPC = fabrica.getControladorPropCat();
         IControladorUsuario CU = fabrica.getIControladorUsuario();
         float monto = 0;
+        String estado = jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString();
         if (!jTextField17.getText().isEmpty()) {
             monto = Float.parseFloat(jTextField17.getText());
         }
@@ -591,6 +593,8 @@ public class Registrar_Colaboracion extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Seleccione un colaborador");
         } else if (jTable1.getSelectedRow() < 0) {
             JOptionPane.showMessageDialog(null, "Seleccione una propuesta");
+        } else if (estado.compareTo("enFinanciacion") != 0 && estado.compareTo("Publicada") != 0) {
+            JOptionPane.showMessageDialog(null, "No puede colaborar en esta propuesta");
         } else {
 
             boolean OK = false;
@@ -633,6 +637,16 @@ public class Registrar_Colaboracion extends javax.swing.JInternalFrame {
             jTable2.clearSelection();
             jLabel20.setIcon(null);
 
+           
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            List<DTListaPropuestasR> lista = CPC.listarPropuestasRWEB();
+            modelo.setRowCount(0);
+            for (int i = 0; i < lista.size(); i++) {
+                DTListaPropuestasR p = (DTListaPropuestasR) lista.get(i);
+                Object[] dat = {p.getTituloP(), p.getProponente(), p.getEstadoActual()};
+                modelo.addRow(dat);
+            }
+
         }
 
     }//GEN-LAST:event_jButton1MouseClicked
@@ -654,16 +668,16 @@ public class Registrar_Colaboracion extends javax.swing.JInternalFrame {
                 modelo.addRow(dat);
             }
         }
-          jTextField1.setText("");
-            jTextArea1.setText("");
-            jTextField3.setText("");
-            jTextField4.setText("");
-            jTextField5.setText("");
-            jTextField6.setText("");
-            jTextField7.setText("");
-           
-            jTable1.clearSelection();
-            jLabel20.setIcon(null);
+        jTextField1.setText("");
+        jTextArea1.setText("");
+        jTextField3.setText("");
+        jTextField4.setText("");
+        jTextField5.setText("");
+        jTextField6.setText("");
+        jTextField7.setText("");
+
+        jTable1.clearSelection();
+        jLabel20.setIcon(null);
     }//GEN-LAST:event_jTextField14KeyReleased
 
     private void jTextField15KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField15KeyReleased
@@ -674,17 +688,17 @@ public class Registrar_Colaboracion extends javax.swing.JInternalFrame {
         List<DtinfoColaborador> col = CU.ListarColaboradores();
         for (int i = 0; i < col.size(); i++) {
             if (col.get(i).getNickname().contains(jTextField15.getText())) {
-            Object[] dat = {col.get(i).getNickname(), col.get(i).getNombre()};
-            modelo.addRow(dat);
+                Object[] dat = {col.get(i).getNickname(), col.get(i).getNombre()};
+                modelo.addRow(dat);
             }
         }
-        
-            jTextField9.setText("");
-            jTextField10.setText("");
-            jTextField11.setText("");
-            jTextField12.setText("");
-            jTextField13.setText("");
-            jTable2.clearSelection();
+
+        jTextField9.setText("");
+        jTextField10.setText("");
+        jTextField11.setText("");
+        jTextField12.setText("");
+        jTextField13.setText("");
+        jTable2.clearSelection();
     }//GEN-LAST:event_jTextField15KeyReleased
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
@@ -699,7 +713,7 @@ public class Registrar_Colaboracion extends javax.swing.JInternalFrame {
                 break;
             }
         }
-        String[] textField = null;
+
         jTextField9.setText((String) jTable2.getValueAt(jTable2.getSelectedRow(), 0));
         jTextField10.setText((String) DtinfoCol.getNombre());
         Date now = new Date();
@@ -711,10 +725,9 @@ public class Registrar_Colaboracion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-
         Fabrica fabrica = Fabrica.getInstance();
         IPropCat controladorPC = fabrica.getControladorPropCat();
-        List<DtNickTitProp> prop = controladorPC.listarPropuestasR();
+        List<DTListaPropuestasR> prop = controladorPC.listarPropuestasRWEB();
 
         DtinfoPropuesta Dtinfop = null;
         for (int i = 0; i < prop.size(); i++) {
@@ -735,8 +748,12 @@ public class Registrar_Colaboracion extends javax.swing.JInternalFrame {
             jComboBox2.addItem("Por Ganancias");
         }
         String dir = System.getProperty("user.dir") + "\\fPropuestas\\";
-        String dir2 = dir.concat(Dtinfop.getImagen());
-
+        String dir2;
+        if (Dtinfop.getImagen().equals("Culturarte.png")) {
+            dir2 = dir + "Culturarte.png";
+        } else {
+            dir2 = dir + Dtinfop.getTitulo() + "\\" + Dtinfop.getImagen();
+        }
         ImageIcon fot = new ImageIcon(dir2);
         Icon icono = new ImageIcon(fot.getImage().getScaledInstance(jLabel20.getWidth(), jLabel20.getHeight(), Image.SCALE_DEFAULT));
         jLabel20.setIcon(icono);
