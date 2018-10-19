@@ -245,22 +245,21 @@ public class inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-
         Fabrica fabrica = Fabrica.getInstance();
         IControladorUsuario ICU = fabrica.getIControladorUsuario();
         IPropCat IPC = fabrica.getControladorPropCat();
-
-        if (ICU.ListarColaboradores().isEmpty() && IPC.listarPropuestaC().isEmpty()) {
+        if (ICU.ListarColaboradores().isEmpty() && IPC.ListarPropuesta().isEmpty()) {
             JOptionPane.showMessageDialog(null, "No existen Colaboradores ni propuestas en el sistema");
         } else if (ICU.ListarColaboradores().isEmpty()) {
             JOptionPane.showMessageDialog(null, "No existen Colaboradores en el sistema");
-        } else if (IPC.listarPropuestaC().isEmpty()) {
+        } else if (IPC.ListarPropuesta().isEmpty()) {
             JOptionPane.showMessageDialog(null, "No existen Propuestas en el sistema");
         } else {
             Registrar_Colaboracion RP = new Registrar_Colaboracion();
             Escritorio.add(RP);
             RP.setVisible(true);
         }
+
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -468,15 +467,15 @@ public class inicio extends javax.swing.JFrame {
         PublicadorAltaUsuario altaU = new PublicadorAltaUsuario();
         URL = this.LeerProperties("AltaUsuario");
         altaU.publicarAltaUsuario(URL);
-        
+
         PublicadorConsultarUsuario conslU = new PublicadorConsultarUsuario();
         URL = this.LeerProperties("ConsultaUsuario");
         conslU.publicarConsultarUsuario(URL);
-                
+
         PublicadorRegistrarColaboracion pubRC = new PublicadorRegistrarColaboracion();
         URL = this.LeerProperties("RegistrarColaboracion");
         pubRC.publicarRegistrarColaboracion(URL);
-        
+
         PublicadorConsultarPropuesta pubCP = new PublicadorConsultarPropuesta();
         URL = this.LeerProperties("ConsultaPropuesta");
         pubCP.publicarConsultaPropuesta(URL);
@@ -492,9 +491,9 @@ public class inicio extends javax.swing.JFrame {
         Properties prop = new Properties();
 
         InputStream archivo = null;
-        
+
         try { //C:\\Users\\Martin\\Documents\\PA\\Tarea 1\\culturarte
-            archivo = new FileInputStream("C:\\Users\\Martin\\Documents\\PA\\Tarea 1\\culturarte\\config\\config.properties");
+            archivo = new FileInputStream(System.getProperty("user.dir") + "\\config\\config.properties");
             prop.load(archivo);
 
         } catch (IOException e) {
