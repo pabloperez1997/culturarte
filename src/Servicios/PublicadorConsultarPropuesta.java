@@ -5,6 +5,7 @@
  */
 package Servicios;
 
+import DtServicios.DtListConsultaPropuesta;
 import DtServicios.DtListNickTitProp;
 import DtServicios.DtListConsultaPropuesta2;
 import DtServicios.DtListInfoPropuesta;
@@ -23,23 +24,23 @@ import logica.Fabrica;
 @WebService
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public class PublicadorConsultarPropuesta {
-    
+
     private Endpoint endpoint = null;
-    
+
     public void publicarConsultaPropuesta(String URL) {
         endpoint = Endpoint.publish(URL, this);
     }
-    
+
     @WebMethod
     public DtListNickTitProp ListarPropuestas() {
         return new DtListNickTitProp(Fabrica.getInstance().getControladorPropCat().listarPropuestas());
     }
-    
+
     @WebMethod
     public DtConsultaPropuesta SeleccionarPropuesta(@WebParam(name = "titulo") String titulo, @WebParam(name = "nickProp") String nickProp) throws Exception {
         return Fabrica.getInstance().getControladorPropCat().SeleccionarPropuesta(titulo, nickProp);
     }
-    
+
     @WebMethod
     public DtListConsultaPropuesta2 ListarColaboradoresProp(@WebParam(name = "titulo") String titulo) throws Exception {
         return new DtListConsultaPropuesta2(Fabrica.getInstance().getControladorPropCat().ListaColaboradoresProp(titulo));
@@ -50,5 +51,46 @@ public class PublicadorConsultarPropuesta {
     public DtListInfoPropuesta ListarPropuestasCategoria(@WebParam(name = "nombre") String nombre) {
         return new DtListInfoPropuesta(Fabrica.getInstance().getControladorPropCat().ListarPropuestasCategoria(nombre));
     }
-    
+
+    @WebMethod
+    public DtListConsultaPropuesta getDtPropuestas() throws Exception {
+        return new DtListConsultaPropuesta(Fabrica.getInstance().getControladorPropCat().getDtPropuestas());
+    }
+
+    @WebMethod
+    public DtListNickTitProp ListarPropuestasCancelar(@WebParam(name = "nick") String nick) {
+        return new DtListNickTitProp(Fabrica.getInstance().getControladorPropCat().ListarPropuestasCancelar(nick));
+    }
+
+    @WebMethod
+    public boolean CancelarPropuesta(@WebParam(name = "titulo") String titulo, @WebParam(name = "nick") String nick) throws Exception {
+        return Fabrica.getInstance().getControladorPropCat().CancelarPropuesta(titulo, nick);
+    }
+
+    //ExtenderFinanciacion
+    @WebMethod
+    public DtListNickTitProp ListarPropuestasX_deProponenteX(@WebParam(name = "nick") String nick) {
+        return new DtListNickTitProp(Fabrica.getInstance().getControladorPropCat().ListarPropuestasX_DeProponenteX(nick));
+    }
+
+    @WebMethod
+    public boolean ExtenderFinanciacion(@WebParam(name = "titulo") String titulo) {
+        return Fabrica.getInstance().getControladorPropCat().ExtenderFinanciacion(titulo);
+    }
+
+    //ComentarPropuesta
+    @WebMethod
+    public DtListNickTitProp ListarPropuestasComentar() {
+        return new DtListNickTitProp(Fabrica.getInstance().getControladorPropCat().listarPropuestasComentar());
+    }
+
+    @WebMethod
+    public void ComentarPropuesta(@WebParam(name = "titulo") String titulo, @WebParam(name = "nick") String nick, @WebParam(name = "texto") String texto) throws Exception {
+        Fabrica.getInstance().getControladorPropCat().ComentarPropuesta(titulo, nick, texto);
+    }
+
+    @WebMethod
+    public DtListInfoPropuesta ListarPropuestasNoI() {
+        return new DtListInfoPropuesta(Fabrica.getInstance().getControladorPropCat().ListarPropuestaNOI());
+    }
 }
