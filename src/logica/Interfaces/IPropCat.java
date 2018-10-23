@@ -42,7 +42,7 @@ public interface IPropCat {
 
     public abstract boolean seleccionarUC(String nombreP, String tipoEsp) throws Exception;
 
-    public abstract boolean crearPropuesta(String tituloP, String descripcion, String lugar, DataImagen imagen, Calendar fecha, float montoE, float montoTot, TipoRetorno retorno) throws Exception;
+    public abstract boolean crearPropuesta(String tituloP, String descripcion, String lugar, DataImagen imagen, String fecha, float montoE, float montoTot, String retorno) throws Exception;
 
     public abstract List<String> ListarCategorias();
 

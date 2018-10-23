@@ -6,22 +6,13 @@
 package Presentacion;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import logica.Clases.DtColaboraciones;
-import logica.Clases.DtConsultaPropuesta;
 import logica.Clases.DtNickTitProp;
-import logica.Clases.DtProponente;
-import logica.Clases.DtinfoPropuesta;
 import logica.Fabrica;
 import logica.Interfaces.IPropCat;
 
