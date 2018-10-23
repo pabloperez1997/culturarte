@@ -24,6 +24,9 @@ public class DtUsuario {
     private String imagen;
     private String password;
     private boolean esproponente;
+    private String biografia;
+    private String direccion;
+    private String sitioweb;
 
     public DtUsuario(String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password, boolean EsProponente) {
         this.nickname = nickname;
@@ -45,6 +48,9 @@ public class DtUsuario {
         this.imagen = imagen;
         this.password = password;
         this.esproponente = EsProponente;
+        this.biografia = bio;
+        this.sitioweb = sit;
+        this.direccion = dir;
     }
 
     public boolean isEsproponente() {
@@ -87,4 +93,15 @@ public class DtUsuario {
         return imagen;
     }
 
+    public String getSitioWeb() {
+        return sitioweb;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public String getBiografia() {
+        return biografia;
+    }
 }

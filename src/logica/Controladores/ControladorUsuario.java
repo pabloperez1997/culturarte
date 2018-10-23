@@ -35,7 +35,6 @@ import logica.Clases.Colaboracion;
 import logica.Clases.DataImagen;
 import logica.Clases.DtColaboraciones;
 import logica.Clases.DtNickTitProp;
-import logica.Clases.DtProponente;
 import logica.Clases.DtSeguidor;
 import logica.Clases.DtUsuario;
 import logica.Clases.DtinfoColaborador;
@@ -265,17 +264,17 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
     @Override
-    public ArrayList<DtProponente> ListarProponentes() {
+    public ArrayList<DtUsuario> ListarProponentes() {
         ControladorUsuario CU = new ControladorUsuario();
         Set set = Usuarios.entrySet();
         Iterator iterator = set.iterator();
-        ArrayList<DtProponente> retorno = new ArrayList();
+        ArrayList<DtUsuario> retorno = new ArrayList();
         while (iterator.hasNext()) {
             Map.Entry mentry = (Map.Entry) iterator.next();
             if (mentry.getValue() instanceof Proponente) {
                 Proponente aux = (Proponente) mentry.getValue();
                 if (aux.getEstaActivo()) {
-                    DtProponente aux2 = new DtProponente(aux.getBiografia(), aux.getDireccion(), aux.getSitioweb(), aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
+                    DtUsuario aux2 = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true, aux.getBiografia(), aux.getSitioweb(), aux.getDireccion());
                     retorno.add(aux2);
                 }
             }
@@ -785,24 +784,23 @@ public class ControladorUsuario implements IControladorUsuario {
         while (iterator.hasNext()) {
 
             Map.Entry mentry = (Map.Entry) iterator.next();
-            if (mentry.getValue() instanceof Usuario) {
-                Usuario aux = (Usuario) mentry.getValue();
+            Usuario aux = (Usuario) mentry.getValue();
 
-                if (aux.getNickname().equals(nombreU)) {
-                    if (aux instanceof Colaborador) {
-                        dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
+            if (aux.getNickname().equals(nombreU)) {
+                if (aux instanceof Colaborador) {
+                    dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
+                } else {
+                    Proponente p = (Proponente) aux;
+                    if (p.getEstaActivo()) {
+                        dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true, p.getBiografia(), p.getSitioweb(), p.getDireccion());
                     } else {
-                        Proponente p = (Proponente) aux;
-                        if (p.getEstaActivo()) {
-                            dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true, p.getBiografia(), p.getSitioweb(), p.getDireccion());
-                        } else {
-                            return null;
-                        }
+                        return null;
                     }
-                    break;
                 }
+                break;
             }
         }
+
         return dtc;
 
     }

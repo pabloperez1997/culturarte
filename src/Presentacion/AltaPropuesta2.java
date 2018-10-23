@@ -362,7 +362,7 @@ public class AltaPropuesta2 extends javax.swing.JInternalFrame {
             if (!imagen.isEmpty()) {
                 foto = convertidor.convertirStringAImg(tituloP, imagen);
             }
-            TipoRetorno tipoR = null;
+            String tipoR = null;
 
             if ("".equals(tituloP)) {
                 javax.swing.JOptionPane.showMessageDialog(null, "Ingrese un titulo");
@@ -390,18 +390,18 @@ public class AltaPropuesta2 extends javax.swing.JInternalFrame {
                 jTextMontoTot.requestFocus();
                 datosBien = false;
             } else if (jCheckBoxEntradas.isSelected() && jCheckBoxGanancias.isSelected()) {
-                tipoR = TipoRetorno.EntGan;
+                tipoR = "Ambas";
             } else if (jCheckBoxGanancias.isSelected()) {
-                tipoR = TipoRetorno.porGanancias;
+                tipoR = "Ganancias";
             } else if (jCheckBoxEntradas.isSelected()) {
-                tipoR = TipoRetorno.Entradas;
+                tipoR = "Entradas";
             } else {
                 javax.swing.JOptionPane.showMessageDialog(null, "Debe seleccionar una forma de retribucion de colaboraciones");
                 datosBien = false;
             }
             if (datosBien) {
                 try {
-                    boolean ok = ICP.crearPropuesta(tituloP, descripcion, lugar, foto, fechaR, montoE, montoTot, tipoR);
+                    boolean ok = ICP.crearPropuesta(tituloP, descripcion, lugar, foto, fechaR.toString(), montoE, montoTot, tipoR);
 
                     if (ok) {
                         javax.swing.JOptionPane.showMessageDialog(null, "La propuesta ha sido creada con Exito");

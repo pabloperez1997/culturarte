@@ -9,23 +9,12 @@ import static Presentacion.inicio.Escritorio;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import logica.Clases.DtConsultaPropuesta;
-import logica.Clases.DtProponente;
 import logica.Clases.DtinfoColaborador;
 import logica.Clases.DtinfoPropuesta;
-import logica.Clases.EstadoPropuesta;
-import logica.Clases.Proponente;
-import logica.Clases.TipoRetorno;
-import logica.Clases.Usuario;
-import logica.Controladores.ControladorPropCat;
-import logica.Controladores.ControladorUsuario;
 import logica.Fabrica;
-import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
 
 /**
