@@ -5,17 +5,13 @@
  */
 package Presentacion;
 
-import java.awt.Component;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import logica.Clases.DtProponente;
 import logica.Clases.DtUsuario;
 import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;

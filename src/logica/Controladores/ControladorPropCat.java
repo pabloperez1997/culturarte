@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import static java.nio.file.StandardOpenOption.CREATE;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -174,7 +175,7 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public boolean crearPropuesta(String tituloP, String descripcion, String lugar, DataImagen imagen, Calendar fecha, float montoE, float montoTot, TipoRetorno retorno) throws Exception {
+    public boolean crearPropuesta(String tituloP, String descripcion, String lugar, DataImagen imagen, String fecha, float montoE, float montoTot, String retorno) throws Exception {
 
         if (this.propuestas.get(tituloP) != null) {
             throw new Exception("Ya existe una propuesta bajo ese Nombre");
@@ -183,20 +184,45 @@ public class ControladorPropCat implements IPropCat {
         Calendar fechaI = new GregorianCalendar();
         EstadoPropuesta estado = new EstadoPropuesta(tipo, fechaI, true);
         String urlImagen;
-        if (imagen != null) {
+        /*if (imagen != null) {
             urlImagen = imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo();
         } else {
             urlImagen = "Culturarte.png";
         }
-        Propuesta nuevaP = new Propuesta(tituloP, descripcion, urlImagen, lugar, fecha, montoE, montoTot, estado, this.catRecordada, retorno, this.uProponente, true);
+         */
+        TipoRetorno tipoR;
+        
+        switch (retorno) {
+            case "Entradas":
+                tipoR = TipoRetorno.Entradas;
+                break;
+            case "Ganancias":
+                tipoR = TipoRetorno.porGanancias;
+                break;
+            default:
+                tipoR = TipoRetorno.EntGan;
+                break;
+        }
+
+        Calendar cal = new GregorianCalendar();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        Date fechaDate = new Date();
+        try {
+            fechaDate = formato.parse(fecha);
+        } catch (ParseException ex) {
+            System.out.println(ex);
+        }
+        cal.setTime(fechaDate);
+
+        Propuesta nuevaP = new Propuesta(tituloP, descripcion, "hj", lugar, cal, montoE, montoTot, estado, this.catRecordada, tipoR, this.uProponente, true);
         boolean agregada = this.dbPropuesta.agregarPropuesta(nuevaP, estado);
         if (agregada) {
             this.propuestas.put(tituloP, nuevaP);
             this.catRecordada.setPropuesta(nuevaP);
             this.uProponente.setPropuesta(nuevaP);
-            if (!urlImagen.equals("Culturarte.png")) {
+            /*if (!urlImagen.equals("Culturarte.png")) {
                 grabarFotoPropuestas(tituloP, imagen);
-            }
+            }*/
 
         } else {
             this.catRecordada = null;

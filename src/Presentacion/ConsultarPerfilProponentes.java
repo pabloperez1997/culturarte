@@ -6,33 +6,17 @@
 package Presentacion;
 
 import java.awt.Image;
-import java.beans.PropertyVetoException;
-import java.io.File;
-import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Formattable;
-import java.util.Formatter;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import logica.Clases.DtProponente;
+import logica.Clases.DtUsuario;
 import logica.Clases.Propuesta;
-import logica.Clases.Usuario;
 import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
@@ -45,7 +29,7 @@ public class ConsultarPerfilProponentes extends javax.swing.JInternalFrame {
 
     private IControladorUsuario ICU;
     private IPropCat ICP;
-    private ArrayList<DtProponente> dtproponentes;
+    private ArrayList<DtUsuario> dtproponentes;
     private String proponenteSeleccionado;
 
     /**
@@ -58,12 +42,12 @@ public class ConsultarPerfilProponentes extends javax.swing.JInternalFrame {
         this.ICU = Fabrica.getInstance().getIControladorUsuario();
         this.ICP = Fabrica.getInstance().getControladorPropCat();
 
-        List<DtProponente> proponentes = ICU.ListarProponentes();
-        this.dtproponentes = (ArrayList<DtProponente>) proponentes;
+        List<DtUsuario> proponentes = ICU.ListarProponentes();
+        this.dtproponentes = (ArrayList<DtUsuario>) proponentes;
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         modelo.setRowCount(0);
         for (int i = 0; i < proponentes.size(); i++) {
-            DtProponente p = proponentes.get(i);
+            DtUsuario p = proponentes.get(i);
             Date f = (Date) p.getFechaN().getTime();
             String fecha = new SimpleDateFormat("dd/MMM/yyyy").format(f);
             Object[] dat = {p.getNickName(), p.getNombre(), p.getApellido(), p.getCorreo(), fecha, p.getDireccion()};
@@ -341,11 +325,11 @@ public class ConsultarPerfilProponentes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextNickActionPerformed
 
     private void jTextNickKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextNickKeyTyped
-        List<DtProponente> proponentes = ICU.ListarProponentes();
+        List<DtUsuario> proponentes = ICU.ListarProponentes();
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         modelo.setRowCount(0);
         for (int i = 0; i < proponentes.size(); i++) {
-            DtProponente p = proponentes.get(i);
+            DtUsuario p = proponentes.get(i);
             if (p.getNickName().contains(jTextNick.getText())) {
                 Calendar fechaN = p.getFechaN();
                 Date fecha = fechaN.getTime();
@@ -369,14 +353,14 @@ public class ConsultarPerfilProponentes extends javax.swing.JInternalFrame {
         jPanelDatos.setVisible(true);
         int seleccion = jTable1.rowAtPoint(evt.getPoint());
         String nickName = (String) jTable1.getValueAt(seleccion, 0);
-        ArrayList<DtProponente> prop = ICU.ListarProponentes();
+        ArrayList<DtUsuario> prop = ICU.ListarProponentes();
         for (int i = 0; i < dtproponentes.size(); i++) {
             if (dtproponentes.get(i).getNickName().equals(nickName)) {
                 this.proponenteSeleccionado = dtproponentes.get(i).getNickName();
-                DtProponente p = dtproponentes.get(i);
+                DtUsuario p = dtproponentes.get(i);
                 jLabelNombre.setText(p.getNombre() + " " + p.getApellido());
                 jLabelCorreo.setText(p.getCorreo());
-                jLabelSitioWeb.setText(p.getSitioweb());
+                jLabelSitioWeb.setText(p.getSitioWeb());
                 jTextAreaBiografia.setText(p.getBiografia());
                 jLabelDireccion.setText(p.getDireccion());
                 Date fechaNaci = p.getFechaN().getTime();
