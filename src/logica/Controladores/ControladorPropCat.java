@@ -16,7 +16,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import static java.nio.file.StandardOpenOption.CREATE;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -378,9 +377,9 @@ public class ControladorPropCat implements IPropCat {
                             }
                         }
                     }
+                } else {
+                    return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable, colaborable);
                 }
-
-                return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable, colaborable);
             }
         } else {
             throw new Exception("La propuesta ingresada no esta en el sistema");
@@ -413,16 +412,13 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public void CargarPropuestas() {
         this.dbPropuesta.cargarCategorias();
-
         Iterator it = this.propuestas.entrySet().iterator();
-
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta aux = (Propuesta) mentry.getValue();
 
             this.dbPropuesta.cargarEstadoPropuesta(aux);
         }
-
     }
 
     @Override
@@ -951,7 +947,6 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public List<DtinfoPropuesta> ListarPropuesta() {
         this.EvaluarEstadosPropuestas();
-
         List<DtinfoPropuesta> propuestas = new ArrayList<>();
         Set set = this.propuestas.entrySet();
         Iterator it = set.iterator();
@@ -1122,7 +1117,6 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public boolean ExtenderFinanciacion(String Titulo) {
         Iterator it = this.getPropuestas().entrySet().iterator();
-
         while (it.hasNext()) {
             Map.Entry mtry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mtry.getValue();
@@ -1230,18 +1224,14 @@ public class ControladorPropCat implements IPropCat {
 
     @Override
     public List<DtConsultaPropuesta> getDtPropuestas() throws Exception {
-        Iterator it = this.getPropuestas().entrySet().iterator();
         List<DtConsultaPropuesta> lista = new ArrayList<>();
+        Iterator it = this.getPropuestas().entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry mtry = (Map.Entry) it.next();
-
             Propuesta prop = (Propuesta) mtry.getValue();
-
             if (prop.getEstaActiva()) {
-
                 Date fecha = (Date) prop.getFecha().getTime();
                 String fechaR = new SimpleDateFormat("dd/MMM/yyyy").format(fecha);
-
                 DtConsultaPropuesta dtCP = this.SeleccionarPropuesta(prop.getTituloP(), null);
                 lista.add(dtCP);
             }

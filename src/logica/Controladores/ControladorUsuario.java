@@ -779,7 +779,6 @@ public class ControladorUsuario implements IControladorUsuario {
 
     @Override
     public DtUsuario ObtenerDTUsuario(String nombreU) {
-
         DtUsuario dtc = null;
         Set set = Usuarios.entrySet();
         Iterator iterator = set.iterator();
