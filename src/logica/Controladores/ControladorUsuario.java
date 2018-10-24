@@ -157,7 +157,7 @@ public class ControladorUsuario implements IControladorUsuario {
         boolean res = this.dbUsuario.dejarseguirUsuario(nickUsu1, nickUsu2);
         if (res) {
             aux1.getSeguidos().remove(nickUsu2, aux2);
-            aux2.getSeguidos().remove(nickUsu1, aux1);
+            aux2.getSeguidores().remove(nickUsu1, aux1);
             return true;
         }
 
@@ -1017,14 +1017,16 @@ public class ControladorUsuario implements IControladorUsuario {
                 Usuario aux = (Usuario) mentry.getValue();
                 if (aux instanceof Colaborador) {
                     DtUsuario aux2 = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
-                    aux2.setSeguidores((ArrayList<String>) aux.getSeguidores());
-                    retorno.add(aux2);
+                    aux2.getSeguidores().addAll(aux.getSeguidores().keySet());
+                    if(aux2.getSeguidores().size()>0){
+                    retorno.add(aux2);}
                 } else {
                     Proponente prop = (Proponente) aux;
                     if (prop.getEstaActivo()) {
                         DtUsuario aux2 = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
-                        aux2.setSeguidores((ArrayList<String>) prop.getSeguidores());
-                        retorno.add(aux2);
+                        aux2.getSeguidores().addAll(prop.getSeguidores().keySet());
+                        if(aux2.getSeguidores().size()>0){
+                        retorno.add(aux2);}
                     }
                 }
 

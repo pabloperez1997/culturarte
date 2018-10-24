@@ -35,6 +35,11 @@ public class PublicadorConsultarUsuario {
     public DtListUsuario ListarUsuarios() {
         return new DtListUsuario(Fabrica.getInstance().getIControladorUsuario().ListarUsuarios());
     }
+    
+    @WebMethod
+    public DtListUsuario ListarUsuariosRanking() {
+        return new DtListUsuario(Fabrica.getInstance().getIControladorUsuario().ListarUsuariosRanking());
+    }
 
     @WebMethod
     public DtListInfoPropuesta ListarPropuestasNoIngresadas(@WebParam(name = "nickname") String nickname) {
