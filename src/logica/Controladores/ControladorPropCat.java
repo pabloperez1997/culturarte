@@ -323,7 +323,6 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public DtinfoPropuesta SeleccionarPropuestaR(String titulo) {
         this.EvaluarEstadosPropuestas();
-
         Map<String, Propuesta> prop = this.propuestas;
         Set set = prop.entrySet();
         Iterator iterator = set.iterator();
@@ -372,7 +371,6 @@ public class ControladorPropCat implements IPropCat {
                     tipoR = "Entradas y Porcentaje";
                 } else {
                     tipoR = prop.getRetorno().name();
-
                 }
 
                 DtUsuario usu = null;
