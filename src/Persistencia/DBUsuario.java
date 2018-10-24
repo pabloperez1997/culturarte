@@ -185,6 +185,7 @@ public class DBUsuario {
                 Usuario seguido = Fabrica.getInstance().getIControladorUsuario().getUsuarios().get(st.getString("nickSeguido"));
 
                 usu.setSeguido(seguido);
+                seguido.getSeguidores().put(usu.getNickname(), usu);
 
             }
             statement.close();
