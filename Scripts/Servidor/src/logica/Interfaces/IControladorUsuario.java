@@ -14,7 +14,6 @@ import logica.Clases.Colaboracion;
 import logica.Clases.Colaborador;
 import logica.Clases.DtColaboraciones;
 import logica.Clases.DtNickTitProp;
-import logica.Clases.DtProponente;
 import logica.Clases.DtSeguidor;
 import logica.Clases.DtUsuario;
 import logica.Clases.DtinfoColaborador;
@@ -42,7 +41,7 @@ public interface IControladorUsuario {
 
     public abstract Proponente ObtenerProponente(String nombreP);
 
-    public abstract ArrayList<DtProponente> ListarProponentes();
+    public abstract ArrayList<DtUsuario> ListarProponentes();
 
     public abstract ArrayList<DtinfoColaborador> ListarColaboradores();
 

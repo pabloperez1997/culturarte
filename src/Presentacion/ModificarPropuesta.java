@@ -18,6 +18,7 @@ import logica.Clases.DtinfoPropuesta;
 import logica.Fabrica;
 import logica.Interfaces.IPropCat;
 
+
 /**
  *
  * @author gabri
