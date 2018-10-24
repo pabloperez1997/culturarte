@@ -5,6 +5,7 @@
  */
 package logica.Clases;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -27,6 +28,8 @@ public class DtUsuario {
     private String biografia;
     private String direccion;
     private String sitioweb;
+    private ArrayList<String> seguidores;
+    private ArrayList<String> seguidos;
 
     public DtUsuario(String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password, boolean EsProponente) {
         this.nickname = nickname;
@@ -37,6 +40,8 @@ public class DtUsuario {
         this.imagen = imagen;
         this.password = password;
         this.esproponente = EsProponente;
+        this.seguidores = new ArrayList<String>();
+	this.seguidos = new ArrayList<String>();
     }
 
     public DtUsuario(String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password, boolean EsProponente, String bio, String sit, String dir) {
@@ -51,6 +56,8 @@ public class DtUsuario {
         this.biografia = bio;
         this.sitioweb = sit;
         this.direccion = dir;
+        this.seguidores = new ArrayList<String>();
+	this.seguidos = new ArrayList<String>();
     }
 
     public boolean isEsproponente() {
@@ -104,4 +111,21 @@ public class DtUsuario {
     public String getBiografia() {
         return biografia;
     }
+    
+    public ArrayList<String> getSeguidores() {
+        return seguidores;
+    }
+
+    public void setSeguidores(ArrayList<String> seguidores) {
+        this.seguidores = seguidores;
+    }
+
+    public ArrayList<String> getSeguidos() {
+        return seguidos;
+    }
+
+    public void setSeguidos(ArrayList<String> seguidos) {
+        this.seguidos = seguidos;
+    }
+
 }
