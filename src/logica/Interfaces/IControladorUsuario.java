@@ -112,4 +112,6 @@ public interface IControladorUsuario {
     public abstract List<DtColaboraciones> getMontoColaboracion(String Colaborador);
 
     public abstract boolean DesactivarProponente(String nickProp)throws Exception;
+    
+    public abstract ArrayList<DtUsuario> ListarUsuariosRanking();
 }

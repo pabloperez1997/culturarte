@@ -108,6 +108,7 @@ public class ControladorUsuario implements IControladorUsuario {
         boolean res = this.dbUsuario.seguirUsuario(nickUsu1, nickUsu2);
         if (res) {
             aux1.getSeguidos().put(nickUsu2, aux2);
+            aux2.getSeguidores().put(nickUsu1, aux1);
             return true;
         }
 
@@ -156,6 +157,7 @@ public class ControladorUsuario implements IControladorUsuario {
         boolean res = this.dbUsuario.dejarseguirUsuario(nickUsu1, nickUsu2);
         if (res) {
             aux1.getSeguidos().remove(nickUsu2, aux2);
+            aux2.getSeguidores().remove(nickUsu1, aux1);
             return true;
         }
 
@@ -1001,6 +1003,55 @@ public class ControladorUsuario implements IControladorUsuario {
         } else {
             throw new Exception("El Proponente que desea desactivar no existe");
         }
+    }
+    
+    
+    @Override
+    public ArrayList<DtUsuario> ListarUsuariosRanking() {
+        Set set = Usuarios.entrySet();
+        Iterator iterator = set.iterator();
+        ArrayList<DtUsuario> retorno = new ArrayList();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            if (mentry.getValue() instanceof Usuario) {
+                Usuario aux = (Usuario) mentry.getValue();
+                if (aux instanceof Colaborador) {
+                    DtUsuario aux2 = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
+                    aux2.getSeguidores().addAll(aux.getSeguidores().keySet());
+                    if(aux2.getSeguidores().size()>0){
+                    retorno.add(aux2);}
+                } else {
+                    Proponente prop = (Proponente) aux;
+                    if (prop.getEstaActivo()) {
+                        DtUsuario aux2 = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
+                        aux2.getSeguidores().addAll(prop.getSeguidores().keySet());
+                        if(aux2.getSeguidores().size()>0){
+                        retorno.add(aux2);}
+                    }
+                }
+
+            }
+        }
+
+        Iterator<DtUsuario> actual;
+        DtUsuario usr,usr1;
+        int siguiente;
+
+        actual = retorno.iterator();
+        for(int i=0; i<retorno.size();i++)
+        {
+             siguiente = i;
+             siguiente++;
+             while(siguiente<retorno.size()){
+                  if(retorno.get(i).getSeguidores().size() < retorno.get(siguiente).getSeguidores().size()){
+                    usr= retorno.set(siguiente, retorno.get(i));
+                    usr1= retorno.set(i,usr);      
+                  }
+                  siguiente++;                    
+             }        
+        }
+
+        return retorno;
     }
 
 }

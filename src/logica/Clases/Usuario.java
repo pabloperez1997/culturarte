@@ -31,9 +31,10 @@ public class Usuario {
         this.password = password;
     }
     private Map<String, Usuario> seguidos;
+    private Map<String, Usuario> seguidores;
     private Map<String,Propuesta> favoritas;
-    
 
+    
     public Usuario(String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen,String password) {
         this.nickname = nickname;
         this.nombre = nombre;
@@ -43,6 +44,7 @@ public class Usuario {
         this.imagen = imagen;
         this.password=password;
         this.seguidos = new HashMap<>();
+        this.seguidores = new HashMap<>();
         this.favoritas = new HashMap<>();
     }
 
@@ -106,4 +108,13 @@ public class Usuario {
     public void setSeguido(Usuario u){
         this.seguidos.put(u.getNickname(), u);
     }
+    
+    public Map<String, Usuario> getSeguidores() {
+        return seguidores;
+    }
+
+    public void setSeguidores(Map<String, Usuario> seguidores) {
+        this.seguidores = seguidores;
+    }
+    
 }
