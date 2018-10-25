@@ -193,16 +193,18 @@ public class ControladorPropCat implements IPropCat {
         if (this.propuestas.get(tituloP) != null) {
             throw new Exception("Ya existe una propuesta bajo ese Nombre");
         }
+
         TipoE tipo = TipoE.Ingresada;
         Calendar fechaI = new GregorianCalendar();
         EstadoPropuesta estado = new EstadoPropuesta(tipo, fechaI, true);
         String urlImagen;
-        /*if (imagen != null) {
+
+        if (imagen != null) {
             urlImagen = imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo();
         } else {
             urlImagen = "Culturarte.png";
         }
-         */
+
         TipoRetorno tipoR;
 
         switch (retorno) {
@@ -370,7 +372,7 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public DtConsultaPropuesta SeleccionarPropuesta(String titulo, String proponente) throws Exception {
+    public DtConsultaPropuesta SeleccionarPropuesta(String titulo, String proponente) {
         Propuesta prop = this.propuestas.get(titulo);
         if (prop != null) {
             if (prop.getEstaActiva()) {
@@ -386,8 +388,6 @@ public class ControladorPropCat implements IPropCat {
                     tipoR = prop.getRetorno().name();
                 }
 
-                DtUsuario usu = null;
-
                 Date fecha = (Date) prop.getFecha().getTime();
                 String fechaR = new SimpleDateFormat("dd/MMM/yyyy").format(fecha);
 
@@ -397,7 +397,7 @@ public class ControladorPropCat implements IPropCat {
                 boolean colaborable = false;
 
                 if (proponente != null) {
-                    usu = (DtUsuario) Fabrica.getInstance().getIControladorUsuario().ObtenerDTUsuario(proponente);
+                    DtUsuario usu = (DtUsuario) Fabrica.getInstance().getIControladorUsuario().ObtenerDTUsuario(proponente);
 
                     if (prop.getAutor().getNickname().equals(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
                         cancelable = true;
@@ -418,8 +418,6 @@ public class ControladorPropCat implements IPropCat {
                     return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable, colaborable);
                 }
             }
-        } else {
-            throw new Exception("La propuesta ingresada no esta en el sistema");
         }
         return null;
     }
