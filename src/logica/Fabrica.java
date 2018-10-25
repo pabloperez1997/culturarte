@@ -5,14 +5,17 @@
  */
 package logica;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import logica.Clases.Colaborador;
 import logica.Clases.DataImagen;
 import logica.Clases.EstadoPropuesta;
@@ -26,7 +29,6 @@ import logica.Controladores.ControladorPropCat;
 import logica.Interfaces.IControladorUsuario;
 import logica.Clases.codificador;
 import logica.Clases.convertidorDeIMG;
-import logica.Controladores.configuraciones;
 
 /**
  *
@@ -82,12 +84,22 @@ public class Fabrica {
         IControladorUsuario ControladorU = ControladorUsuario.getInstance();
         return ControladorU; //To change body of generated methods, choose Tools | Templates.
     }
+     public String leerPropiedades(String caso) {
+        Properties prop = new Properties();
+        InputStream archivo = null;
+        try {
+            archivo = new FileInputStream(System.getProperty("user.dir") + "\\config\\config.properties");
+            prop.load(archivo);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return prop.getProperty(caso);
+    }
 
     public void cargarDatosdePrueba() throws IOException {
         IControladorUsuario ICU = this.getIControladorUsuario();
         IPropCat IPC = this.getControladorPropCat();
-        configuraciones configuracion = new configuraciones();
-        String ruta = configuracion.getCarpetaImagenes() + "\\fotosdp\\";
+        String ruta = leerPropiedades("fotosdp");
 //    
 //    DBUsuario d=new DBUsuario();
 //    d.limpiarBD();
@@ -424,4 +436,5 @@ public class Fabrica {
         ICU.eliminarCategorias();
 
     }
+    
 }

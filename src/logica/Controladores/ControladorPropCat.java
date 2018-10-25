@@ -28,9 +28,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
 import logica.Clases.Colaborador;
@@ -53,7 +55,6 @@ import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
 import logica.Clases.DataImagen;
-import logica.Controladores.configuraciones;
 import logica.Clases.convertidorDeIMG;
 import logica.Clases.DtUsuario;
 
@@ -72,7 +73,8 @@ public class ControladorPropCat implements IPropCat {
     private Proponente uProponente;
     private Propuesta Propuesta;
     private DBColaboracion dbColaboracion = null;
-    private String carpetaImagenesPropuestas = new configuraciones().getCarpetaImagenes();
+    private final String carpetaImagenesPropuestas = leerPropiedades("fPropuestas");
+    private String carpetaImagenesDp;
     convertidorDeIMG convertidor = new convertidorDeIMG();
 
     public static ControladorPropCat getInstance() {
@@ -109,6 +111,18 @@ public class ControladorPropCat implements IPropCat {
 
         }
         return retorno;
+    }
+
+    public String leerPropiedades(String caso) {
+        Properties prop = new Properties();
+        InputStream archivo = null;
+        try {
+            archivo = new FileInputStream(System.getProperty("user.dir") + "\\config\\config.properties");
+            prop.load(archivo);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return prop.getProperty(caso);
     }
 
     @Override
@@ -190,7 +204,7 @@ public class ControladorPropCat implements IPropCat {
         }
          */
         TipoRetorno tipoR;
-        
+
         switch (retorno) {
             case "Entradas":
                 tipoR = TipoRetorno.Entradas;
@@ -243,7 +257,7 @@ public class ControladorPropCat implements IPropCat {
         if (!fileImagenes.isDirectory()) {
             throw new IOException("La carpeta de imagenes no fue configurada");
         }//if.
-        String pathStr = this.carpetaImagenesPropuestas + "\\fPropuestas" + File.separatorChar + titulo;
+        String pathStr = this.carpetaImagenesPropuestas + File.separatorChar + titulo;
         final File dirUsuario = new File(pathStr);
         if (!dirUsuario.isDirectory()) {
             dirUsuario.mkdirs();
@@ -542,8 +556,8 @@ public class ControladorPropCat implements IPropCat {
         Propuesta nuevaP;
         nuevaP = new Propuesta(tituloP, descripcion, imagen, lugar, fecha, montoE, montoTot, null, cat, retorno, p, true);
         this.propuestas.put(tituloP, nuevaP);
-        String ruta = new configuraciones().getCarpetaImagenes();
-        String url = ruta + "\\fotosdp\\" + imagen;
+        String ruta = leerPropiedades("fotosdp");
+        String url = ruta + imagen;
         try {
             DataImagen img = convertidor.convertirStringAImg(url, tituloP);
 
@@ -680,7 +694,7 @@ public class ControladorPropCat implements IPropCat {
 
         File origen = new File(foto);
         String extension = getFileExtension(origen);
-        String rutaLocal = System.getProperty("user.dir") + "\\fPropuestas\\" + tituloP + "." + extension;
+        String rutaLocal = carpetaImagenesPropuestas + tituloP + "." + extension;
         File destino = new File(rutaLocal);
 
         try {
