@@ -11,10 +11,8 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.Endpoint;
 import logica.Clases.DataImagen;
-import logica.Clases.TipoRetorno;
 import logica.Fabrica;
 
 /**
