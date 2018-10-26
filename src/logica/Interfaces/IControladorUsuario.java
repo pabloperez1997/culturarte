@@ -114,4 +114,6 @@ public interface IControladorUsuario {
     public abstract boolean DesactivarProponente(String nickProp)throws Exception;
     
     public abstract ArrayList<DtUsuario> ListarUsuariosRanking();
+    
+    public abstract boolean agregarRegistro(String ip,String navegador,String sitio,String so);
 }

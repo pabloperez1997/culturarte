@@ -46,5 +46,9 @@ public class PublicadorInicio {
     public DtListConsultaPropuesta getDtPropuestas() throws Exception {
         return new DtListConsultaPropuesta(Fabrica.getInstance().getControladorPropCat().getDtPropuestas());
     }
+    @WebMethod
+    public boolean agregarRegistro(@WebParam(name = "ip") String ip,@WebParam(name = "navegador") String navegador,@WebParam(name = "sitio")String sitio,@WebParam(name = "SO")String so){
+        return Fabrica.getInstance().getIControladorUsuario().agregarRegistro(ip, navegador, sitio, so);
+    }
 
 }
