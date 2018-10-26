@@ -7,7 +7,6 @@ package Servicios;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.jws.WebMethod;
@@ -15,8 +14,8 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.ws.Endpoint;
-import logica.Clases.DataImagen;
 import logica.Fabrica;
+import logica.Clases.DataImagen;
 
 /**
  *
@@ -33,13 +32,15 @@ public class PublicadorAltaUsuario {
     }
 
     @WebMethod
-    public boolean AgregarUsuarioProponente(@WebParam(name = "nick") String nick, @WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido, @WebParam(name = "correo") String correo, @WebParam(name = "fecha") String fecha, @WebParam(name = "direccion") String direccion, @WebParam(name = "biografia") String biografia, @WebParam(name = "sitio") String sitio, @WebParam(name = "hash") String hash) {
-        return Fabrica.getInstance().getIControladorUsuario().AgregarUsuarioProponente(nick, nombre, apellido, correo, ParseFecha(fecha), null, direccion, biografia, sitio, hash);
+    public boolean AgregarUsuarioProponente(@WebParam(name = "nick") String nick, @WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido, @WebParam(name = "correo") String correo, @WebParam(name = "fecha") String fecha, @WebParam(name = "direccion") String direccion, @WebParam(name = "biografia") String biografia, @WebParam(name = "sitio") String sitio, @WebParam(name = "hash") String hash, @WebParam(name = "arreglo") byte[] arreglo, @WebParam(name = "nombreimg") String nombreimg, @WebParam(name = "extencion") String extencion) {
+        DataImagen dataImagen = new DataImagen(arreglo, nombreimg, extencion);
+        return Fabrica.getInstance().getIControladorUsuario().AgregarUsuarioProponente(nick, nombre, apellido, correo, ParseFecha(fecha), dataImagen, direccion, biografia, sitio, hash);
     }
 
     @WebMethod
-    public boolean AgregarUsuarioColaborador(@WebParam(name = "nick") String nick, @WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido, @WebParam(name = "correo") String correo, @WebParam(name = "fecha") String fecha, @WebParam(name = "hash") String hash) {
-        return Fabrica.getInstance().getIControladorUsuario().AgregarUsuarioColaborador(nick, nombre, apellido, correo, ParseFecha(fecha), null, hash);
+    public boolean AgregarUsuarioColaborador(@WebParam(name = "nick") String nick, @WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido, @WebParam(name = "correo") String correo, @WebParam(name = "fecha") String fecha, @WebParam(name = "hash") String hash,@WebParam(name = "arreglo") byte[] arreglo, @WebParam(name = "nombreimg") String nombreimg, @WebParam(name = "extencion") String extencion) {
+        DataImagen dataImagen = new DataImagen(arreglo, nombreimg, extencion);
+        return Fabrica.getInstance().getIControladorUsuario().AgregarUsuarioColaborador(nick, nombre, apellido, correo, ParseFecha(fecha), dataImagen, hash);
     }
 
     public GregorianCalendar ParseFecha(String fecha) {
