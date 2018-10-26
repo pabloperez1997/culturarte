@@ -16,7 +16,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import static java.nio.file.StandardOpenOption.CREATE;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -29,9 +28,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
 import logica.Clases.Colaborador;
@@ -54,7 +55,6 @@ import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
 import logica.Clases.DataImagen;
-import logica.Controladores.configuraciones;
 import logica.Clases.convertidorDeIMG;
 import logica.Clases.DtUsuario;
 
@@ -73,7 +73,8 @@ public class ControladorPropCat implements IPropCat {
     private Proponente uProponente;
     private Propuesta Propuesta;
     private DBColaboracion dbColaboracion = null;
-    private String carpetaImagenesPropuestas = new configuraciones().getCarpetaImagenes();
+    private final String carpetaImagenesPropuestas = leerPropiedades("fPropuestas");
+    private String carpetaImagenesDp;
     convertidorDeIMG convertidor = new convertidorDeIMG();
 
     public static ControladorPropCat getInstance() {
@@ -110,6 +111,18 @@ public class ControladorPropCat implements IPropCat {
 
         }
         return retorno;
+    }
+
+    public String leerPropiedades(String caso) {
+        Properties prop = new Properties();
+        InputStream archivo = null;
+        try {
+            archivo = new FileInputStream(System.getProperty("user.dir") + "\\config\\config.properties");
+            prop.load(archivo);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return prop.getProperty(caso);
     }
 
     @Override
@@ -180,18 +193,20 @@ public class ControladorPropCat implements IPropCat {
         if (this.propuestas.get(tituloP) != null) {
             throw new Exception("Ya existe una propuesta bajo ese Nombre");
         }
+
         TipoE tipo = TipoE.Ingresada;
         Calendar fechaI = new GregorianCalendar();
         EstadoPropuesta estado = new EstadoPropuesta(tipo, fechaI, true);
         String urlImagen;
-        /*if (imagen != null) {
+
+        if (imagen != null) {
             urlImagen = imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo();
         } else {
             urlImagen = "Culturarte.png";
         }
-         */
+
         TipoRetorno tipoR;
-        
+
         switch (retorno) {
             case "Entradas":
                 tipoR = TipoRetorno.Entradas;
@@ -244,7 +259,7 @@ public class ControladorPropCat implements IPropCat {
         if (!fileImagenes.isDirectory()) {
             throw new IOException("La carpeta de imagenes no fue configurada");
         }//if.
-        String pathStr = this.carpetaImagenesPropuestas + "\\fPropuestas" + File.separatorChar + titulo;
+        String pathStr = this.carpetaImagenesPropuestas + File.separatorChar + titulo;
         final File dirUsuario = new File(pathStr);
         if (!dirUsuario.isDirectory()) {
             dirUsuario.mkdirs();
@@ -324,7 +339,6 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public DtinfoPropuesta SeleccionarPropuestaR(String titulo) {
         this.EvaluarEstadosPropuestas();
-
         Map<String, Propuesta> prop = this.propuestas;
         Set set = prop.entrySet();
         Iterator iterator = set.iterator();
@@ -358,9 +372,8 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public DtConsultaPropuesta SeleccionarPropuesta(String titulo, String proponente) throws Exception {
+    public DtConsultaPropuesta SeleccionarPropuesta(String titulo, String proponente) {
         Propuesta prop = this.propuestas.get(titulo);
-
         if (prop != null) {
             if (prop.getEstaActiva()) {
                 String estado;
@@ -373,10 +386,7 @@ public class ControladorPropCat implements IPropCat {
                     tipoR = "Entradas y Porcentaje";
                 } else {
                     tipoR = prop.getRetorno().name();
-
                 }
-
-                DtUsuario usu = null;
 
                 Date fecha = (Date) prop.getFecha().getTime();
                 String fechaR = new SimpleDateFormat("dd/MMM/yyyy").format(fecha);
@@ -387,7 +397,7 @@ public class ControladorPropCat implements IPropCat {
                 boolean colaborable = false;
 
                 if (proponente != null) {
-                    usu = (DtUsuario) Fabrica.getInstance().getIControladorUsuario().ObtenerDTUsuario(proponente);
+                    DtUsuario usu = (DtUsuario) Fabrica.getInstance().getIControladorUsuario().ObtenerDTUsuario(proponente);
 
                     if (prop.getAutor().getNickname().equals(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
                         cancelable = true;
@@ -404,12 +414,10 @@ public class ControladorPropCat implements IPropCat {
                             }
                         }
                     }
+                } else {
+                    return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable, colaborable);
                 }
-
-                return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable, colaborable);
             }
-        } else {
-            throw new Exception("La propuesta ingresada no esta en el sistema");
         }
         return null;
     }
@@ -439,16 +447,13 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public void CargarPropuestas() {
         this.dbPropuesta.cargarCategorias();
-
         Iterator it = this.propuestas.entrySet().iterator();
-
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta aux = (Propuesta) mentry.getValue();
 
             this.dbPropuesta.cargarEstadoPropuesta(aux);
         }
-
     }
 
     @Override
@@ -549,8 +554,8 @@ public class ControladorPropCat implements IPropCat {
         Propuesta nuevaP;
         nuevaP = new Propuesta(tituloP, descripcion, imagen, lugar, fecha, montoE, montoTot, null, cat, retorno, p, true);
         this.propuestas.put(tituloP, nuevaP);
-        String ruta = new configuraciones().getCarpetaImagenes();
-        String url = ruta + "\\fotosdp\\" + imagen;
+        String ruta = leerPropiedades("fotosdp");
+        String url = ruta + imagen;
         try {
             DataImagen img = convertidor.convertirStringAImg(url, tituloP);
 
@@ -687,7 +692,7 @@ public class ControladorPropCat implements IPropCat {
 
         File origen = new File(foto);
         String extension = getFileExtension(origen);
-        String rutaLocal = System.getProperty("user.dir") + "\\fPropuestas\\" + tituloP + "." + extension;
+        String rutaLocal = carpetaImagenesPropuestas + tituloP + "." + extension;
         File destino = new File(rutaLocal);
 
         try {
@@ -977,7 +982,6 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public List<DtinfoPropuesta> ListarPropuesta() {
         this.EvaluarEstadosPropuestas();
-
         List<DtinfoPropuesta> propuestas = new ArrayList<>();
         Set set = this.propuestas.entrySet();
         Iterator it = set.iterator();
@@ -1148,7 +1152,6 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public boolean ExtenderFinanciacion(String Titulo) {
         Iterator it = this.getPropuestas().entrySet().iterator();
-
         while (it.hasNext()) {
             Map.Entry mtry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mtry.getValue();
@@ -1256,18 +1259,14 @@ public class ControladorPropCat implements IPropCat {
 
     @Override
     public List<DtConsultaPropuesta> getDtPropuestas() throws Exception {
-        Iterator it = this.getPropuestas().entrySet().iterator();
         List<DtConsultaPropuesta> lista = new ArrayList<>();
+        Iterator it = this.getPropuestas().entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry mtry = (Map.Entry) it.next();
-
             Propuesta prop = (Propuesta) mtry.getValue();
-
             if (prop.getEstaActiva()) {
-
                 Date fecha = (Date) prop.getFecha().getTime();
                 String fechaR = new SimpleDateFormat("dd/MMM/yyyy").format(fecha);
-
                 DtConsultaPropuesta dtCP = this.SeleccionarPropuesta(prop.getTituloP(), null);
                 lista.add(dtCP);
             }

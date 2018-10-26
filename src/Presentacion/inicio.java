@@ -459,7 +459,6 @@ public class inicio extends javax.swing.JFrame {
 
     public void PublicarServicios() {
         String URL;
-
         PublicadorAltaPropuesta pubAP = new PublicadorAltaPropuesta();
         URL = this.LeerProperties("AltaPropuesta");
         pubAP.publicar(URL);
@@ -483,7 +482,6 @@ public class inicio extends javax.swing.JFrame {
         PublicadorInicio pubI = new PublicadorInicio();
         URL = this.LeerProperties("Inicio");
         pubI.publicarInicio(URL);
-
     }
 
     public String LeerProperties(String caso) {

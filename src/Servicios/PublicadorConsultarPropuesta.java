@@ -37,8 +37,13 @@ public class PublicadorConsultarPropuesta {
     }
 
     @WebMethod
-    public DtConsultaPropuesta SeleccionarPropuesta(@WebParam(name = "titulo") String titulo, @WebParam(name = "nickProp") String nickProp) throws Exception {
+    public DtConsultaPropuesta SeleccionarPropuesta(@WebParam(name = "titulo") String titulo, @WebParam(name = "nickProp") String nickProp) {
         return Fabrica.getInstance().getControladorPropCat().SeleccionarPropuesta(titulo, nickProp);
+    }
+
+    @WebMethod
+    public DtConsultaPropuesta SeleccionarPropuesta2(@WebParam(name = "titulo") String titulo) {
+        return Fabrica.getInstance().getControladorPropCat().SeleccionarPropuesta(titulo, null);
     }
 
     @WebMethod

@@ -27,9 +27,11 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
 import logica.Clases.DataImagen;
@@ -44,7 +46,6 @@ import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
 import logica.Clases.codificador;
-import logica.Controladores.configuraciones;
 
 /**
  *
@@ -59,8 +60,7 @@ public class ControladorUsuario implements IControladorUsuario {
     private DBUsuario dbUsuario = null;
     private Colaborador Colaborador;
     codificador a = new codificador();
-    configuraciones configuracion = new configuraciones();
-    private String carpetaImagenesPerfiles = configuracion.getCarpetaImagenes() + "\\fPerfiles";
+    private String carpetaImagenesPerfiles = leerPropiedades("fPerfiles");
 
     public static ControladorUsuario getInstance() {
         if (instancia == null) {
@@ -780,7 +780,6 @@ public class ControladorUsuario implements IControladorUsuario {
 
     @Override
     public DtUsuario ObtenerDTUsuario(String nombreU) {
-
         DtUsuario dtc = null;
         Set set = Usuarios.entrySet();
         Iterator iterator = set.iterator();
@@ -1004,8 +1003,7 @@ public class ControladorUsuario implements IControladorUsuario {
             throw new Exception("El Proponente que desea desactivar no existe");
         }
     }
-    
-    
+
     @Override
     public ArrayList<DtUsuario> ListarUsuariosRanking() {
         Set set = Usuarios.entrySet();
@@ -1018,15 +1016,17 @@ public class ControladorUsuario implements IControladorUsuario {
                 if (aux instanceof Colaborador) {
                     DtUsuario aux2 = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
                     aux2.getSeguidores().addAll(aux.getSeguidores().keySet());
-                    if(aux2.getSeguidores().size()>0){
-                    retorno.add(aux2);}
+                    if (aux2.getSeguidores().size() > 0) {
+                        retorno.add(aux2);
+                    }
                 } else {
                     Proponente prop = (Proponente) aux;
                     if (prop.getEstaActivo()) {
                         DtUsuario aux2 = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
                         aux2.getSeguidores().addAll(prop.getSeguidores().keySet());
-                        if(aux2.getSeguidores().size()>0){
-                        retorno.add(aux2);}
+                        if (aux2.getSeguidores().size() > 0) {
+                            retorno.add(aux2);
+                        }
                     }
                 }
 
@@ -1034,24 +1034,36 @@ public class ControladorUsuario implements IControladorUsuario {
         }
 
         Iterator<DtUsuario> actual;
-        DtUsuario usr,usr1;
+        DtUsuario usr, usr1;
         int siguiente;
 
         actual = retorno.iterator();
-        for(int i=0; i<retorno.size();i++)
-        {
-             siguiente = i;
-             siguiente++;
-             while(siguiente<retorno.size()){
-                  if(retorno.get(i).getSeguidores().size() < retorno.get(siguiente).getSeguidores().size()){
-                    usr= retorno.set(siguiente, retorno.get(i));
-                    usr1= retorno.set(i,usr);      
-                  }
-                  siguiente++;                    
-             }        
+        for (int i = 0; i < retorno.size(); i++) {
+            siguiente = i;
+            siguiente++;
+            while (siguiente < retorno.size()) {
+                if (retorno.get(i).getSeguidores().size() < retorno.get(siguiente).getSeguidores().size()) {
+                    usr = retorno.set(siguiente, retorno.get(i));
+                    usr1 = retorno.set(i, usr);
+                }
+                siguiente++;
+            }
         }
 
         return retorno;
+
+    }
+
+    public String leerPropiedades(String caso) {
+        Properties prop = new Properties();
+        InputStream archivo = null;
+        try {
+            archivo = new FileInputStream(System.getProperty("user.dir") + "\\config\\config.properties");
+            prop.load(archivo);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return prop.getProperty(caso);
     }
 
 }
