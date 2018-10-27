@@ -98,4 +98,9 @@ public class PublicadorConsultarPropuesta {
     public DtListInfoPropuesta ListarPropuestasNoI() {
         return new DtListInfoPropuesta(Fabrica.getInstance().getControladorPropCat().ListarPropuestaNOI());
     }
+
+    @WebMethod
+    public byte[] retornarImagen(@WebParam(name = "titulo") String titulo) throws Exception {
+        return Fabrica.getInstance().getControladorPropCat().retornarImagen(titulo);
+    }
 }

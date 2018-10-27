@@ -11,7 +11,6 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import logica.Clases.DataImagen;
-import logica.Clases.TipoRetorno;
 import logica.Fabrica;
 import logica.Interfaces.IPropCat;
 import logica.Clases.convertidorDeIMG;

@@ -5,6 +5,8 @@
  */
 package logica.Interfaces;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -133,4 +135,6 @@ public interface IPropCat {
     public abstract void DesactivarPropuesta(Propuesta prop);
 
     public abstract List<DtConsultaPropuesta> getDtPropuestas() throws Exception;
+
+    public byte[] retornarImagen(String titulo) throws IOException;
 }

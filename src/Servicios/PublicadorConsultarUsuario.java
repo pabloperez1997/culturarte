@@ -8,6 +8,7 @@ package Servicios;
 import DtServicios.DtListUsuario;
 import DtServicios.DtListInfoPropuesta;
 import DtServicios.DtListColaboraciones;
+import java.awt.image.BufferedImage;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -111,5 +112,10 @@ public class PublicadorConsultarUsuario {
     @WebMethod
     public boolean DejarSeguirUsuario(@WebParam(name = "nick1") String nick1, @WebParam(name = "nick2") String nick2) throws Exception {
         return Fabrica.getInstance().getIControladorUsuario().dejarseguirUsuario(nick1, nick2);
+    }
+    
+    @WebMethod
+    public byte[] retornarImagen(@WebParam(name = "nick") String nick) throws Exception {
+        return Fabrica.getInstance().getIControladorUsuario().retornarImagen(nick);
     }
 }
