@@ -430,8 +430,7 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public List<DtinfoPropuesta> DarPropuestasCol(Colaborador c
-    ) {
+    public List<DtinfoPropuesta> DarPropuestasCol(Colaborador c) {
         this.EvaluarEstadosPropuestas();
 
         List<DtinfoPropuesta> resultado = new ArrayList<>();
