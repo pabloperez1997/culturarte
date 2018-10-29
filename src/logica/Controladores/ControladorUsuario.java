@@ -11,6 +11,7 @@ import logica.Clases.Colaborador;
 import logica.Clases.Propuesta;
 import logica.Clases.Usuario;
 import Persistencia.DBUsuario;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -31,6 +32,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
@@ -658,6 +660,17 @@ public class ControladorUsuario implements IControladorUsuario {
             }
             return res;
         }
+    }
+    
+    @Override
+    public byte[] retornarImagen(String nick) throws IOException {
+        byte[] arreglo = null;
+        String ruta = leerPropiedades("fPerfiles") + File.separatorChar + this.Usuarios.get(nick).getCorreo();
+        String imagen = this.Usuarios.get(nick).getImagen();
+        String img = ruta + File.separatorChar + imagen;
+        File f = new File(img);
+        arreglo = Files.readAllBytes(f.toPath());
+        return arreglo;
     }
 
     @Override
