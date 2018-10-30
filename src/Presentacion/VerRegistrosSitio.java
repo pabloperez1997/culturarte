@@ -1,13 +1,29 @@
 package Presentacion;
 
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import logica.Clases.DtRegistro;
+import logica.Clases.DtinfoColaborador;
+import logica.Fabrica;
+import logica.Interfaces.IControladorUsuario;
+
 /**
  *
  * @author gabri
  */
 public class VerRegistrosSitio extends javax.swing.JInternalFrame {
-
+private IControladorUsuario ICU;
     public VerRegistrosSitio() {
         initComponents();
+        ICU=Fabrica.getInstance().getIControladorUsuario();
+        List<DtRegistro> rg=ICU.getListaRegistro();
+        DefaultTableModel modelo = (DefaultTableModel) TablaRegistro.getModel();
+        modelo.setRowCount(0);
+        for (int i = 0; i < rg.size(); i++) {
+            DtRegistro dr = (DtRegistro) rg.get(i);
+            Object[] dat = {dr.getIp(), dr.getSitio(), dr.getNavegador(),dr.getSO()};
+            modelo.addRow(dat);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -16,17 +32,17 @@ public class VerRegistrosSitio extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TablaRegistro = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Ver registros de acceso al sitio");
 
         jPanel1.setToolTipText("Ver registros de acceso al sitio");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TablaRegistro.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -57,7 +73,7 @@ public class VerRegistrosSitio extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TablaRegistro);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Buscar:");
@@ -166,11 +182,11 @@ public class VerRegistrosSitio extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TablaRegistro;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

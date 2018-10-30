@@ -1067,9 +1067,13 @@ public class ControladorUsuario implements IControladorUsuario {
         }
         return prop.getProperty(caso);
     }
-public boolean agregarRegistro(String ip,String navegador,String sitio,String so){
+    @Override
+    public boolean agregarRegistro(String ip,String navegador,String sitio,String so){
     DtRegistro dr= new DtRegistro(ip, sitio, navegador, so);
     this.RegistrosSitio.add(dr);
     return true;
+}
+public List<DtRegistro> getListaRegistro(){
+    return this.RegistrosSitio;
 }
 }
