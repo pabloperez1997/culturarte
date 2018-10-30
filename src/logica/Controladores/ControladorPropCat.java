@@ -397,7 +397,7 @@ public class ControladorPropCat implements IPropCat {
                 if (proponente != null) {
                     DtUsuario usu = (DtUsuario) Fabrica.getInstance().getIControladorUsuario().ObtenerDTUsuario(proponente);
 
-                    if (prop.getAutor().getNickname().equals(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
+                    if (prop.getAutor().getNickname().equals(usu.getNickName()) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
                         cancelable = true;
                     } else if (prop.getAutor().getNickname().equals(proponente)) {
                         if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
@@ -409,12 +409,13 @@ public class ControladorPropCat implements IPropCat {
                         if (!usu.Esproponente() && !prop.EsColaborador(usu.getNickName())) {
                             if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
                                 colaborable = true;
+
                             }
                         }
                     }
-                } else {
-                    return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable, colaborable);
+
                 }
+                return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable, colaborable);
             }
         }
         return null;
