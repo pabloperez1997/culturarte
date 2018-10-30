@@ -5,6 +5,8 @@
  */
 package logica.Interfaces;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -112,11 +114,13 @@ public interface IControladorUsuario {
 
     public abstract List<DtColaboraciones> getMontoColaboracion(String Colaborador);
 
-    public abstract boolean DesactivarProponente(String nickProp)throws Exception;
-    
+    public abstract boolean DesactivarProponente(String nickProp) throws Exception;
+
     public abstract ArrayList<DtUsuario> ListarUsuariosRanking();
     
     public abstract boolean agregarRegistro(String ip,String navegador,String sitio,String so);
     
     public abstract List<DtRegistro> getListaRegistro();
+
+    public byte[] retornarImagen(String nick) throws IOException;
 }

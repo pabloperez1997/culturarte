@@ -11,25 +11,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import logica.Clases.Categoria;
-import logica.Clases.Colaboracion;
 import logica.Clases.Colaborador;
 import logica.Clases.Comentario;
-import logica.Clases.DtColaboraciones;
 import logica.Clases.EstadoPropuesta;
 import logica.Clases.Proponente;
 import logica.Clases.Propuesta;
 import logica.Clases.TipoE;
 import logica.Clases.TipoRetorno;
-import logica.Clases.Usuario;
 import logica.Fabrica;
-import logica.Interfaces.IControladorUsuario;
-import logica.Interfaces.IPropCat;
 
 /**
  *

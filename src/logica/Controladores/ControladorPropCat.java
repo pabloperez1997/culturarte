@@ -7,6 +7,7 @@ package logica.Controladores;
 
 import Persistencia.DBColaboracion;
 import Persistencia.DBPropuesta;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -32,6 +33,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
@@ -202,7 +204,7 @@ public class ControladorPropCat implements IPropCat {
         if (imagen != null) {
             urlImagen = imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo();
         } else {
-            urlImagen = "Culturarte.png";
+            urlImagen = imagen.getNombreArchivo() + "." + "png";
         }
 
         TipoRetorno tipoR;
@@ -229,16 +231,12 @@ public class ControladorPropCat implements IPropCat {
         }
         cal.setTime(fechaDate);
 
-        Propuesta nuevaP = new Propuesta(tituloP, descripcion, "hj", lugar, cal, montoE, montoTot, estado, this.catRecordada, tipoR, this.uProponente, true);
+        Propuesta nuevaP = new Propuesta(tituloP, descripcion, urlImagen, lugar, cal, montoE, montoTot, estado, this.catRecordada, tipoR, this.uProponente, true);
         boolean agregada = this.dbPropuesta.agregarPropuesta(nuevaP, estado);
         if (agregada) {
             this.propuestas.put(tituloP, nuevaP);
             this.catRecordada.setPropuesta(nuevaP);
             this.uProponente.setPropuesta(nuevaP);
-            /*if (!urlImagen.equals("Culturarte.png")) {
-                grabarFotoPropuestas(tituloP, imagen);
-            }*/
-
         } else {
             this.catRecordada = null;
             this.uProponente = null;
@@ -399,7 +397,7 @@ public class ControladorPropCat implements IPropCat {
                 if (proponente != null) {
                     DtUsuario usu = (DtUsuario) Fabrica.getInstance().getIControladorUsuario().ObtenerDTUsuario(proponente);
 
-                    if (prop.getAutor().getNickname().equals(proponente) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
+                    if (prop.getAutor().getNickname().equals(usu.getNickName()) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
                         cancelable = true;
                     } else if (prop.getAutor().getNickname().equals(proponente)) {
                         if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
@@ -411,12 +409,13 @@ public class ControladorPropCat implements IPropCat {
                         if (!usu.Esproponente() && !prop.EsColaborador(usu.getNickName())) {
                             if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
                                 colaborable = true;
+
                             }
                         }
                     }
-                } else {
-                    return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable, colaborable);
+
                 }
+                return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable, colaborable);
             }
         }
         return null;
@@ -558,6 +557,7 @@ public class ControladorPropCat implements IPropCat {
         String url = ruta + imagen;
         try {
             DataImagen img = convertidor.convertirStringAImg(url, tituloP);
+            nuevaP.setImagen(img.getNombreArchivo() + "." + img.getExtensionArchivo());
 
             this.dbPropuesta = new DBPropuesta();
             boolean agregada = this.dbPropuesta.agregarPropuestaDatosdePrueba(nuevaP);
@@ -1275,4 +1275,14 @@ public class ControladorPropCat implements IPropCat {
         return lista;
     }
 
+    @Override
+    public byte[] retornarImagen(String titulo) throws IOException {
+        byte[] arreglo = null;
+        String ruta = leerPropiedades("fPropuestas") + this.propuestas.get(titulo).getTituloP();
+        String imagen = this.propuestas.get(titulo).getImagen();
+        String img = ruta + "\\" + imagen;
+        File f = new File(img);
+        arreglo = Files.readAllBytes(f.toPath());
+        return arreglo;
+    }
 }
