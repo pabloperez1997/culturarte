@@ -661,13 +661,19 @@ public class ControladorUsuario implements IControladorUsuario {
             return res;
         }
     }
-    
+
     @Override
     public byte[] retornarImagen(String nick) throws IOException {
         byte[] arreglo = null;
-        String ruta = leerPropiedades("fPerfiles") + File.separatorChar + this.Usuarios.get(nick).getCorreo();
-        String imagen = this.Usuarios.get(nick).getImagen();
-        String img = ruta + File.separatorChar + imagen;
+        Usuario user = this.Usuarios.get(nick);
+        String foto = user.getImagen();
+        String ruta = leerPropiedades("fPerfiles");
+        String img;
+        if (foto.equals("nadie.png")) {
+            img = ruta + "nadie.png";
+        } else {
+            img = ruta + user.getCorreo()+File.separatorChar+user.getImagen();
+        }        
         File f = new File(img);
         arreglo = Files.readAllBytes(f.toPath());
         return arreglo;
