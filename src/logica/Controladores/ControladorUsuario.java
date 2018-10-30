@@ -77,6 +77,7 @@ public class ControladorUsuario implements IControladorUsuario {
         this.Usuarios = new HashMap<>();
         this.dbUsuario = new DBUsuario();
         this.IPC = Fabrica.getInstance().getControladorPropCat();
+        this.RegistrosSitio=new ArrayList<>();
     }
 
     @Override
