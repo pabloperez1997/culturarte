@@ -87,4 +87,8 @@ public class Colaboracion {
         return ok;
     }
 
+    public DtColaboraciones getDtColaboracion() {
+        return new DtColaboraciones(this);
+    }
+
 }

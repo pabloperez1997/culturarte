@@ -23,7 +23,7 @@ public class DtinfoColaborador {
     private String correo;
     private Calendar fechaN;
     private String imagen;
-    private List<Colaboracion> colaboraciones;
+    private List<DtColaboraciones> colaboraciones;
 
     public DtinfoColaborador(String nickname, String nombre, String apellido, String correo, Calendar fechaN) {
         this.nickname = nickname;
@@ -50,10 +50,10 @@ public class DtinfoColaborador {
         this.correo = aux.getCorreo();
         this.fechaN = aux.getFechaN();
         this.imagen = aux.getImagen();
-        this.colaboraciones = aux.getColaboraciones();
+        this.colaboraciones = aux.getDtColaboraciones();
     }
 
-    public List<Colaboracion> getColaboraciones() {
+    public List<DtColaboraciones> getColaboraciones() {
         return colaboraciones;
     }
 
