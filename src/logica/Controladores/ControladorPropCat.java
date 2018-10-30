@@ -1280,7 +1280,7 @@ public class ControladorPropCat implements IPropCat {
         byte[] arreglo = null;
         String ruta = leerPropiedades("fPropuestas") + this.propuestas.get(titulo).getTituloP();
         String imagen = this.propuestas.get(titulo).getImagen();
-        String img = ruta + File.separatorChar + imagen;
+        String img = ruta + "\\" + imagen;
         File f = new File(img);
         arreglo = Files.readAllBytes(f.toPath());
         return arreglo;
