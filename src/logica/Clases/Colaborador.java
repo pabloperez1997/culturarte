@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -43,5 +44,18 @@ public class Colaborador extends Usuario {
             }
         }
         return ok;
+    }
+    
+    public List<DtColaboraciones> getDtColaboraciones(){
+        List<DtColaboraciones> colab = new ArrayList<>();
+        
+        Iterator it = this.Colaboraciones.iterator();
+        
+        while(it.hasNext()){
+            Colaboracion c = (Colaboracion) it.next();
+            DtColaboraciones dtC = new DtColaboraciones(c);
+            colab.add(dtC);
+        }   
+        return colab;
     }
 }

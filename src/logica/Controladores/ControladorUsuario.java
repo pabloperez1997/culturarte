@@ -415,21 +415,18 @@ public class ControladorUsuario implements IControladorUsuario {
 
     @Override
     public DtinfoColaborador getDtColaborador(String nick) {
-        DtinfoColaborador dtc = null;
-        Set set = Usuarios.entrySet();
-        Iterator iterator = set.iterator();
-        ArrayList<DtinfoColaborador> retorno = new ArrayList();
+
+        Iterator iterator = this.Usuarios.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry mentry = (Map.Entry) iterator.next();
             if (mentry.getValue() instanceof Colaborador) {
                 Colaborador c = (Colaborador) mentry.getValue();
                 if (c.getNickname().equals(nick)) {
-                    dtc = new DtinfoColaborador(c);
-                    break;
+                    return new DtinfoColaborador(c);
                 }
             }
         }
-        return dtc;
+        return null;
     }
 
     public void setColaborador(Colaborador colaborador) {
@@ -675,8 +672,8 @@ public class ControladorUsuario implements IControladorUsuario {
         if (foto.equals("nadie.png")) {
             img = ruta + "nadie.png";
         } else {
-            img = ruta + user.getCorreo()+File.separatorChar+user.getImagen();
-        }        
+            img = ruta + user.getCorreo() + File.separatorChar + user.getImagen();
+        }
         File f = new File(img);
         arreglo = Files.readAllBytes(f.toPath());
         return arreglo;
