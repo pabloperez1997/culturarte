@@ -39,6 +39,7 @@ import logica.Clases.Colaboracion;
 import logica.Clases.DataImagen;
 import logica.Clases.DtColaboraciones;
 import logica.Clases.DtNickTitProp;
+import logica.Clases.DtRegistro;
 import logica.Clases.DtSeguidor;
 import logica.Clases.DtUsuario;
 import logica.Clases.DtinfoColaborador;
@@ -63,6 +64,7 @@ public class ControladorUsuario implements IControladorUsuario {
     private Colaborador Colaborador;
     codificador a = new codificador();
     private String carpetaImagenesPerfiles = leerPropiedades("fPerfiles");
+    private List<DtRegistro> RegistrosSitio;
 
     public static ControladorUsuario getInstance() {
         if (instancia == null) {
@@ -75,6 +77,7 @@ public class ControladorUsuario implements IControladorUsuario {
         this.Usuarios = new HashMap<>();
         this.dbUsuario = new DBUsuario();
         this.IPC = Fabrica.getInstance().getControladorPropCat();
+        this.RegistrosSitio=new ArrayList<>();
     }
 
     @Override
@@ -1081,5 +1084,13 @@ public class ControladorUsuario implements IControladorUsuario {
         }
         return prop.getProperty(caso);
     }
-
+    @Override
+    public boolean agregarRegistro(String ip,String navegador,String sitio,String so){
+    DtRegistro dr= new DtRegistro(ip, sitio, navegador, so);
+    this.RegistrosSitio.add(dr);
+    return true;
+}
+public List<DtRegistro> getListaRegistro(){
+    return this.RegistrosSitio;
+}
 }

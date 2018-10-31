@@ -23,6 +23,7 @@ import logica.Clases.DtinfoPropuesta;
 import logica.Clases.Proponente;
 import logica.Clases.Usuario;
 import logica.Clases.DataImagen;
+import logica.Clases.DtRegistro;
 import logica.Clases.Propuesta;
 
 /**
@@ -116,6 +117,10 @@ public interface IControladorUsuario {
     public abstract boolean DesactivarProponente(String nickProp) throws Exception;
 
     public abstract ArrayList<DtUsuario> ListarUsuariosRanking();
+    
+    public abstract boolean agregarRegistro(String ip,String navegador,String sitio,String so);
+    
+    public abstract List<DtRegistro> getListaRegistro();
 
     public byte[] retornarImagen(String nick) throws IOException;
 }
