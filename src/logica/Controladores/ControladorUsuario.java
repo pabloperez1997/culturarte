@@ -1090,7 +1090,8 @@ public class ControladorUsuario implements IControladorUsuario {
     this.RegistrosSitio.add(dr);
     return true;
 }
-public List<DtRegistro> getListaRegistro(){
+    @Override
+    public List<DtRegistro> getListaRegistro(){
     return this.RegistrosSitio;
 }
 }

@@ -122,5 +122,8 @@ public interface IControladorUsuario {
     
     public abstract List<DtRegistro> getListaRegistro();
 
-    public byte[] retornarImagen(String nick) throws IOException;
+    public  byte[] retornarImagen(String nick) throws IOException;
+  
+    
+    public abstract String leerPropiedades(String caso);
 }

@@ -50,7 +50,6 @@ public class inicio extends javax.swing.JFrame {
         ICU.CargarFavoritas();
         IPC.CargarComentarios();
         this.setTitle("Culturarte");
-
         this.PublicarServicios();
     }
 
@@ -517,6 +516,8 @@ public class inicio extends javax.swing.JFrame {
         URL = "http://" + prop.getProperty("Ip") + ":" + prop.getProperty("Porth") + "/servicio" + prop.getProperty(caso);
         return URL;
     }
+    
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JPanel Escritorio;

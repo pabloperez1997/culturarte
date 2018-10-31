@@ -51,5 +51,9 @@ public class PublicadorInicio {
     public boolean agregarRegistro(@WebParam(name = "ip") String ip,@WebParam(name = "navegador") String navegador,@WebParam(name = "sitio")String sitio,@WebParam(name = "SO")String so){
         return Fabrica.getInstance().getIControladorUsuario().agregarRegistro(ip, navegador, sitio, so);
     }
+    @WebMethod
+    public String leerPropiedades(String caso){
+        return Fabrica.getInstance().getIControladorUsuario().leerPropiedades(caso);
+    }
 
 }
