@@ -57,6 +57,7 @@ import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
 import logica.Clases.DataImagen;
+import logica.Clases.DtComentarios;
 import logica.Clases.convertidorDeIMG;
 import logica.Clases.DtUsuario;
 
@@ -1284,5 +1285,23 @@ public class ControladorPropCat implements IPropCat {
         File f = new File(img);
         arreglo = Files.readAllBytes(f.toPath());
         return arreglo;
+    }
+    
+    @Override
+    public List<DtComentarios> retornarComantarios(String TituloP) {
+        List<DtComentarios> lista = null;
+        Iterator it = this.getPropuestas().entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry mtry = (Map.Entry) it.next();
+            Propuesta prop = (Propuesta) mtry.getValue();
+            if (prop.getTituloP().compareTo(TituloP) == 0 && prop.getEstaActiva()) {
+                List<Comentario> listaC = prop.getComentarios();
+                for (int i = 0; i < listaC.size(); i++) {
+                    lista.add(new DtComentarios(listaC.get(i).getColaborador().getNickname(), prop.getTituloP(), listaC.get(i).getTexto()));
+                }
+            }
+
+        }
+        return lista;
     }
 }

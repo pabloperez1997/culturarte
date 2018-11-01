@@ -5,6 +5,7 @@
  */
 package Servicios;
 
+import DtServicios.DtListComentarios;
 import DtServicios.DtListConsultaPropuesta;
 import DtServicios.DtListNickTitProp;
 import DtServicios.DtListConsultaPropuesta2;
@@ -102,5 +103,10 @@ public class PublicadorConsultarPropuesta {
     @WebMethod
     public byte[] retornarImagen(@WebParam(name = "titulo") String titulo) throws Exception {
         return Fabrica.getInstance().getControladorPropCat().retornarImagen(titulo);
+    }
+    
+      @WebMethod
+    public DtListComentarios listarComentarios(@WebParam(name = "TituloP") String titulo) throws Exception {
+        return new DtListComentarios(Fabrica.getInstance().getControladorPropCat().retornarComantarios(titulo));
     }
 }

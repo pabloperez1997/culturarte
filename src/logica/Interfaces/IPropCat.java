@@ -27,6 +27,7 @@ import logica.Clases.TipoE;
 import logica.Clases.TipoRetorno;
 import logica.Clases.Usuario;
 import logica.Clases.DataImagen;
+import logica.Clases.DtComentarios;
 
 /**
  *
@@ -137,4 +138,6 @@ public interface IPropCat {
     public abstract List<DtConsultaPropuesta> getDtPropuestas() throws Exception;
 
     public byte[] retornarImagen(String titulo) throws IOException;
+    
+    public List<DtComentarios> retornarComantarios(String TituloP);
 }
