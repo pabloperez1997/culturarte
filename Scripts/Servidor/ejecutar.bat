@@ -1,1 +1,0 @@
-java -jar culturarte.jar
