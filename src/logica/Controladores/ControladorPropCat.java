@@ -77,7 +77,7 @@ public class ControladorPropCat implements IPropCat {
     private Propuesta Propuesta;
     private DBColaboracion dbColaboracion = null;
     private final String carpetaImagenesPropuestas = leerPropiedades("fPropuestas");
-    private String carpetaImagenesDp;
+    private String carpetaImagenesDp = leerPropiedades("fotosdp");
     convertidorDeIMG convertidor = new convertidorDeIMG();
 
     public static ControladorPropCat getInstance() {
@@ -205,7 +205,11 @@ public class ControladorPropCat implements IPropCat {
         if (imagen != null) {
             urlImagen = imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo();
         } else {
-            urlImagen = imagen.getNombreArchivo() + "." + "png";
+            String ruta = leerPropiedades("fotosdp");
+            String url = ruta + "Culturarte.png";
+            imagen = convertidor.convertirStringAImg(url, tituloP);
+            urlImagen = (imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo());
+
         }
 
         TipoRetorno tipoR;
@@ -238,6 +242,7 @@ public class ControladorPropCat implements IPropCat {
             this.propuestas.put(tituloP, nuevaP);
             this.catRecordada.setPropuesta(nuevaP);
             this.uProponente.setPropuesta(nuevaP);
+            this.grabarFotoPropuestas(tituloP, imagen);
         } else {
             this.catRecordada = null;
             this.uProponente = null;
@@ -543,11 +548,7 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public boolean crearPropuestaDatosdePrueba(String tituloP, String descripcion,
-            Categoria cat, Calendar fecha,
-            String lugar, float montoE, float montoTot, TipoRetorno retorno,
-            Proponente p, String imagen
-    ) {
+    public boolean crearPropuestaDatosdePrueba(String tituloP, String descripcion, Categoria cat, Calendar fecha, String lugar, float montoE, float montoTot, TipoRetorno retorno, Proponente p, String imagen) {
         if (this.getPropuestas().get(tituloP) != null) {
             return false;
         }
@@ -572,8 +573,7 @@ public class ControladorPropCat implements IPropCat {
     }
 
     @Override
-    public Categoria ObtenerCategoria(String nomCat
-    ) {
+    public Categoria ObtenerCategoria(String nomCat) {
         return (Categoria) this.categorias.get(nomCat);
     }
 
@@ -1286,7 +1286,7 @@ public class ControladorPropCat implements IPropCat {
         arreglo = Files.readAllBytes(f.toPath());
         return arreglo;
     }
-    
+
     @Override
     public List<DtComentarios> retornarComantarios(String TituloP) {
         List<DtComentarios> lista = null;

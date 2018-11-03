@@ -359,7 +359,7 @@ public class AltaPropuesta2 extends javax.swing.JInternalFrame {
         DataImagen foto = null;
         try {
             if (!imagen.isEmpty()) {
-                foto = convertidor.convertirStringAImg(tituloP, imagen);
+                foto = convertidor.convertirStringAImg(imagen, tituloP);
             }
             String tipoR = null;
 

@@ -337,7 +337,7 @@ public class Fabrica {
 
         IPC.nuevoEstadoPropuestaDatosdePrueba("Pilsen Rock", TipoE.Ingresada, new GregorianCalendar(2018, 11, 15, 15, 40, 0));
         IPC.nuevoEstadoPropuestaDatosdePrueba("Pilsen Rock", TipoE.Publicada, new GregorianCalendar(2018, 11, 20, 14, 30, 0));
-        IPC.setEstadoActualDatosDePrueba("Pilsen Rock", new EstadoPropuesta(TipoE.enFinanciacion, new GregorianCalendar(20018, 11, 20, 16, 50, 0), true));
+        IPC.setEstadoActualDatosDePrueba("Pilsen Rock", new EstadoPropuesta(TipoE.enFinanciacion, new GregorianCalendar(2018, 11, 20, 16, 50, 0), true));
 
         IPC.nuevoEstadoPropuestaDatosdePrueba("Romeo y Julieta", TipoE.Ingresada, new GregorianCalendar(2018, 11, 05, 12, 20, 0));
         IPC.nuevoEstadoPropuestaDatosdePrueba("Romeo y Julieta", TipoE.Publicada, new GregorianCalendar(2018, 11, 06, 10, 25, 0));
