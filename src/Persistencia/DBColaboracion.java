@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import logica.Clases.Colaboracion;
 import logica.Clases.Colaborador;
+import logica.Clases.Pago;
 import logica.Clases.Propuesta;
 import logica.Clases.TipoRetorno;
 import logica.Clases.Usuario;
@@ -200,5 +201,11 @@ public class DBColaboracion {
         sql.executeUpdate();
         sql.close();
         return true;
+    }
+    
+    public boolean RegistrarPagoColaboracion(Pago pago){
+        
+        
+        return false;
     }
 }

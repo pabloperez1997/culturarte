@@ -6,7 +6,7 @@
 package logica.Clases;
 
 import java.util.Calendar;
-import java.util.Date;
+import logica.Clases.Pago;
 
 /**
  *
@@ -19,6 +19,7 @@ public class Colaboracion {
     private Calendar fechaRealiz;
     private boolean Entradas;
     private Propuesta Propuesta;
+    private Pago pago;
 
     public Colaboracion(Colaborador UColaborador, float montoC, Calendar fechaRealiz, boolean Entradas, Propuesta propuesta) {
         this.UColaborador = UColaborador;
@@ -26,6 +27,7 @@ public class Colaboracion {
         this.fechaRealiz = fechaRealiz;
         this.Entradas = Entradas;
         this.Propuesta = propuesta;
+        this.pago = null;
     }
 
     public float getMontoC() {
@@ -91,4 +93,11 @@ public class Colaboracion {
         return new DtColaboraciones(this);
     }
 
+    public Pago getPago() {
+        return this.pago;
+    }
+
+    public void setPago(Pago pago) {
+        this.pago = pago;
+    }
 }

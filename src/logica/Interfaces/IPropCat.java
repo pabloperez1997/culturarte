@@ -28,6 +28,7 @@ import logica.Clases.TipoRetorno;
 import logica.Clases.Usuario;
 import logica.Clases.DataImagen;
 import logica.Clases.DtComentarios;
+import logica.Clases.DtPago;
 
 /**
  *
@@ -138,6 +139,12 @@ public interface IPropCat {
     public abstract List<DtConsultaPropuesta> getDtPropuestas() throws Exception;
 
     public byte[] retornarImagen(String titulo) throws IOException;
-    
-    public List<DtComentarios> retornarComantarios(String TituloP);
+
+    public abstract List<DtComentarios> retornarComantarios(String TituloP);
+
+    public abstract void CargarPagosTarjetaDP(String nick, String titulo, String tarjeta, String numero, Calendar fecha, int cvc, String titular);
+
+    public abstract void CargarPagosTransfPayDP(String nick, String titulo, String nomBanco, String numCuenta, String nomTitular);
+
+    public abstract DtPago ObtenerPago(String nick, String titulo);
 }

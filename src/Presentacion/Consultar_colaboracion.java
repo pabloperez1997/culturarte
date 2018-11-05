@@ -20,6 +20,7 @@ import javax.swing.table.TableModel;
 import logica.Clases.Colaboracion;
 import logica.Clases.Colaborador;
 import logica.Clases.DtColaboraciones;
+import logica.Clases.DtPago;
 import logica.Clases.DtinfoColaborador;
 import logica.Controladores.ControladorUsuario;
 import logica.Fabrica;
@@ -39,6 +40,8 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
     public Consultar_colaboracion() {
         initComponents();
         this.setTitle("Consultar colaboraciones del colaborador");
+        this.jPanelPago.setVisible(false);
+
         jTable1.addMouseListener(new MouseAdapter() {
         });
         Tabla_propuesta.addMouseListener(new MouseAdapter() {
@@ -77,6 +80,18 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jTextField7 = new javax.swing.JTextField();
         jTextField8 = new javax.swing.JTextField();
+        jPanelPago = new javax.swing.JPanel();
+        jLabelTipoPago = new javax.swing.JLabel();
+        jLabelPago = new javax.swing.JLabel();
+        jLabelPago1 = new javax.swing.JLabel();
+        jLabelPago2 = new javax.swing.JLabel();
+        jLabelPago3 = new javax.swing.JLabel();
+        jTextPago = new javax.swing.JTextField();
+        jTextPago1 = new javax.swing.JTextField();
+        jTextPago2 = new javax.swing.JTextField();
+        jTextPago3 = new javax.swing.JTextField();
+        jLabelPago4 = new javax.swing.JLabel();
+        jTextPago4 = new javax.swing.JTextField();
 
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
@@ -237,7 +252,7 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
                     .addComponent(jTextField5)
                     .addComponent(jTextField1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 42, Short.MAX_VALUE)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -279,61 +294,168 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
             }
         });
 
+        jPanelPago.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabelTipoPago.setText("Pago");
+
+        jLabelPago.setText("Tarjeta:");
+
+        jLabelPago1.setText("Numero:");
+
+        jLabelPago2.setText("CVC:");
+
+        jLabelPago3.setText("FechaV:");
+
+        jTextPago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextPagoActionPerformed(evt);
+            }
+        });
+
+        jTextPago1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextPago1ActionPerformed(evt);
+            }
+        });
+
+        jTextPago2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextPago2ActionPerformed(evt);
+            }
+        });
+
+        jTextPago3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextPago3ActionPerformed(evt);
+            }
+        });
+
+        jLabelPago4.setText("Titular:");
+
+        jTextPago4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextPago4ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelPagoLayout = new javax.swing.GroupLayout(jPanelPago);
+        jPanelPago.setLayout(jPanelPagoLayout);
+        jPanelPagoLayout.setHorizontalGroup(
+            jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelPagoLayout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addGroup(jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabelPago, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelPago2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelPago1, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                    .addComponent(jLabelPago3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelPago4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jTextPago)
+                        .addComponent(jTextPago2)
+                        .addComponent(jTextPago3)
+                        .addComponent(jTextPago4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextPago1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPagoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelTipoPago, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(78, 78, 78))
+        );
+        jPanelPagoLayout.setVerticalGroup(
+            jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelPagoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelTipoPago)
+                .addGap(18, 18, 18)
+                .addGroup(jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelPago)
+                    .addComponent(jTextPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelPago1)
+                    .addComponent(jTextPago1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelPago2)
+                    .addComponent(jTextPago2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelPago3)
+                    .addComponent(jTextPago3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelPago4)
+                    .addComponent(jTextPago4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(23, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(45, 45, 45)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton2)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(35, 35, 35)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanelPago, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(114, 114, 114)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(9, 9, 9)
+                                .addComponent(jLabel2))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(63, 63, 63)
-                                .addComponent(jLabel3))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(114, 114, 114)
-                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addComponent(jLabel1)
-                        .addGap(142, 142, 142)
-                        .addComponent(jLabel2)))
-                .addContainerGap(21, Short.MAX_VALUE))
+                                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
+                                .addGap(80, 80, 80)))))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
-                .addGap(13, 13, 13)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addComponent(jLabel3)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(16, 16, 16)
-                .addComponent(jButton2))
+                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanelPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 48, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -341,16 +463,12 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -401,6 +519,7 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
             jTextField3.setText("");
             jTextField5.setText("");
             jTextField6.setText("");
+            jPanelPago.setVisible(false);
             JOptionPane.showMessageDialog(null, "El colaborador no tiene colaboraciones");
 
         }
@@ -425,20 +544,20 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
     private void jTextField8KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField8KeyReleased
         Fabrica fabrica = Fabrica.getInstance();
         ControladorUsuario ICU = (ControladorUsuario) fabrica.getIControladorUsuario();
-         List<DtColaboraciones> colaboraciones = ICU.ListarColaboraciones(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
+        List<DtColaboraciones> colaboraciones = ICU.ListarColaboraciones(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
         if (!colaboraciones.isEmpty()) {
             DefaultTableModel modelo = (DefaultTableModel) Tabla_propuesta.getModel();
             modelo.setRowCount(0);
             for (int i = 0; i < colaboraciones.size(); i++) {
                 DtColaboraciones u = colaboraciones.get(i);
                 if (u.getPropuesta().contains(jTextField8.getText())) {
-                    Object[] dat = {u.getPropuesta() , u.getUColaborador()};
+                    Object[] dat = {u.getPropuesta(), u.getUColaborador()};
                     modelo.addRow(dat);
                 }
             }
-        }    
+        }
     }//GEN-LAST:event_jTextField8KeyReleased
-    
+
     private void Tabla_propuestaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Tabla_propuestaMouseClicked
         Fabrica fabrica = Fabrica.getInstance();
         IControladorUsuario ICU = fabrica.getIControladorUsuario();
@@ -464,12 +583,96 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
                     SimpleDateFormat g = new SimpleDateFormat("hh:mm:ss a");
                     jTextField6.setText(f.format(utilDate));
                     jTextField1.setText(g.format(utilDate.getTime()));
+
+                    DtPago pago = Fabrica.getInstance().getControladorPropCat().ObtenerPago(this.nickname, jTextField2.getText());
+
+                    if (pago != null) {
+                        this.jPanelPago.setVisible(true);
+                        this.CargarPago(pago);
+                    } else {
+                        this.jPanelPago.setVisible(false);
+                    }
+
                     break;
                 }
             }
 
         }
     }//GEN-LAST:event_Tabla_propuestaMouseClicked
+
+    private void CargarPago(DtPago pago) {
+
+        if (pago.getTipo().equals("tarjeta")) {
+            jLabelPago.setVisible(true);
+            jLabelPago1.setVisible(true);
+            jLabelPago2.setVisible(true);
+            jLabelPago3.setVisible(true);
+            jLabelPago4.setVisible(true);
+
+            jLabelTipoPago.setText("Pago con Tarjeta");
+
+            jLabelPago.setText("Tarjeta:");
+            jLabelPago1.setText("Numero:");
+            jLabelPago2.setText("CVC:");
+            jLabelPago3.setText("Fecha V.:");
+            jLabelPago2.setText("Titular:");
+
+            jTextPago.setVisible(true);
+            jTextPago1.setVisible(true);
+            jTextPago2.setVisible(true);
+            jTextPago3.setVisible(true);
+            jTextPago4.setVisible(true);
+
+            jTextPago.setText(pago.getTarjetaBANCO());
+            jTextPago1.setText(pago.getNumeroCUENTA());
+            jTextPago2.setText(String.valueOf(pago.getCvc()));
+            jTextPago3.setText(pago.getFechaV());
+            jTextPago4.setText(pago.getTitular());
+
+        } else if (pago.getTipo().equals("paypal")) {
+            jLabelTipoPago.setText("Pago con Paypal");
+
+            jLabelPago.setVisible(true);
+            jLabelPago1.setVisible(true);
+
+            jLabelPago.setText("Nro.:");
+            jLabelPago1.setText("Titular:");
+            jLabelPago2.setVisible(false);
+            jLabelPago3.setVisible(false);
+            jLabelPago4.setVisible(false);
+
+            jTextPago.setVisible(true);
+            jTextPago1.setVisible(true);
+
+            jTextPago.setText(pago.getNumeroCUENTA());
+            jTextPago1.setText(pago.getTitular());
+            jTextPago2.setVisible(false);
+            jTextPago3.setVisible(false);
+            jTextPago4.setVisible(false);
+        } else {
+            jLabelTipoPago.setText("Pago por Transferencia");
+
+            jLabelPago.setVisible(true);
+            jLabelPago1.setVisible(true);
+            jLabelPago2.setVisible(true);
+
+            jLabelPago.setText("Banco:");
+            jLabelPago1.setText("Nro.:");
+            jLabelPago2.setText("Titular:");
+            jLabelPago3.setVisible(false);
+            jLabelPago4.setVisible(false);
+
+            jTextPago.setVisible(true);
+            jTextPago1.setVisible(true);
+            jTextPago2.setVisible(true);
+
+            jTextPago.setText(pago.getTarjetaBANCO());
+            jTextPago1.setText(pago.getNumeroCUENTA());
+            jTextPago2.setText(pago.getTitular());
+            jTextPago3.setVisible(false);
+            jTextPago4.setVisible(false);
+        }
+    }
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
@@ -478,6 +681,26 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private void jTextPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextPagoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextPagoActionPerformed
+
+    private void jTextPago1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextPago1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextPago1ActionPerformed
+
+    private void jTextPago2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextPago2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextPago2ActionPerformed
+
+    private void jTextPago3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextPago3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextPago3ActionPerformed
+
+    private void jTextPago4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextPago4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextPago4ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -491,8 +714,15 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabelPago;
+    private javax.swing.JLabel jLabelPago1;
+    private javax.swing.JLabel jLabelPago2;
+    private javax.swing.JLabel jLabelPago3;
+    private javax.swing.JLabel jLabelPago4;
+    private javax.swing.JLabel jLabelTipoPago;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanelPago;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
@@ -503,5 +733,10 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jTextPago;
+    private javax.swing.JTextField jTextPago1;
+    private javax.swing.JTextField jTextPago2;
+    private javax.swing.JTextField jTextPago3;
+    private javax.swing.JTextField jTextPago4;
     // End of variables declaration//GEN-END:variables
 }

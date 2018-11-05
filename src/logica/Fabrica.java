@@ -316,9 +316,26 @@ public class Fabrica {
 
         IPC.agregarColaboracionDatosdePrueba("Un día de Julio", "tonyp", 30000, new GregorianCalendar(2018, 11, 8, 04, 48, 0), true);
         IPC.agregarColaboracionDatosdePrueba("Un día de Julio", "marcelot", 150000, new GregorianCalendar(2018, 11, 9, 15, 30, 0), false);
-       
-//------------------------------------------Estado Propuesta--------------------------------------------------//
+//---------------------------------------------- Pagos --------------------------------------------------------//
 
+        IPC.CargarPagosTarjetaDP("novick", "Cine en el Botánico", "Oca", "1234567845672017", new GregorianCalendar(2018, 07, 30), 123, "Edgardo Novick");
+        IPC.CargarPagosTarjetaDP("robinh", "Cine en el Botánico", "Oca", "1234567823452017", new GregorianCalendar(2018, 07, 30), 123, "Robin Henderson");
+        IPC.CargarPagosTarjetaDP("nicoj", "Cine en el Botánico", "Visa", "1234567834562017", new GregorianCalendar(2018, 8, 30), 123, "Nicolás Jodal");
+        IPC.CargarPagosTarjetaDP("marcelot", "Religiosamente", "Visa", "1234567845672017", new GregorianCalendar(2018, 9, 30), 123, "Marcelo Tinelli");
+        IPC.CargarPagosTarjetaDP("tiajaci", "Religiosamente", "Master", "1234567856782017", new GregorianCalendar(2018, 10, 30), 123, "Tía Jacinta");
+        IPC.CargarPagosTarjetaDP("Mengano", "Religiosamente", "Master", "1234567867892017", new GregorianCalendar(2018, 11, 30), 123, "Mengano Gómez");
+
+        IPC.CargarPagosTransfPayDP("novick", "Religiosamente", "BROU", "1234567890", "Edgardo Novick");
+        IPC.CargarPagosTransfPayDP("sergiop", "Religiosamente", "BROU", "2345678901", "Sergio Puglia");
+        IPC.CargarPagosTransfPayDP("marcelot", "El Pimiento Indomable", "Santander", "3456789012", "Marcelo Tinelli");
+        IPC.CargarPagosTransfPayDP("sergiop", "El Pimiento Indomable", "Santander", "4567890123", "Sergio Puglia");
+        IPC.CargarPagosTransfPayDP("chino", "Pilsen Rock", "HSBC", "5678901234", "Alvaro Recoba");
+        IPC.CargarPagosTransfPayDP("novick", "Pilsen Rock", "HSBC", "6789012345", "Edgardo Novick");
+        IPC.CargarPagosTransfPayDP("tonyp", "Pilsen Rock", null, "1234567890", "Antonio Pacheco");
+        IPC.CargarPagosTransfPayDP("tonyp", "Un día de Julio", null, "4567890123", "Antonio Pacheco");
+        IPC.CargarPagosTransfPayDP("marcelot", "Un día de Julio", null, "5678901234", "Marcelo Tinelli");
+
+//------------------------------------------Estado Propuesta--------------------------------------------------//
         IPC.nuevoEstadoPropuestaDatosdePrueba("Cine en el Botánico", TipoE.Ingresada, new GregorianCalendar(2018, 05, 16, 15, 30, 0));
         IPC.nuevoEstadoPropuestaDatosdePrueba("Cine en el Botánico", TipoE.Publicada, new GregorianCalendar(2018, 05, 17, 8, 30, 0));
         IPC.nuevoEstadoPropuestaDatosdePrueba("Cine en el Botánico", TipoE.enFinanciacion, new GregorianCalendar(2018, 05, 20, 14, 30, 0));
@@ -352,7 +369,7 @@ public class Fabrica {
 
         IPC.setEstadoActualDatosDePrueba("Durazno Rock", new EstadoPropuesta(TipoE.Ingresada, new GregorianCalendar(2018, 12, 10, 2, 12, 0), true));
         //------------------------------------------Comentarios Propuesta--------------------------------------------------//
-       
+
         try {
             IPC.ComentarPropuesta("Cine en el Botánico", "novick", "Muy buena propuesta.");
             IPC.ComentarPropuesta("Cine en el Botánico", "robinh", "Realmente una pena que la propuesta haya sido cancelada.");

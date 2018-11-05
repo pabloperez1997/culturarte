@@ -58,8 +58,11 @@ import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
 import logica.Clases.DataImagen;
 import logica.Clases.DtComentarios;
+import logica.Clases.DtPago;
 import logica.Clases.convertidorDeIMG;
 import logica.Clases.DtUsuario;
+import logica.Clases.Tarjeta;
+import logica.Clases.TransfPay;
 
 /**
  *
@@ -1304,4 +1307,52 @@ public class ControladorPropCat implements IPropCat {
         }
         return lista;
     }
+
+    @Override
+    public void CargarPagosTarjetaDP(String nick, String titulo, String tarjeta, String numero, Calendar fecha, int cvc, String titular) {
+        Propuesta prop = this.propuestas.get(titulo);
+        Iterator it = prop.getColaboraciones().iterator();
+
+        while (it.hasNext()) {
+            Colaboracion colab = (Colaboracion) it.next();
+            if (colab.getColaborador().getNickname().equals(nick)) {
+                Tarjeta pago = new Tarjeta(tarjeta, numero, fecha, cvc, titular);
+                colab.setPago(pago);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void CargarPagosTransfPayDP(String nick, String titulo, String nomBanco, String numCuenta, String nomTitular) {
+        Propuesta prop = this.propuestas.get(titulo);
+        Iterator it = prop.getColaboraciones().iterator();
+
+        while (it.hasNext()) {
+            Colaboracion colab = (Colaboracion) it.next();
+            if (colab.getColaborador().getNickname().equals(nick)) {
+                TransfPay pago = new TransfPay(nomBanco, numCuenta, nomTitular);
+                colab.setPago(pago);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public DtPago ObtenerPago(String nick, String titulo) {
+        Propuesta prop = this.propuestas.get(titulo);
+
+        Iterator it = prop.getColaboraciones().iterator();
+
+        while (it.hasNext()) {
+            Colaboracion colab = (Colaboracion) it.next();
+            if (colab.getColaborador().getNickname().equals(nick)) {
+                if (colab.getPago() != null) {
+                    return colab.getPago().getPago();
+                }
+            }
+        }
+        return null;
+    }
+
 }
