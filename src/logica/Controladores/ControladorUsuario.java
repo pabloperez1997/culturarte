@@ -512,11 +512,13 @@ public class ControladorUsuario implements IControladorUsuario {
                 Usuario aux = (Usuario) mentry.getValue();
                 if (aux instanceof Colaborador) {
                     DtUsuario aux2 = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
+                    aux2.getSeguidores().addAll(aux.getSeguidores().keySet());
                     retorno.add(aux2);
                 } else {
                     Proponente prop = (Proponente) aux;
                     if (prop.getEstaActivo()) {
                         DtUsuario aux2 = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
+                        aux2.getSeguidores().addAll(prop.getSeguidores().keySet());
                         retorno.add(aux2);
                     }
                 }
@@ -810,10 +812,14 @@ public class ControladorUsuario implements IControladorUsuario {
             if (aux.getNickname().equals(nombreU)) {
                 if (aux instanceof Colaborador) {
                     dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
+                    dtc.getSeguidores().addAll(aux.getSeguidores().keySet());
+                    dtc.getSeguidos().addAll(aux.getSeguidos().keySet());
                 } else {
                     Proponente p = (Proponente) aux;
                     if (p.getEstaActivo()) {
                         dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true, p.getBiografia(), p.getSitioweb(), p.getDireccion());
+                    dtc.getSeguidores().addAll(p.getSeguidores().keySet());
+                    dtc.getSeguidos().addAll(p.getSeguidos().keySet());
                     } else {
                         return null;
                     }
@@ -950,10 +956,14 @@ public class ControladorUsuario implements IControladorUsuario {
                 if (aux.getCorreo().equals(correoU)) {
                     if (aux instanceof Colaborador) {
                         dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
+                     dtc.getSeguidores().addAll(aux.getSeguidores().keySet());
+                     dtc.getSeguidos().addAll(aux.getSeguidos().keySet());
                     } else {
                         Proponente prop = (Proponente) aux;
                         if (prop.getEstaActivo()) {
                             dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
+                        dtc.getSeguidores().addAll(prop.getSeguidores().keySet());
+                        dtc.getSeguidos().addAll(prop.getSeguidos().keySet());
                         }
                     }
                     break;
