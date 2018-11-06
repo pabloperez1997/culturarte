@@ -1317,7 +1317,17 @@ public class ControladorPropCat implements IPropCat {
             Colaboracion colab = (Colaboracion) it.next();
             if (colab.getColaborador().getNickname().equals(nick)) {
                 Tarjeta pago = new Tarjeta(tarjeta, numero, fecha, cvc, titular);
-                colab.setPago(pago);
+
+                try {
+                    boolean ok = this.dbColaboracion.RegistrarPagoColaboracion(pago, nick, titulo);
+                    if (ok) {
+                        colab.setPago(pago);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorPropCat.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(ControladorPropCat.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 return;
             }
         }
@@ -1332,7 +1342,16 @@ public class ControladorPropCat implements IPropCat {
             Colaboracion colab = (Colaboracion) it.next();
             if (colab.getColaborador().getNickname().equals(nick)) {
                 TransfPay pago = new TransfPay(nomBanco, numCuenta, nomTitular);
-                colab.setPago(pago);
+                try {
+                    boolean ok = this.dbColaboracion.RegistrarPagoColaboracion(pago, nick, titulo);
+                    if (ok) {
+                        colab.setPago(pago);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorPropCat.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(ControladorPropCat.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 return;
             }
         }

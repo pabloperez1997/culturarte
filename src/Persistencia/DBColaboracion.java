@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -17,9 +19,12 @@ import java.util.Map;
 import java.util.Set;
 import logica.Clases.Colaboracion;
 import logica.Clases.Colaborador;
+import logica.Clases.DtPago;
 import logica.Clases.Pago;
 import logica.Clases.Propuesta;
+import logica.Clases.Tarjeta;
 import logica.Clases.TipoRetorno;
+import logica.Clases.TransfPay;
 import logica.Clases.Usuario;
 import logica.Controladores.ControladorPropCat;
 import logica.Controladores.ControladorUsuario;
@@ -165,6 +170,7 @@ public class DBColaboracion {
                 Calendar fechaRC = Calendar.getInstance();
                 fechaRC.setTime(fecha);
                 Colaboracion colaboracion = new Colaboracion(null, rs.getFloat("montoC"), fechaRC, rs.getBoolean("entradas"), null);
+
                 Map<String, Usuario> usuarios = ICU.getUsuarios();
                 Set set = usuarios.entrySet();
                 Iterator iterator = set.iterator();
@@ -172,8 +178,24 @@ public class DBColaboracion {
                     Map.Entry mentry = (Map.Entry) iterator.next();
                     if (mentry.getValue() instanceof Colaborador) {
                         if (((Colaborador) mentry.getValue()).getNickname().compareTo(rs.getString("nickName")) == 0) {
-                            colaboracion.setUColaborador(((Colaborador) mentry.getValue()));
-                            ((Colaborador) mentry.getValue()).setColaboraciones(colaboracion);
+                            Colaborador colab = (Colaborador) mentry.getValue();
+                            colaboracion.setUColaborador(colab);
+                            colab.setColaboraciones(colaboracion);
+                            //---------------PAGO--------------------------
+                            String tipo = rs.getString("tipo");
+                            if (tipo != null) {
+                                if (tipo.equals("transferencia")) {
+                                    colaboracion.setPago(this.CargarPagosColaboraciones(tipo, rs.getString("tarjetaBANCO"), rs.getString("numeroCUENTA"), null, 0, colab.getNombre() + " " + colab.getApellido()));
+                                } else if (tipo.equals("paypal")) {
+                                    colaboracion.setPago(this.CargarPagosColaboraciones(tipo, null, rs.getString("numeroCUENTA"), null, 0, colab.getNombre() + " " + colab.getApellido()));
+                                } else if (tipo.equals("tarjeta")) {
+                                    java.util.Date fechav = rs.getDate("fechaV");
+                                    Calendar fechaV = Calendar.getInstance();
+                                    fechaV.setTime(fechav);
+                                    colaboracion.setPago(this.CargarPagosColaboraciones(tipo, rs.getString("tarjetaBANCO"), rs.getString("numeroCUENTA"), fechaV, rs.getInt("CVC"), colab.getNombre() + " " + colab.getApellido()));
+                                }
+                            }
+                            //----------------------------------------------
                         }
                     }
                 }
@@ -202,10 +224,58 @@ public class DBColaboracion {
         sql.close();
         return true;
     }
-    
-    public boolean RegistrarPagoColaboracion(Pago pago){
-        
-        
-        return false;
+
+    public boolean RegistrarPagoColaboracion(Pago pago, String nick, String titulo) throws SQLException, ParseException {
+
+        DtPago pag = pago.getPago();
+        switch (pag.getTipo()) {
+            case "tarjeta": {
+                Tarjeta tar = (Tarjeta) pago;
+                PreparedStatement sql = conexion.prepareStatement("UPDATE colaboracion SET tarjetaBANCO=?,numeroCUENTA=?,fechaV=?,CVC=?,tipo=? WHERE TituloP='" + titulo + "' AND nickName='" + nick + "';");
+
+                sql.setString(1, pag.getTarjetaBANCO());
+                sql.setString(2, pag.getNumeroCUENTA());
+
+                Calendar fecha = tar.getFechaV();
+                java.util.Date dateR = (java.util.Date) fecha.getTime();
+                java.sql.Date dateRR = new java.sql.Date(dateR.getTime());
+
+                sql.setDate(3, dateRR);
+                sql.setInt(4, pag.getCvc());
+                sql.setString(5, pag.getTipo());
+                sql.executeUpdate();
+                sql.close();
+                return true;
+            }
+            case "transferencia": {
+                PreparedStatement sql = conexion.prepareStatement("UPDATE colaboracion SET tarjetaBANCO=?,numeroCUENTA=?,tipo=? WHERE TituloP='" + titulo + "' AND nickName='" + nick + "';");
+                sql.setString(1, pag.getTarjetaBANCO());
+                sql.setString(2, pag.getNumeroCUENTA());
+                sql.setString(3, pag.getTipo());
+                sql.executeUpdate();
+                sql.close();
+                return true;
+            }
+            default: {
+                PreparedStatement sql = conexion.prepareStatement("UPDATE colaboracion SET numeroCUENTA=?,tipo=? WHERE TituloP='" + titulo + "' AND nickName='" + nick + "';");
+                sql.setString(1, pag.getNumeroCUENTA());
+                sql.setString(2, pag.getTipo());
+                sql.executeUpdate();
+                sql.close();
+                return true;
+            }
+        }
+    }
+
+    public Pago CargarPagosColaboraciones(String tipo, String tarjetaBANCO, String numeroCUENTA, Calendar fechaV, int cvc, String titular) {
+
+        switch (tipo) {
+            case "transferencia":
+                return new TransfPay(tarjetaBANCO, numeroCUENTA, titular);
+            case "paypal":
+                return new TransfPay(null, numeroCUENTA, titular);
+            default:
+                return new Tarjeta(tarjetaBANCO, numeroCUENTA, fechaV, cvc, titular);
+        }
     }
 }

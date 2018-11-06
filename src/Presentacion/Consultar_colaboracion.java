@@ -306,24 +306,28 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
 
         jLabelPago3.setText("FechaV:");
 
+        jTextPago.setEditable(false);
         jTextPago.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextPagoActionPerformed(evt);
             }
         });
 
+        jTextPago1.setEditable(false);
         jTextPago1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextPago1ActionPerformed(evt);
             }
         });
 
+        jTextPago2.setEditable(false);
         jTextPago2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextPago2ActionPerformed(evt);
             }
         });
 
+        jTextPago3.setEditable(false);
         jTextPago3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextPago3ActionPerformed(evt);
@@ -332,6 +336,7 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
 
         jLabelPago4.setText("Titular:");
 
+        jTextPago4.setEditable(false);
         jTextPago4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextPago4ActionPerformed(evt);
@@ -350,7 +355,7 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
                     .addComponent(jLabelPago1, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
                     .addComponent(jLabelPago3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelPago4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jTextPago)
@@ -358,9 +363,9 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
                         .addComponent(jTextPago3)
                         .addComponent(jTextPago4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jTextPago1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(36, 36, 36))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPagoLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(102, Short.MAX_VALUE)
                 .addComponent(jLabelTipoPago, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(78, 78, 78))
         );
@@ -382,13 +387,13 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
                     .addComponent(jLabelPago2)
                     .addComponent(jTextPago2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelPago3)
-                    .addComponent(jTextPago3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextPago3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelPago3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelPago4)
-                    .addComponent(jTextPago4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanelPagoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextPago4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelPago4))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
@@ -615,7 +620,7 @@ public class Consultar_colaboracion extends javax.swing.JInternalFrame {
             jLabelPago1.setText("Numero:");
             jLabelPago2.setText("CVC:");
             jLabelPago3.setText("Fecha V.:");
-            jLabelPago2.setText("Titular:");
+            jLabelPago4.setText("Titular:");
 
             jTextPago.setVisible(true);
             jTextPago1.setVisible(true);
