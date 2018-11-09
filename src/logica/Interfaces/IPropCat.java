@@ -147,4 +147,7 @@ public interface IPropCat {
     public abstract void CargarPagosTransfPayDP(String nick, String titulo, String nomBanco, String numCuenta, String nomTitular);
 
     public abstract DtPago ObtenerPago(String nick, String titulo);
+
+    public abstract void CargarPagosTarjeta(String nick, String titulo, String tarjeta, String numero, String fecha, int cvc, String titular);
+
 }
