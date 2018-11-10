@@ -1373,4 +1373,37 @@ public class ControladorPropCat implements IPropCat {
         return null;
     }
 
+    @Override
+    public void CargarPagosTarjeta(String nick, String titulo, String tarjeta, String numero, String fecha, int cvc, String titular) {
+        Propuesta prop = this.propuestas.get(titulo);
+        Iterator it = prop.getColaboraciones().iterator();
+
+        while (it.hasNext()) {
+            Colaboracion colab = (Colaboracion) it.next();
+            if (colab.getColaborador().getNickname().equals(nick)) {
+                Calendar cal = new GregorianCalendar();
+                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                Date fechaDate = new Date();
+                try {
+                    fechaDate = formato.parse(fecha);
+                } catch (ParseException ex) {
+                    System.out.println(ex);
+                }
+                cal.setTime(fechaDate);
+                Tarjeta pago = new Tarjeta(tarjeta, numero, cal, cvc, titular);
+                try {
+                    boolean ok = this.dbColaboracion.RegistrarPagoColaboracion(pago, nick, titulo);
+                    if (ok) {
+                        colab.setPago(pago);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorPropCat.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(ControladorPropCat.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return;
+            }
+        }
+    }
+
 }
