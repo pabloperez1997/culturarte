@@ -212,7 +212,6 @@ public class ControladorPropCat implements IPropCat {
             String url = ruta + "Culturarte.png";
             imagen = convertidor.convertirStringAImg(url, tituloP);
             urlImagen = (imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo());
-
         }
 
         TipoRetorno tipoR;
@@ -1279,12 +1278,12 @@ public class ControladorPropCat implements IPropCat {
         return lista;
     }
 
-    @Override
+  @Override
     public byte[] retornarImagen(String titulo) throws IOException {
         byte[] arreglo = null;
         String ruta = leerPropiedades("fPropuestas") + this.propuestas.get(titulo).getTituloP();
         String imagen = this.propuestas.get(titulo).getImagen();
-        String img = ruta + "\\" + imagen;
+        String img = ruta + "/" + imagen;
         File f = new File(img);
         arreglo = Files.readAllBytes(f.toPath());
         return arreglo;

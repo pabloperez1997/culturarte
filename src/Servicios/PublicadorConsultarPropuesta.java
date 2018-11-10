@@ -104,8 +104,8 @@ public class PublicadorConsultarPropuesta {
     public byte[] retornarImagen(@WebParam(name = "titulo") String titulo) throws Exception {
         return Fabrica.getInstance().getControladorPropCat().retornarImagen(titulo);
     }
-    
-      @WebMethod
+
+    @WebMethod
     public DtListComentarios listarComentarios(@WebParam(name = "TituloP") String titulo) throws Exception {
         return new DtListComentarios(Fabrica.getInstance().getControladorPropCat().retornarComantarios(titulo));
     }
