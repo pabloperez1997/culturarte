@@ -94,7 +94,6 @@ public class VerProponenteDesactivado2 extends javax.swing.JInternalFrame {
         jTextFiltrarPropuestas = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
         jPanelColaboraciones = new javax.swing.JPanel();
-        jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jTextColabMonto = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
@@ -107,6 +106,7 @@ public class VerProponenteDesactivado2 extends javax.swing.JInternalFrame {
         jTextFiltrarColaboraciones = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
         jTextColabHora = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
         jPanelInfoUsuario = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextPropFechaN = new javax.swing.JTextField();
@@ -180,7 +180,7 @@ public class VerProponenteDesactivado2 extends javax.swing.JInternalFrame {
 
         jLabel14.setText("Monto Total:");
 
-        jLabel15.setText("Detalle");
+        jLabel15.setText("Detalle Propuesta");
 
         jLabel16.setText("Precio Entrada:");
 
@@ -234,21 +234,21 @@ public class VerProponenteDesactivado2 extends javax.swing.JInternalFrame {
                                             .addComponent(jLabel9)
                                             .addComponent(jLabel8))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                .addGroup(jPanelPropuestaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jTextPropuPrecioE)
-                                    .addComponent(jTextPropuCategoria)
-                                    .addComponent(jTextPropuTitulo, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextPropuFechaR, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextPropuMontoT, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextPropuLugar, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextPropuRetorno, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextPropuEstado, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextPropuTotalActual, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanelPropuestaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextPropuPrecioE, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jTextPropuMontoT)
+                                    .addComponent(jTextPropuLugar)
+                                    .addComponent(jTextPropuRetorno)
+                                    .addComponent(jTextPropuEstado)
+                                    .addComponent(jTextPropuCategoria, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                                    .addComponent(jTextPropuTitulo)
+                                    .addComponent(jTextPropuFechaR)
+                                    .addComponent(jTextPropuTotalActual, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanelPropuestaLayout.createSequentialGroup()
                         .addGap(121, 121, 121)
                         .addComponent(jLabel15)))
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addGap(87, 87, 87))
         );
         jPanelPropuestaLayout.setVerticalGroup(
             jPanelPropuestaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -302,8 +302,6 @@ public class VerProponenteDesactivado2 extends javax.swing.JInternalFrame {
 
         jPanelColaboraciones.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel19.setText("Colaboradores");
-
         jLabel20.setText("Monto:");
 
         jTextColabMonto.setEditable(false);
@@ -342,7 +340,7 @@ public class VerProponenteDesactivado2 extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(jTableColaboradores);
 
-        jLabel24.setText("Filtrar:");
+        jLabel24.setText("Filtrar Colaboraciones:");
 
         jTextFiltrarColaboraciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -359,20 +357,14 @@ public class VerProponenteDesactivado2 extends javax.swing.JInternalFrame {
 
         jTextColabHora.setEditable(false);
 
+        jLabel7.setText("Detalle Colaboracion");
+
         javax.swing.GroupLayout jPanelColaboracionesLayout = new javax.swing.GroupLayout(jPanelColaboraciones);
         jPanelColaboraciones.setLayout(jPanelColaboracionesLayout);
         jPanelColaboracionesLayout.setHorizontalGroup(
             jPanelColaboracionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelColaboracionesLayout.createSequentialGroup()
                 .addGroup(jPanelColaboracionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelColaboracionesLayout.createSequentialGroup()
-                        .addGap(107, 107, 107)
-                        .addComponent(jLabel24)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFiltrarColaboraciones, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelColaboracionesLayout.createSequentialGroup()
-                        .addGap(180, 180, 180)
-                        .addComponent(jLabel19))
                     .addGroup(jPanelColaboracionesLayout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -396,21 +388,27 @@ public class VerProponenteDesactivado2 extends javax.swing.JInternalFrame {
                                     .addGroup(jPanelColaboracionesLayout.createSequentialGroup()
                                         .addComponent(jLabel21)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextColabFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                                        .addComponent(jTextColabFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabel7)))
+                    .addGroup(jPanelColaboracionesLayout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addComponent(jLabel24)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextFiltrarColaboraciones, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(62, Short.MAX_VALUE))
         );
         jPanelColaboracionesLayout.setVerticalGroup(
             jPanelColaboracionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelColaboracionesLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel19)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelColaboracionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFiltrarColaboraciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel24))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel7)
+                .addGap(15, 15, 15)
                 .addGroup(jPanelColaboracionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel20)
                     .addComponent(jTextColabMonto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -511,14 +509,15 @@ public class VerProponenteDesactivado2 extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(jTextPropNick, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelInfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextPropFechaN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanelInfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelInfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel23)
                         .addComponent(jTextPropFechaD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jTextPropCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5)))
+                        .addComponent(jLabel5))
+                    .addGroup(jPanelInfoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(jTextPropFechaN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -741,7 +740,6 @@ public class VerProponenteDesactivado2 extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
@@ -753,6 +751,7 @@ public class VerProponenteDesactivado2 extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;

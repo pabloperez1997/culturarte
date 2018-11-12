@@ -292,7 +292,9 @@ public class ConfirmarPropuestas extends javax.swing.JInternalFrame {
 
         jTextAreaDescripcion.setEditable(false);
         jTextAreaDescripcion.setColumns(20);
+        jTextAreaDescripcion.setLineWrap(true);
         jTextAreaDescripcion.setRows(5);
+        jTextAreaDescripcion.setAutoscrolls(false);
         jScrollPane2.setViewportView(jTextAreaDescripcion);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -559,7 +561,7 @@ public class ConfirmarPropuestas extends javax.swing.JInternalFrame {
             jTextFieldApellido.setText(datProp.getTituloP());
             jTextFieldNombre.setText(datProp.getProponente());
 
-            String foto = System.getProperty("user.dir") + "\\fPropuestas\\" + info.getImagen();
+            String foto = System.getProperty("user.dir") + "\\fPropuestas\\" + info.getTitulo() + "\\" + info.getImagen();
             ImageIcon fot = new ImageIcon(foto);
             Icon icono = new ImageIcon(fot.getImage().getScaledInstance(jLabelFotoP.getWidth(), jLabelFotoP.getHeight(), Image.SCALE_DEFAULT));
             jLabelFotoP.setIcon(icono);
