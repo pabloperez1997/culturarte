@@ -36,7 +36,12 @@ public class PublicadorAltaPropuesta {
 
     @WebMethod
     public boolean CrearPropuesta(@WebParam(name = "tituloP") String tituloP, @WebParam(name = "descripcion") String descripcion, @WebParam(name = "lugar") String lugar, @WebParam(name = "fecha") String fecha, @WebParam(name = "montoE") float montoE, @WebParam(name = "montoTot") float montoTot, @WebParam(name = "retorno") String retorno) throws Exception {
-        return Fabrica.getInstance().getControladorPropCat().crearPropuesta(tituloP, descripcion, lugar, new DataImagen(null, null, null), fecha, montoE, montoTot, retorno);
+        return Fabrica.getInstance().getControladorPropCat().crearPropuesta(tituloP, descripcion, lugar, null, fecha, montoE, montoTot, retorno);
+    }
+
+    @WebMethod
+    public boolean CrearPropuesta2(@WebParam(name = "tituloP") String tituloP, @WebParam(name = "descripcion") String descripcion, @WebParam(name = "lugar") String lugar, @WebParam(name = "fecha") String fecha, @WebParam(name = "montoE") float montoE, @WebParam(name = "montoTot") float montoTot, @WebParam(name = "retorno") String retorno, @WebParam(name = "imagen") byte[] imagen, @WebParam(name = "extencion") String extencion) throws Exception {
+        return Fabrica.getInstance().getControladorPropCat().crearPropuesta(tituloP, descripcion, lugar, new DataImagen(imagen, tituloP, extencion), fecha, montoE, montoTot, retorno);
     }
 
     @WebMethod
