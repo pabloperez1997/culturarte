@@ -1292,7 +1292,7 @@ public class ControladorPropCat implements IPropCat {
 
     @Override
     public List<DtComentarios> retornarComantarios(String TituloP) {
-        List<DtComentarios> lista = null;
+        List<DtComentarios> lista = new ArrayList<>();
         Iterator it = this.getPropuestas().entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry mtry = (Map.Entry) it.next();

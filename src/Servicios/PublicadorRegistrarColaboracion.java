@@ -53,4 +53,9 @@ public class PublicadorRegistrarColaboracion {
     public void CargarPagosTarjeta(@WebParam(name = "nick") String nick, @WebParam(name = "Titulo") String Titulo, @WebParam(name = "tarjeta") String tarjeta,@WebParam(name = "numero") String numero, @WebParam(name = "fecha") String fecha,@WebParam(name = "cvc") int cvc, @WebParam(name = "titular") String titular)  throws Exception {
         Fabrica.getInstance().getControladorPropCat().CargarPagosTarjeta(nick, Titulo, tarjeta, numero, fecha, cvc, titular);
     }
+    
+         @WebMethod
+    public void CargarPagosTransfPayDP(@WebParam(name = "nick") String nick, @WebParam(name = "Titulo") String Titulo, @WebParam(name = "nomBanco") String banco,@WebParam(name = "numCuenta") String numCuenta, @WebParam(name = "nomTitular") String Titular)  throws Exception {
+        Fabrica.getInstance().getControladorPropCat().CargarPagosTransfPayDP(nick,Titulo, banco, numCuenta,Titular);
+    }
 }
