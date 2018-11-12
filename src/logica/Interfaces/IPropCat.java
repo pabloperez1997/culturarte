@@ -5,7 +5,6 @@
  */
 package logica.Interfaces;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
@@ -27,7 +26,6 @@ import logica.Clases.TipoE;
 import logica.Clases.TipoRetorno;
 import logica.Clases.Usuario;
 import logica.Clases.DataImagen;
-import logica.Clases.DtBasicoUsu;
 import logica.Clases.DtComentarios;
 import logica.Clases.DtPago;
 
@@ -151,5 +149,7 @@ public interface IPropCat {
 
     public abstract void CargarPagosTarjeta(String nick, String titulo, String tarjeta, String numero, String fecha, int cvc, String titular);
 
-    
+    public abstract List<String> ListarPropuestasDe(String Autor);
+
+    public abstract DtColaboraciones ObtenerColaboracion(String nick, String titulo);
 }

@@ -24,6 +24,7 @@ import logica.Clases.Proponente;
 import logica.Clases.Usuario;
 import logica.Clases.DataImagen;
 import logica.Clases.DtBasicoUsu;
+import logica.Clases.DtDesactivado;
 import logica.Clases.DtRegistro;
 import logica.Clases.Propuesta;
 
@@ -128,4 +129,6 @@ public interface IControladorUsuario {
     public abstract List<DtBasicoUsu> ListarProponentesDesactivados();
 
     public abstract String leerPropiedades(String caso);
+    
+    public abstract DtDesactivado obtenerProponenteDesactivado(String nick);
 }

@@ -83,6 +83,7 @@ public class inicio extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
+        jMenuItem15 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -233,6 +234,14 @@ public class inicio extends javax.swing.JFrame {
             }
         });
         jMenu4.add(jMenuItem14);
+
+        jMenuItem15.setText("Ver Proponente Desactivado");
+        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem15ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem15);
 
         jMenuBar1.add(jMenu4);
 
@@ -431,11 +440,18 @@ public class inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
-       VerRegistrosSitio VRS=new VerRegistrosSitio();
-       Escritorio.add(VRS);
+        VerRegistrosSitio VRS = new VerRegistrosSitio();
+        Escritorio.add(VRS);
         VRS.toFront();
         VRS.setVisible(true);
     }//GEN-LAST:event_jMenuItem14ActionPerformed
+
+    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+        VerProponenteDesactivado VPD = new VerProponenteDesactivado();
+        Escritorio.add(VPD);
+        VPD.toFront();
+        VPD.setVisible(true);
+    }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -516,8 +532,7 @@ public class inicio extends javax.swing.JFrame {
         URL = "http://" + prop.getProperty("Ip") + ":" + prop.getProperty("Porth") + "/servicio" + prop.getProperty(caso);
         return URL;
     }
-    
-   
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JPanel Escritorio;
@@ -532,6 +547,7 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
