@@ -27,6 +27,7 @@ import logica.Clases.TipoE;
 import logica.Clases.TipoRetorno;
 import logica.Clases.Usuario;
 import logica.Clases.DataImagen;
+import logica.Clases.DtBasicoUsu;
 import logica.Clases.DtComentarios;
 import logica.Clases.DtPago;
 
@@ -150,4 +151,5 @@ public interface IPropCat {
 
     public abstract void CargarPagosTarjeta(String nick, String titulo, String tarjeta, String numero, String fecha, int cvc, String titular);
 
+    
 }

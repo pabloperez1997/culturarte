@@ -57,6 +57,7 @@ import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
 import logica.Clases.DataImagen;
+import logica.Clases.DtBasicoUsu;
 import logica.Clases.DtComentarios;
 import logica.Clases.DtPago;
 import logica.Clases.convertidorDeIMG;
@@ -1382,6 +1383,7 @@ public class ControladorPropCat implements IPropCat {
         while (it.hasNext()) {
             Colaboracion colab = (Colaboracion) it.next();
             if (colab.getColaborador().getNickname().equals(nick)) {
+                
                 Calendar cal = new GregorianCalendar();
                 SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
                 Date fechaDate = new Date();
@@ -1391,15 +1393,15 @@ public class ControladorPropCat implements IPropCat {
                     System.out.println(ex);
                 }
                 cal.setTime(fechaDate);
+                
                 Tarjeta pago = new Tarjeta(tarjeta, numero, cal, cvc, titular);
+                
                 try {
                     boolean ok = this.dbColaboracion.RegistrarPagoColaboracion(pago, nick, titulo);
                     if (ok) {
                         colab.setPago(pago);
                     }
-                } catch (SQLException ex) {
-                    Logger.getLogger(ControladorPropCat.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ParseException ex) {
+                } catch (SQLException | ParseException ex) {
                     Logger.getLogger(ControladorPropCat.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 return;
