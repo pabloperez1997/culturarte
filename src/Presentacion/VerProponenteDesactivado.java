@@ -17,7 +17,7 @@ import logica.Fabrica;
  * @author Martin
  */
 public class VerProponenteDesactivado extends javax.swing.JInternalFrame {
-    
+
     List<DtBasicoUsu> listProp;
 
     /**
@@ -25,23 +25,23 @@ public class VerProponenteDesactivado extends javax.swing.JInternalFrame {
      */
     public VerProponenteDesactivado() {
         initComponents();
-        
+
         this.listProp = Fabrica.getInstance().getIControladorUsuario().ListarProponentesDesactivados();
-        
+
         DefaultTableModel modelo = (DefaultTableModel) jTableProponentes.getModel();
-        
+
         modelo.setRowCount(0);
-        
+
         for (int i = 0; i < listProp.size(); i++) {
-            
+
             DtBasicoUsu usu = (DtBasicoUsu) listProp.get(i);
-            Object[] datos = {usu.getNombre(), usu.getApellido(), usu.getNickName()};
-            
+            Object[] datos = {usu.getNickName(), usu.getNombre(), usu.getApellido()};
+
             modelo.addRow(datos);
         }
         jTableProponentes.addMouseListener(new MouseAdapter() {
         });
-        
+
     }
 
     /**
@@ -105,7 +105,7 @@ public class VerProponenteDesactivado extends javax.swing.JInternalFrame {
                 {null, null, null}
             },
             new String [] {
-                "Nombre", "Apellido", "Identificador"
+                "Identificador", "Nombre", "Apellido"
             }
         ) {
             Class[] types = new Class [] {
@@ -124,6 +124,11 @@ public class VerProponenteDesactivado extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(jTableProponentes);
 
         jButtonSalir.setText("Salir");
+        jButtonSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSalirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -182,19 +187,19 @@ public class VerProponenteDesactivado extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextBuscadorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextBuscadorKeyReleased
-        
+
         DefaultTableModel model = (DefaultTableModel) jTableProponentes.getModel();
-        
+
         model.setRowCount(0);
-        
+
         for (int i = 0; i < jTableProponentes.getRowCount(); i++) {
             model.removeRow(i);
             i -= 1;
         }
-        
+
         model = (DefaultTableModel) jTableProponentes.getModel();
         model.setRowCount(0);
-        
+
         for (int i = 0; i < this.listProp.size(); i++) {
             DtBasicoUsu prop = (DtBasicoUsu) this.listProp.get(i);
             if ((!jTextBuscador.getText().isEmpty()) && prop.getNickName().contains(jTextBuscador.getText())) {
@@ -210,14 +215,18 @@ public class VerProponenteDesactivado extends javax.swing.JInternalFrame {
     private void jTableProponentesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProponentesMouseClicked
         int row = jTableProponentes.rowAtPoint(evt.getPoint());
         String nickName = jTableProponentes.getValueAt(row, 0).toString();
-        
+
         VerProponenteDesactivado2 verInfo = new VerProponenteDesactivado2(nickName);
-        
+
         inicio.Escritorio.add(verInfo);
         this.setVisible(false);
         verInfo.toFront();
         verInfo.setVisible(true);
     }//GEN-LAST:event_jTableProponentesMouseClicked
+
+    private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButtonSalirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
