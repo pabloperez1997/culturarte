@@ -11,7 +11,6 @@ import logica.Clases.Colaborador;
 import logica.Clases.Propuesta;
 import logica.Clases.Usuario;
 import Persistencia.DBUsuario;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -34,7 +33,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
@@ -67,7 +65,7 @@ public class ControladorUsuario implements IControladorUsuario {
     private DBUsuario dbUsuario = null;
     private Colaborador Colaborador;
     codificador a = new codificador();
-    private String carpetaImagenesPerfiles = leerPropiedades("fPerfiles");
+    private String carpetaImagenesPerfiles = CarpetaImagenes.getInstance().carpetafPerfiles;
     private List<DtRegistro> RegistrosSitio;
 
     public static ControladorUsuario getInstance() {
@@ -673,7 +671,7 @@ public class ControladorUsuario implements IControladorUsuario {
         byte[] arreglo = null;
         Usuario user = this.Usuarios.get(nick);
         String foto = user.getImagen();
-        String ruta = leerPropiedades("fPerfiles");
+        String ruta = this.carpetaImagenesPerfiles;
         String img;
         if (foto.equals("nadie.png")) {
             img = ruta + "nadie.png";
@@ -1089,6 +1087,7 @@ public class ControladorUsuario implements IControladorUsuario {
 
     }
 
+    @Override
     public String leerPropiedades(String caso) {
         Properties prop = new Properties();
         InputStream archivo = null;
@@ -1136,7 +1135,6 @@ public class ControladorUsuario implements IControladorUsuario {
         return listDesactivados;
     }
 
-    @Override
     public DtDesactivado obtenerProponenteDesactivado(String nick) {
 
         Proponente prop = (Proponente) this.Usuarios.get(nick);
@@ -1153,6 +1151,55 @@ public class ControladorUsuario implements IControladorUsuario {
 
         }
         return null;
+    }
 
+    @Override
+    public boolean existeNombreUser(String nick) {
+        boolean esta = false;
+        Iterator it = this.Usuarios.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Usuario aux = (Usuario) mentry.getValue();
+            if (aux.getNickname().equals(nick)) {
+                esta = true;
+            }
+        }
+        return esta;
+    }
+
+    @Override
+    public boolean existeCorreoUser(String correo) {
+        boolean esta = false;
+        Iterator it = this.Usuarios.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Usuario aux = (Usuario) mentry.getValue();
+            if (aux.getCorreo().equals(correo)) {
+                esta = true;
+            }
+        }
+        return esta;
+    }
+
+    @Override
+    public int cantidadUsuSiguenPropuesta(String titulo) {
+        Iterator it = this.Usuarios.entrySet().iterator();
+        int cantFav = 0;
+        while (it.hasNext()) {
+            Map.Entry mtry = (Map.Entry) it.next();
+
+            if (mtry.getValue() instanceof Colaborador) {
+                Colaborador colab = (Colaborador) mtry.getValue();
+                if (colab.getFavoritas().get(titulo) != null) {
+                    cantFav++;
+                }
+            } else {
+                Proponente prop = (Proponente) mtry.getValue();
+                if (prop.getFavoritas().get(titulo) != null) {
+                    cantFav++;
+                }
+            }
+        }
+        return cantFav;
     }
 }

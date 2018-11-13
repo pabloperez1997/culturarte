@@ -7,7 +7,6 @@ package logica.Controladores;
 
 import Persistencia.DBColaboracion;
 import Persistencia.DBPropuesta;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -29,12 +28,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
 import logica.Clases.Colaborador;
@@ -60,6 +56,7 @@ import logica.Clases.DataImagen;
 import logica.Clases.DtBasicoUsu;
 import logica.Clases.DtComentarios;
 import logica.Clases.DtPago;
+import logica.Clases.DtRecomendacionProp;
 import logica.Clases.convertidorDeIMG;
 import logica.Clases.DtUsuario;
 import logica.Clases.Tarjeta;
@@ -80,8 +77,8 @@ public class ControladorPropCat implements IPropCat {
     private Proponente uProponente;
     private Propuesta Propuesta;
     private DBColaboracion dbColaboracion = null;
-    private final String carpetaImagenesPropuestas = leerPropiedades("fPropuestas");
-    private String carpetaImagenesDp = leerPropiedades("fotosdp");
+    private final String carpetaImagenesPropuestas = CarpetaImagenes.getInstance().carpetafPropuestas;
+    private String carpetaImagenesDp = CarpetaImagenes.getInstance().carpetafDatosDP;
     convertidorDeIMG convertidor = new convertidorDeIMG();
     
     public static ControladorPropCat getInstance() {
@@ -118,18 +115,6 @@ public class ControladorPropCat implements IPropCat {
             
         }
         return retorno;
-    }
-    
-    public String leerPropiedades(String caso) {
-        Properties prop = new Properties();
-        InputStream archivo = null;
-        try {
-            archivo = new FileInputStream(System.getProperty("user.dir") + "\\config\\config.properties");
-            prop.load(archivo);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-        return prop.getProperty(caso);
     }
     
     @Override
@@ -209,7 +194,7 @@ public class ControladorPropCat implements IPropCat {
         if (imagen != null) {
             urlImagen = imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo();
         } else {
-            String ruta = leerPropiedades("fotosdp");
+            String ruta = this.carpetaImagenesDp;
             String url = ruta + "Culturarte.png";
             imagen = convertidor.convertirStringAImg(url, tituloP);
             urlImagen = (imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo());
@@ -387,24 +372,24 @@ public class ControladorPropCat implements IPropCat {
             float monto = this.CalcularMontoPropuesta(prop);
             String nick = prop.getAutor().getNickname();
             String tipoR;
-            
+
             if (prop.getRetorno() == TipoRetorno.EntGan) {
                 tipoR = "Entradas y Porcentaje";
             } else {
                 tipoR = prop.getRetorno().name();
             }
-            
+
             Date fecha = (Date) prop.getFecha().getTime();
             String fechaR = new SimpleDateFormat("dd/MMM/yyyy").format(fecha);
-            
+
             boolean cancelable = false;
             boolean extendible = false;
             boolean comentable = false;
             boolean colaborable = false;
-            
+
             if (proponente != null) {
                 DtUsuario usu = (DtUsuario) Fabrica.getInstance().getIControladorUsuario().ObtenerDTUsuario(proponente);
-                
+
                 if (prop.getAutor().getNickname().equals(usu.getNickName()) && prop.getEstadoActual().getEstado() == TipoE.Financiada) {
                     cancelable = true;
                 } else if (prop.getAutor().getNickname().equals(proponente)) {
@@ -417,14 +402,14 @@ public class ControladorPropCat implements IPropCat {
                     if (!usu.Esproponente() && !prop.EsColaborador(usu.getNickName())) {
                         if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
                             colaborable = true;
-                            
+
                         }
                     }
                 }
-                
+
             }
             return new DtConsultaPropuesta(prop.getTituloP(), prop.getCategoria().getNombreC(), prop.getLugar(), fechaR, monto, prop.getMontoE(), estado, prop.getDescripcionP(), prop.getImagen(), prop.getMontoTot(), tipoR, nick, extendible, cancelable, comentable, colaborable);
-            
+
         }
         return null;
     }
@@ -556,7 +541,7 @@ public class ControladorPropCat implements IPropCat {
         Propuesta nuevaP;
         nuevaP = new Propuesta(tituloP, descripcion, imagen, lugar, fecha, montoE, montoTot, null, cat, retorno, p, true);
         this.propuestas.put(tituloP, nuevaP);
-        String ruta = leerPropiedades("fotosdp");
+        String ruta = this.carpetaImagenesDp;
         String url = ruta + imagen;
         try {
             DataImagen img = convertidor.convertirStringAImg(url, tituloP);
@@ -1280,7 +1265,7 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public byte[] retornarImagen(String titulo) throws IOException {
         byte[] arreglo = null;
-        String ruta = leerPropiedades("fPropuestas") + this.propuestas.get(titulo).getTituloP();
+        String ruta = this.carpetaImagenesPropuestas + "/" + this.propuestas.get(titulo).getTituloP();
         String imagen = this.propuestas.get(titulo).getImagen();
         String img = ruta + "/" + imagen;
         File f = new File(img);
@@ -1290,7 +1275,7 @@ public class ControladorPropCat implements IPropCat {
     
     @Override
     public List<DtComentarios> retornarComantarios(String TituloP) {
-        List<DtComentarios> lista = null;
+        List<DtComentarios> lista = new ArrayList<>();
         Iterator it = this.getPropuestas().entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry mtry = (Map.Entry) it.next();
@@ -1371,16 +1356,16 @@ public class ControladorPropCat implements IPropCat {
         }
         return null;
     }
-    
+
     @Override
     public void CargarPagosTarjeta(String nick, String titulo, String tarjeta, String numero, String fecha, int cvc, String titular) {
         Propuesta prop = this.propuestas.get(titulo);
         Iterator it = prop.getColaboraciones().iterator();
-        
+
         while (it.hasNext()) {
             Colaboracion colab = (Colaboracion) it.next();
             if (colab.getColaborador().getNickname().equals(nick)) {
-                
+
                 Calendar cal = new GregorianCalendar();
                 SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
                 Date fechaDate = new Date();
@@ -1390,9 +1375,9 @@ public class ControladorPropCat implements IPropCat {
                     System.out.println(ex);
                 }
                 cal.setTime(fechaDate);
-                
+
                 Tarjeta pago = new Tarjeta(tarjeta, numero, cal, cvc, titular);
-                
+
                 try {
                     boolean ok = this.dbColaboracion.RegistrarPagoColaboracion(pago, nick, titulo);
                     if (ok) {
@@ -1405,38 +1390,77 @@ public class ControladorPropCat implements IPropCat {
             }
         }
     }
-    
+
     @Override
     public List<String> ListarPropuestasDe(String autor) {
         List<String> propuestasDe = new ArrayList<>();
-        
+
         Iterator it = this.propuestas.entrySet().iterator();
-        
+
         while (it.hasNext()) {
             Map.Entry mtry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mtry.getValue();
-            
+
             if (!prop.getEstaActiva() && prop.getAutor().getNickname().equals(autor)) {
                 propuestasDe.add(prop.getTituloP());
             }
         }
-        
+
         return propuestasDe;
     }
-    
+
     @Override
     public DtColaboraciones ObtenerColaboracion(String nick, String titulo) {
-        
+
         Propuesta prop = (Propuesta) this.propuestas.get(titulo);
         Iterator it = prop.getColaboraciones().iterator();
-        
+
         while (it.hasNext()) {
             Colaboracion colab = (Colaboracion) it.next();
-            
+
             if (colab.getColaborador().getNickname().equals(nick)) {
                 return new DtColaboraciones(colab);
             }
         }
         return null;
+    }
+
+    @Override
+    public List<DtRecomendacionProp> recomendacionDePropuestas(String nick) {
+        List<DtRecomendacionProp> lista = new ArrayList<>();
+
+        Iterator it = this.propuestas.entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry mtry = (Map.Entry) it.next();
+            Propuesta prop = (Propuesta) mtry.getValue();
+            Colaborador colab = (Colaborador) Fabrica.getInstance().getIControladorUsuario().getUsuarios().get(nick);
+            if (colab != null && !prop.EsColaborador(nick)) {
+                DtRecomendacionProp dtRprop = new DtRecomendacionProp(prop.getTituloP(), this.obtenerPuntuacionPropuesta(prop));
+                lista.add(dtRprop);
+            }
+        }
+
+        return lista;
+    }
+
+    public int obtenerPuntuacionPropuesta(Propuesta prop) {
+        int puntuacion = 0;
+        int porcentaje = (int) ((this.CalcularMontoPropuesta(prop) * 100) / prop.getMontoTot());
+        int pfin = 0;
+
+        if (porcentaje >= 0 && porcentaje <= 25) {
+            pfin = 1;
+        } else if (porcentaje >= 25 && porcentaje <= 50) {
+            pfin = 2;
+        } else if (porcentaje >= 50 && porcentaje <= 75) {
+            pfin = 3;
+        } else if (porcentaje >= 75 && porcentaje <= 100) {
+            pfin = 4;
+        }
+
+        puntuacion = prop.getColaboraciones().size() + pfin + Fabrica.getInstance().getIControladorUsuario().cantidadUsuSiguenPropuesta(prop.getTituloP());
+
+        return puntuacion;
     }
 }

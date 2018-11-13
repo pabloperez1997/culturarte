@@ -22,6 +22,7 @@ public class DtColaboraciones {
     private Calendar fechaRealiz;
     private boolean Entradas;
     private String Propuesta;
+    private DtPago Pago;
 
     public DtColaboraciones(String UColaborador, float montoC, Calendar fechaRealiz, boolean Entradas, String Propuesta) {
         this.UColaborador = UColaborador;
@@ -29,6 +30,7 @@ public class DtColaboraciones {
         this.fechaRealiz = fechaRealiz;
         this.Entradas = Entradas;
         this.Propuesta = Propuesta;
+        this.Pago = Pago;
     }
 
     public DtColaboraciones(Colaboracion col) {
@@ -37,6 +39,7 @@ public class DtColaboraciones {
         this.fechaRealiz = col.getFechaRealiz();
         this.Entradas = col.getEntradas();
         this.Propuesta = col.getPropuesta().getTituloP();
+        this.Pago = col.getPago().getPago();
     }
 
     public String getUColaborador() {
