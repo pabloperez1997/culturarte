@@ -11,7 +11,6 @@ import logica.Clases.Colaborador;
 import logica.Clases.Propuesta;
 import logica.Clases.Usuario;
 import Persistencia.DBUsuario;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -34,7 +33,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
@@ -67,7 +65,7 @@ public class ControladorUsuario implements IControladorUsuario {
     private DBUsuario dbUsuario = null;
     private Colaborador Colaborador;
     codificador a = new codificador();
-    private String carpetaImagenesPerfiles = leerPropiedades("fPerfiles");
+    private String carpetaImagenesPerfiles = CarpetaImagenes.getInstance().carpetafPerfiles;
     private List<DtRegistro> RegistrosSitio;
 
     public static ControladorUsuario getInstance() {
@@ -673,7 +671,7 @@ public class ControladorUsuario implements IControladorUsuario {
         byte[] arreglo = null;
         Usuario user = this.Usuarios.get(nick);
         String foto = user.getImagen();
-        String ruta = leerPropiedades("fPerfiles");
+        String ruta = this.carpetaImagenesPerfiles;
         String img;
         if (foto.equals("nadie.png")) {
             img = ruta + "nadie.png";
@@ -1089,6 +1087,7 @@ public class ControladorUsuario implements IControladorUsuario {
 
     }
 
+    @Override
     public String leerPropiedades(String caso) {
         Properties prop = new Properties();
         InputStream archivo = null;
