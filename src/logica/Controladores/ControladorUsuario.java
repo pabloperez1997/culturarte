@@ -77,7 +77,7 @@ public class ControladorUsuario implements IControladorUsuario {
         this.Usuarios = new HashMap<>();
         this.dbUsuario = new DBUsuario();
         this.IPC = Fabrica.getInstance().getControladorPropCat();
-        this.RegistrosSitio=new ArrayList<>();
+        this.RegistrosSitio = new ArrayList<>();
     }
 
     @Override
@@ -818,8 +818,8 @@ public class ControladorUsuario implements IControladorUsuario {
                     Proponente p = (Proponente) aux;
                     if (p.getEstaActivo()) {
                         dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true, p.getBiografia(), p.getSitioweb(), p.getDireccion());
-                    dtc.getSeguidores().addAll(p.getSeguidores().keySet());
-                    dtc.getSeguidos().addAll(p.getSeguidos().keySet());
+                        dtc.getSeguidores().addAll(p.getSeguidores().keySet());
+                        dtc.getSeguidos().addAll(p.getSeguidos().keySet());
                     } else {
                         return null;
                     }
@@ -956,14 +956,14 @@ public class ControladorUsuario implements IControladorUsuario {
                 if (aux.getCorreo().equals(correoU)) {
                     if (aux instanceof Colaborador) {
                         dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
-                     dtc.getSeguidores().addAll(aux.getSeguidores().keySet());
-                     dtc.getSeguidos().addAll(aux.getSeguidos().keySet());
+                        dtc.getSeguidores().addAll(aux.getSeguidores().keySet());
+                        dtc.getSeguidos().addAll(aux.getSeguidos().keySet());
                     } else {
                         Proponente prop = (Proponente) aux;
                         if (prop.getEstaActivo()) {
                             dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
-                        dtc.getSeguidores().addAll(prop.getSeguidores().keySet());
-                        dtc.getSeguidos().addAll(prop.getSeguidos().keySet());
+                            dtc.getSeguidores().addAll(prop.getSeguidores().keySet());
+                            dtc.getSeguidos().addAll(prop.getSeguidos().keySet());
                         }
                     }
                     break;
@@ -1094,14 +1094,42 @@ public class ControladorUsuario implements IControladorUsuario {
         }
         return prop.getProperty(caso);
     }
+
     @Override
-    public boolean agregarRegistro(String ip,String navegador,String sitio,String so){
-    DtRegistro dr= new DtRegistro(ip, sitio, navegador, so);
-    this.RegistrosSitio.add(dr);
-    return true;
-}
+    public boolean agregarRegistro(String ip, String navegador, String sitio, String so) {
+        DtRegistro dr = new DtRegistro(ip, sitio, navegador, so);
+        this.RegistrosSitio.add(dr);
+        return true;
+    }
+
     @Override
-    public List<DtRegistro> getListaRegistro(){
-    return this.RegistrosSitio;
-}
+    public List<DtRegistro> getListaRegistro() {
+        return this.RegistrosSitio;
+    }
+
+    public boolean existeNombreUser(String nick) {
+        boolean esta = false;
+        Iterator it = this.Usuarios.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Usuario aux = (Usuario) mentry.getValue();
+            if (aux.getNickname().equals(nick)) {
+                esta = true;
+            }
+        }
+        return esta;
+    }
+
+    public boolean existeCorreoUser(String correo) {
+        boolean esta = false;
+        Iterator it = this.Usuarios.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Usuario aux = (Usuario) mentry.getValue();
+            if (aux.getCorreo().equals(correo)) {
+                esta = true;
+            }
+        }
+        return esta;
+    }
 }

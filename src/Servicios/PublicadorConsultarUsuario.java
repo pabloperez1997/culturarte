@@ -118,4 +118,13 @@ public class PublicadorConsultarUsuario {
     public byte[] retornarImagen(@WebParam(name = "nick") String nick) throws Exception {
         return Fabrica.getInstance().getIControladorUsuario().retornarImagen(nick);
     }
+    
+     @WebMethod
+    public boolean existeNombreUser(@WebParam(name = "nick") String nick) throws Exception {
+        return Fabrica.getInstance().getIControladorUsuario().existeNombreUser(nick);
+    }
+     @WebMethod
+    public boolean existeCorreoUser(@WebParam(name = "correo") String correo) throws Exception {
+        return Fabrica.getInstance().getIControladorUsuario().existeCorreoUser(correo);
+    }
 }
