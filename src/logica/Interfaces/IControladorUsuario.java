@@ -132,5 +132,5 @@ public interface IControladorUsuario {
     
     public abstract boolean existeNombreUser(String nick);
     public abstract boolean existeCorreoUser(String correo);
-    
+     public abstract DtDesactivado obtenerProponenteDesactivado(String nick);
 }
