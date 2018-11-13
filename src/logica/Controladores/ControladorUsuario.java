@@ -1152,6 +1152,7 @@ public class ControladorUsuario implements IControladorUsuario {
         }
         return null;
     }
+
     public boolean existeNombreUser(String nick) {
         boolean esta = false;
         Iterator it = this.Usuarios.entrySet().iterator();
@@ -1177,4 +1178,5 @@ public class ControladorUsuario implements IControladorUsuario {
         }
         return esta;
     }
+
 }
