@@ -1435,7 +1435,7 @@ public class ControladorPropCat implements IPropCat {
             Propuesta prop = (Propuesta) mtry.getValue();
             Colaborador colab = (Colaborador) Fabrica.getInstance().getIControladorUsuario().getUsuarios().get(nick);
             if (colab != null && !prop.EsColaborador(nick)) {
-                DtRecomendacionProp dtRprop = new DtRecomendacionProp(prop.getTituloP(), this.obtenerPuntuacionPropuesta(prop));
+                DtRecomendacionProp dtRprop = new DtRecomendacionProp(prop.getTituloP(), this.obtenerPuntuacionPropuesta(prop,nick));
                 lista.add(dtRprop);
             }
         }
@@ -1443,7 +1443,7 @@ public class ControladorPropCat implements IPropCat {
         return lista;
     }
 
-    public int obtenerPuntuacionPropuesta(Propuesta prop) {
+    public int obtenerPuntuacionPropuesta(Propuesta prop,String Nick) {
         int puntuacion = 0;
         int porcentaje = (int) ((this.CalcularMontoPropuesta(prop) * 100) / prop.getMontoTot());
         int pfin = 0;
@@ -1458,7 +1458,7 @@ public class ControladorPropCat implements IPropCat {
             pfin = 4;
         }
 
-        puntuacion = prop.getColaboraciones().size() + pfin + Fabrica.getInstance().getIControladorUsuario().cantidadUsuSiguenPropuesta(prop.getTituloP());
+        puntuacion = prop.getColaboraciones().size() + pfin + Fabrica.getInstance().getIControladorUsuario().cantidadUsuSiguenPropuesta(prop.getTituloP(),Nick);
 
         return puntuacion;
     }

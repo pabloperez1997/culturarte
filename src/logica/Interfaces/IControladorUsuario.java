@@ -134,6 +134,6 @@ public interface IControladorUsuario {
 
     public abstract boolean existeCorreoUser(String correo);
     
-    public abstract int cantidadUsuSiguenPropuesta(String titulo);
+    public abstract int cantidadUsuSiguenPropuesta(String titulo,String nick);
 
 }

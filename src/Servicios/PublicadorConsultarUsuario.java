@@ -36,7 +36,7 @@ public class PublicadorConsultarUsuario {
     public DtListUsuario ListarUsuarios() {
         return new DtListUsuario(Fabrica.getInstance().getIControladorUsuario().ListarUsuarios());
     }
-    
+
     @WebMethod
     public DtListUsuario ListarUsuariosRanking() {
         return new DtListUsuario(Fabrica.getInstance().getIControladorUsuario().ListarUsuariosRanking());
@@ -46,8 +46,6 @@ public class PublicadorConsultarUsuario {
     public DtListInfoPropuesta ListarPropuestasNoIngresadas(@WebParam(name = "nickname") String nickname) {
         return new DtListInfoPropuesta(Fabrica.getInstance().getControladorPropCat().ListarPropuestasNoIngresadas(nickname));
     }
-
-    
 
     @WebMethod
     public DtListInfoPropuesta ListarPropuestasDeProponenteX(@WebParam(name = "nickname") String nickname) throws Exception {
@@ -113,17 +111,18 @@ public class PublicadorConsultarUsuario {
     public boolean DejarSeguirUsuario(@WebParam(name = "nick1") String nick1, @WebParam(name = "nick2") String nick2) throws Exception {
         return Fabrica.getInstance().getIControladorUsuario().dejarseguirUsuario(nick1, nick2);
     }
-    
+
     @WebMethod
     public byte[] retornarImagen(@WebParam(name = "nick") String nick) throws Exception {
         return Fabrica.getInstance().getIControladorUsuario().retornarImagen(nick);
     }
-    
-     @WebMethod
+
+    @WebMethod
     public boolean existeNombreUser(@WebParam(name = "nick") String nick) throws Exception {
         return Fabrica.getInstance().getIControladorUsuario().existeNombreUser(nick);
     }
-     @WebMethod
+
+    @WebMethod
     public boolean existeCorreoUser(@WebParam(name = "correo") String correo) throws Exception {
         return Fabrica.getInstance().getIControladorUsuario().existeCorreoUser(correo);
     }

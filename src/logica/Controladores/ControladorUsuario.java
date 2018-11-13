@@ -1182,7 +1182,7 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
     @Override
-    public int cantidadUsuSiguenPropuesta(String titulo) {
+    public int cantidadUsuSiguenPropuesta(String titulo,String nick) {
         Iterator it = this.Usuarios.entrySet().iterator();
         int cantFav = 0;
         while (it.hasNext()) {
@@ -1190,7 +1190,7 @@ public class ControladorUsuario implements IControladorUsuario {
 
             if (mtry.getValue() instanceof Colaborador) {
                 Colaborador colab = (Colaborador) mtry.getValue();
-                if (colab.getFavoritas().get(titulo) != null) {
+                if (colab.getFavoritas().get(titulo) != null && !colab.getNickname().equals(nick)) {
                     cantFav++;
                 }
             } else {
