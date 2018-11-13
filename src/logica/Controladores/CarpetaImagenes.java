@@ -19,9 +19,9 @@ public class CarpetaImagenes {
 
     private CarpetaImagenes() {
 
-        this.carpetafPropuestas = (String) System.getProperty("user.dir") + "\\fPropuestas";
-        this.carpetafDatosDP = (String) System.getProperty("user.dir") + "\\fotosdp";
-        this.carpetafPerfiles = (String) System.getProperty("user.dir") + "\\fPerfiles";
+        this.carpetafPropuestas = (String) System.getProperty("user.dir") + "\\fPropuestas\\";
+        this.carpetafDatosDP = (String) System.getProperty("user.dir") + "\\fotosdp\\";
+        this.carpetafPerfiles = (String) System.getProperty("user.dir") + "\\fPerfiles\\";
 
     }
 
