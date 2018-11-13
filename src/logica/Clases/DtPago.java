@@ -9,6 +9,14 @@ package logica.Clases;
  *
  * @author Martin
  */
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
+/**
+ *
+ * @author Martin
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DtPago {
 
     String tipo;

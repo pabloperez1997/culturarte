@@ -1135,7 +1135,6 @@ public class ControladorUsuario implements IControladorUsuario {
         return listDesactivados;
     }
 
-    @Override
     public DtDesactivado obtenerProponenteDesactivado(String nick) {
 
         Proponente prop = (Proponente) this.Usuarios.get(nick);
@@ -1152,6 +1151,30 @@ public class ControladorUsuario implements IControladorUsuario {
 
         }
         return null;
+    }
+    public boolean existeNombreUser(String nick) {
+        boolean esta = false;
+        Iterator it = this.Usuarios.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Usuario aux = (Usuario) mentry.getValue();
+            if (aux.getNickname().equals(nick)) {
+                esta = true;
+            }
+        }
+        return esta;
+    }
 
+    public boolean existeCorreoUser(String correo) {
+        boolean esta = false;
+        Iterator it = this.Usuarios.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry mentry = (Map.Entry) it.next();
+            Usuario aux = (Usuario) mentry.getValue();
+            if (aux.getCorreo().equals(correo)) {
+                esta = true;
+            }
+        }
+        return esta;
     }
 }
