@@ -127,8 +127,11 @@ public interface IControladorUsuario {
     public abstract List<DtBasicoUsu> ListarProponentesDesactivados();
 
     public abstract String leerPropiedades(String caso);
-    
+
+    public abstract DtDesactivado obtenerProponenteDesactivado(String nick);
+
     public abstract boolean existeNombreUser(String nick);
+
     public abstract boolean existeCorreoUser(String correo);
-    
+
 }
