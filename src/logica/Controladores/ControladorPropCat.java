@@ -1264,7 +1264,7 @@ public class ControladorPropCat implements IPropCat {
     @Override
     public byte[] retornarImagen(String titulo) throws IOException {
         byte[] arreglo = null;
-        String ruta = this.carpetaImagenesPropuestas + this.propuestas.get(titulo).getTituloP();
+        String ruta = this.carpetaImagenesPropuestas + "/" + this.propuestas.get(titulo).getTituloP();
         String imagen = this.propuestas.get(titulo).getImagen();
         String img = ruta + "/" + imagen;
         File f = new File(img);
