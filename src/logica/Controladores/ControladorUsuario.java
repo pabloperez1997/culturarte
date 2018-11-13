@@ -1152,6 +1152,8 @@ public class ControladorUsuario implements IControladorUsuario {
         }
         return null;
     }
+
+    @Override
     public boolean existeNombreUser(String nick) {
         boolean esta = false;
         Iterator it = this.Usuarios.entrySet().iterator();
@@ -1165,6 +1167,7 @@ public class ControladorUsuario implements IControladorUsuario {
         return esta;
     }
 
+    @Override
     public boolean existeCorreoUser(String correo) {
         boolean esta = false;
         Iterator it = this.Usuarios.entrySet().iterator();
@@ -1176,5 +1179,27 @@ public class ControladorUsuario implements IControladorUsuario {
             }
         }
         return esta;
+    }
+
+    @Override
+    public int cantidadUsuSiguenPropuesta(String titulo) {
+        Iterator it = this.Usuarios.entrySet().iterator();
+        int cantFav = 0;
+        while (it.hasNext()) {
+            Map.Entry mtry = (Map.Entry) it.next();
+
+            if (mtry.getValue() instanceof Colaborador) {
+                Colaborador colab = (Colaborador) mtry.getValue();
+                if (colab.getFavoritas().get(titulo) != null) {
+                    cantFav++;
+                }
+            } else {
+                Proponente prop = (Proponente) mtry.getValue();
+                if (prop.getFavoritas().get(titulo) != null) {
+                    cantFav++;
+                }
+            }
+        }
+        return cantFav;
     }
 }

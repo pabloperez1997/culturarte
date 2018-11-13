@@ -28,6 +28,7 @@ import logica.Clases.Usuario;
 import logica.Clases.DataImagen;
 import logica.Clases.DtComentarios;
 import logica.Clases.DtPago;
+import logica.Clases.DtRecomendacionProp;
 
 /**
  *
@@ -152,4 +153,6 @@ public interface IPropCat {
     public abstract List<String> ListarPropuestasDe(String Autor);
 
     public abstract DtColaboraciones ObtenerColaboracion(String nick, String titulo);
+
+    public abstract List<DtRecomendacionProp> recomendacionDePropuestas(String nick);
 }

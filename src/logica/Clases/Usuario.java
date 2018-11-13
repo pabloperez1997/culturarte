@@ -22,32 +22,22 @@ public class Usuario {
     private Calendar fechaN;
     private String imagen;
     private String password;
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
     private Map<String, Usuario> seguidos;
     private Map<String, Usuario> seguidores;
-    private Map<String,Propuesta> favoritas;
+    private Map<String, Propuesta> favoritas;
 
-    
-    public Usuario(String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen,String password) {
+    public Usuario(String nickname, String nombre, String apellido, String correo, Calendar fechaN, String imagen, String password) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
         this.fechaN = fechaN;
         this.imagen = imagen;
-        this.password=password;
+        this.password = password;
         this.seguidos = new HashMap<>();
         this.seguidores = new HashMap<>();
         this.favoritas = new HashMap<>();
     }
-
 
     public Map<String, Propuesta> getFavoritas() {
         return favoritas;
@@ -105,10 +95,10 @@ public class Usuario {
         return seguidos;
     }
 
-    public void setSeguido(Usuario u){
+    public void setSeguido(Usuario u) {
         this.seguidos.put(u.getNickname(), u);
     }
-    
+
     public Map<String, Usuario> getSeguidores() {
         return seguidores;
     }
@@ -116,5 +106,13 @@ public class Usuario {
     public void setSeguidores(Map<String, Usuario> seguidores) {
         this.seguidores = seguidores;
     }
-    
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }

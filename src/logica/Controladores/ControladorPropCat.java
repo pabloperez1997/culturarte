@@ -7,7 +7,6 @@ package logica.Controladores;
 
 import Persistencia.DBColaboracion;
 import Persistencia.DBPropuesta;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -29,12 +28,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
 import logica.Clases.Colaborador;
@@ -57,9 +53,9 @@ import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
 import logica.Clases.DataImagen;
-import logica.Clases.DtBasicoUsu;
 import logica.Clases.DtComentarios;
 import logica.Clases.DtPago;
+import logica.Clases.DtRecomendacionProp;
 import logica.Clases.convertidorDeIMG;
 import logica.Clases.DtUsuario;
 import logica.Clases.Tarjeta;
@@ -1426,5 +1422,44 @@ public class ControladorPropCat implements IPropCat {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<DtRecomendacionProp> recomendacionDePropuestas(String nick) {
+        List<DtRecomendacionProp> lista = new ArrayList<>();
+
+        Iterator it = this.propuestas.entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry mtry = (Map.Entry) it.next();
+            Propuesta prop = (Propuesta) mtry.getValue();
+            Colaborador colab = (Colaborador) Fabrica.getInstance().getIControladorUsuario().getUsuarios().get(nick);
+            if (colab != null && !prop.EsColaborador(nick)) {
+                DtRecomendacionProp dtRprop = new DtRecomendacionProp(prop.getTituloP(), this.obtenerPuntuacionPropuesta(prop));
+                lista.add(dtRprop);
+            }
+        }
+
+        return lista;
+    }
+
+    public int obtenerPuntuacionPropuesta(Propuesta prop) {
+        int puntuacion = 0;
+        int porcentaje = (int) ((this.CalcularMontoPropuesta(prop) * 100) / prop.getMontoTot());
+        int pfin = 0;
+
+        if (porcentaje >= 0 && porcentaje <= 25) {
+            pfin = 1;
+        } else if (porcentaje >= 25 && porcentaje <= 50) {
+            pfin = 2;
+        } else if (porcentaje >= 50 && porcentaje <= 75) {
+            pfin = 3;
+        } else if (porcentaje >= 75 && porcentaje <= 100) {
+            pfin = 4;
+        }
+
+        puntuacion = prop.getColaboraciones().size() + pfin + Fabrica.getInstance().getIControladorUsuario().cantidadUsuSiguenPropuesta(prop.getTituloP());
+
+        return puntuacion;
     }
 }
