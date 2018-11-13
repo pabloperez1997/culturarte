@@ -5,12 +5,10 @@
  */
 package logica.Interfaces;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
 import logica.Clases.Colaboracion;
 import logica.Clases.Colaborador;
@@ -129,8 +127,11 @@ public interface IControladorUsuario {
     public abstract List<DtBasicoUsu> ListarProponentesDesactivados();
 
     public abstract String leerPropiedades(String caso);
-    
+
+    public abstract DtDesactivado obtenerProponenteDesactivado(String nick);
+
     public abstract boolean existeNombreUser(String nick);
+
     public abstract boolean existeCorreoUser(String correo);
      public abstract DtDesactivado obtenerProponenteDesactivado(String nick);
 }
