@@ -48,4 +48,9 @@ public class PublicadorRegistrarColaboracion {
     public boolean AgregarColaboracion(@WebParam(name = "retorno") boolean retorno, @WebParam(name = "monto_final") float monto_final) throws Exception {
         return Fabrica.getInstance().getControladorPropCat().agregarColaboracion(retorno, monto_final);
     }
+    
+    @WebMethod
+    public void CargarPagosTarjeta(@WebParam(name = "nick") String nick, @WebParam(name = "Titulo") String Titulo, @WebParam(name = "tarjeta") String tarjeta,@WebParam(name = "numero") String numero, @WebParam(name = "fecha") String fecha,@WebParam(name = "cvc") int cvc, @WebParam(name = "titular") String titular)  throws Exception {
+        Fabrica.getInstance().getControladorPropCat().CargarPagosTarjeta(nick, Titulo, tarjeta, numero, fecha, cvc, titular);
+    }
 }

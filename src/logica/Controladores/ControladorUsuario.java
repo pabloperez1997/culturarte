@@ -23,7 +23,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import static java.nio.file.StandardOpenOption.CREATE;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -37,7 +39,9 @@ import javax.swing.JOptionPane;
 import logica.Clases.Categoria;
 import logica.Clases.Colaboracion;
 import logica.Clases.DataImagen;
+import logica.Clases.DtBasicoUsu;
 import logica.Clases.DtColaboraciones;
+import logica.Clases.DtDesactivado;
 import logica.Clases.DtNickTitProp;
 import logica.Clases.DtRegistro;
 import logica.Clases.DtSeguidor;
@@ -77,7 +81,7 @@ public class ControladorUsuario implements IControladorUsuario {
         this.Usuarios = new HashMap<>();
         this.dbUsuario = new DBUsuario();
         this.IPC = Fabrica.getInstance().getControladorPropCat();
-        this.RegistrosSitio=new ArrayList<>();
+        this.RegistrosSitio = new ArrayList<>();
     }
 
     @Override
@@ -818,8 +822,8 @@ public class ControladorUsuario implements IControladorUsuario {
                     Proponente p = (Proponente) aux;
                     if (p.getEstaActivo()) {
                         dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true, p.getBiografia(), p.getSitioweb(), p.getDireccion());
-                    dtc.getSeguidores().addAll(p.getSeguidores().keySet());
-                    dtc.getSeguidos().addAll(p.getSeguidos().keySet());
+                        dtc.getSeguidores().addAll(p.getSeguidores().keySet());
+                        dtc.getSeguidos().addAll(p.getSeguidos().keySet());
                     } else {
                         return null;
                     }
@@ -956,14 +960,14 @@ public class ControladorUsuario implements IControladorUsuario {
                 if (aux.getCorreo().equals(correoU)) {
                     if (aux instanceof Colaborador) {
                         dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), false);
-                     dtc.getSeguidores().addAll(aux.getSeguidores().keySet());
-                     dtc.getSeguidos().addAll(aux.getSeguidos().keySet());
+                        dtc.getSeguidores().addAll(aux.getSeguidores().keySet());
+                        dtc.getSeguidos().addAll(aux.getSeguidos().keySet());
                     } else {
                         Proponente prop = (Proponente) aux;
                         if (prop.getEstaActivo()) {
                             dtc = new DtUsuario(aux.getNickname(), aux.getNombre(), aux.getApellido(), aux.getCorreo(), aux.getFechaN(), aux.getImagen(), aux.getPassword(), true);
-                        dtc.getSeguidores().addAll(prop.getSeguidores().keySet());
-                        dtc.getSeguidos().addAll(prop.getSeguidos().keySet());
+                            dtc.getSeguidores().addAll(prop.getSeguidores().keySet());
+                            dtc.getSeguidos().addAll(prop.getSeguidos().keySet());
                         }
                     }
                     break;
@@ -1014,16 +1018,18 @@ public class ControladorUsuario implements IControladorUsuario {
                 prop.setEstaActiva(false);
                 prop.setFDesactivacion(new GregorianCalendar());
                 boolean ok = this.dbUsuario.setNuevoEstadoProponente(nickname, false, prop.getFDesactivacion());
-                Iterator it = prop.getPropuestas().entrySet().iterator();
+                if (ok) {
+                    Iterator it = prop.getPropuestas().entrySet().iterator();
 
-                while (it.hasNext()) {
-                    Map.Entry mtry = (Map.Entry) it.next();
-                    Propuesta propuesta = (Propuesta) mtry.getValue();
+                    while (it.hasNext()) {
+                        Map.Entry mtry = (Map.Entry) it.next();
+                        Propuesta propuesta = (Propuesta) mtry.getValue();
 
-                    if (propuesta.getEstaActiva()) { // deberian estar todas activas (true)
-                        propuesta.setEstaActiva(false);
-                        Fabrica.getInstance().getControladorPropCat().DesactivarPropuesta(propuesta);
+                        if (propuesta.getEstaActiva()) { // deberian estar todas activas (true)
+                            propuesta.setEstaActiva(false);
+                            Fabrica.getInstance().getControladorPropCat().DesactivarPropuesta(propuesta);
 
+                        }
                     }
                 }
             }
@@ -1094,14 +1100,59 @@ public class ControladorUsuario implements IControladorUsuario {
         }
         return prop.getProperty(caso);
     }
+
     @Override
-    public boolean agregarRegistro(String ip,String navegador,String sitio,String so){
-    DtRegistro dr= new DtRegistro(ip, sitio, navegador, so);
-    this.RegistrosSitio.add(dr);
-    return true;
-}
+    public boolean agregarRegistro(String ip, String navegador, String sitio, String so) {
+        DtRegistro dr = new DtRegistro(ip, sitio, navegador, so);
+        this.RegistrosSitio.add(dr);
+        return true;
+    }
+
     @Override
-    public List<DtRegistro> getListaRegistro(){
-    return this.RegistrosSitio;
-}
+    public List<DtRegistro> getListaRegistro() {
+        return this.RegistrosSitio;
+    }
+
+    @Override
+    public List<DtBasicoUsu> ListarProponentesDesactivados() {
+        List<DtBasicoUsu> listDesactivados = new ArrayList<>();
+
+        Iterator it = this.Usuarios.entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry mtry = (Map.Entry) it.next();
+
+            if (mtry.getValue() instanceof Proponente) {
+                Proponente prop = (Proponente) mtry.getValue();
+
+                if (!prop.getEstaActivo()) {
+                    DtBasicoUsu usu = new DtBasicoUsu(prop.getNombre(), prop.getApellido(), prop.getNickname());
+                    listDesactivados.add(usu);
+                }
+            }
+
+        }
+
+        return listDesactivados;
+    }
+
+    @Override
+    public DtDesactivado obtenerProponenteDesactivado(String nick) {
+
+        Proponente prop = (Proponente) this.Usuarios.get(nick);
+
+        if (!prop.getEstaActivo()) {
+
+            Date fechaD = (Date) prop.getFDesactivacion().getTime();
+            String fechaDD = new SimpleDateFormat("dd/MMM/yyyy").format(fechaD);
+
+            Date fechaN = (Date) prop.getFDesactivacion().getTime();
+            String fechaNN = new SimpleDateFormat("dd/MMM/yyyy").format(fechaN);
+
+            return new DtDesactivado(prop.getNombre(), prop.getApellido(), fechaDD, fechaNN, prop.getCorreo(), prop.getNickname());
+
+        }
+        return null;
+
+    }
 }
