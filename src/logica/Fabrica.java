@@ -29,6 +29,7 @@ import logica.Controladores.ControladorPropCat;
 import logica.Interfaces.IControladorUsuario;
 import logica.Clases.codificador;
 import logica.Clases.convertidorDeIMG;
+import logica.Controladores.CarpetaImagenes;
 
 /**
  *
@@ -85,22 +86,10 @@ public class Fabrica {
         return ControladorU; //To change body of generated methods, choose Tools | Templates.
     }
 
-    public String leerPropiedades(String caso) {
-        Properties prop = new Properties();
-        InputStream archivo = null;
-        try {
-            archivo = new FileInputStream(System.getProperty("user.dir") + "\\config\\config.properties");
-            prop.load(archivo);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-        return prop.getProperty(caso);
-    }
-
     public void cargarDatosdePrueba() throws IOException {
         IControladorUsuario ICU = this.getIControladorUsuario();
         IPropCat IPC = this.getControladorPropCat();
-        String ruta = leerPropiedades("fotosdp");
+        String ruta = CarpetaImagenes.getInstance().carpetafDatosDP;
 //    
 //    DBUsuario d=new DBUsuario();
 //    d.limpiarBD();
