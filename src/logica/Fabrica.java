@@ -209,41 +209,41 @@ public class Fabrica {
 //-----------------------------------------------------Propuestas------------------------------------//
         IPC.crearPropuestaDatosdePrueba("Cine en el Botánico", "El 16 de Diciembre a la hora 20 se proyectará la película \"Clever\", en el Jardín Botánico (Av. 19 de Abril 1181) "
                 + "en el marco de las actividades realizadas por el ciclo Cultura al Aire Libre. El largometraje uruguayo de ficción"
-                + "Clever es dirigido por Federico Borgia y Guillermo Madeiro. Es apto para mayores de 15 años.", IPC.ObtenerCategoria("Cine al Aire Libre"), new GregorianCalendar(2018, 5, 16),
+                + "Clever es dirigido por Federico Borgia y Guillermo Madeiro. Es apto para mayores de 15 años.", IPC.ObtenerCategoria("Cine al Aire Libre"), new GregorianCalendar(2018, 4, 16),
                 "Jardín Botánico ", 200, 150000, TipoRetorno.porGanancias, ICU.ObtenerProponente("diegop"), "Culturarte.png");
 
         IPC.crearPropuestaDatosdePrueba("Durazno Rock", "Una vez mas EspectaculosBA dice presente en DURAZNO ROCK! Mas de 400 personas nos acompañaron el año pasado y "
-                + "este año se repite!! Este año con la presencia destacada de La Beriso!!", IPC.ObtenerCategoria("Festival"), new GregorianCalendar(2018, 12, 10),
+                + "este año se repite!! Este año con la presencia destacada de La Beriso!!", IPC.ObtenerCategoria("Festival"), new GregorianCalendar(2018, 11, 10),
                 "Durazno", 0, 100000, TipoRetorno.porGanancias, ICU.ObtenerProponente("durazno"), "Culturarte.png");
 
         IPC.crearPropuestaDatosdePrueba("El Lazarillo de Tormes", "Vuelve unas de las producciones de El Galpón más aclamadas de los últimos tiempos. Esta obra se ha presentado "
                 + "en Miami, Nueva York, Washington, México, Guadalajara, Río de Janeiro y La Habana. En nuestro país, El Lazarillo de Tormes fue nominado en los rubros mejor espectáculo "
                 + "y mejor dirección a los Premios Florencio 1995, obteniendo su protagonista Héctor Guido el Florencio a Mejor actor de ese año.",
-                IPC.ObtenerCategoria("Teatro Dramático"), new GregorianCalendar(2018, 12, 03), "Teatro el Galpón", 350, 1750000, TipoRetorno.Entradas, ICU.ObtenerProponente("hectorg"), "Culturarte.png");
+                IPC.ObtenerCategoria("Teatro Dramático"), new GregorianCalendar(2018, 11, 03), "Teatro el Galpón", 350, 1750000, TipoRetorno.Entradas, ICU.ObtenerProponente("hectorg"), "Culturarte.png");
 
         IPC.crearPropuestaDatosdePrueba("El Pimiento Indomable", "El Pimiento Indomable, formación compuesta por Kiko Veneno y el uruguayo Martín Buscaglia, presentará este 19 de Octubre, "
                 + "su primer trabajo. Bajo un título homónimo al del grupo, es un disco que según los propios protagonistas “no se parece al de ninguno de los dos por separado. Entre los "
-                + "títulos que se podrán escuchar se encuentran “Nadador salvador”, “América es más grande”, “Pescaito Enroscado” o “La reina del placer", IPC.ObtenerCategoria("Concierto"), new GregorianCalendar(2018, 07, 26),
+                + "títulos que se podrán escuchar se encuentran “Nadador salvador”, “América es más grande”, “Pescaito Enroscado” o “La reina del placer", IPC.ObtenerCategoria("Concierto"), new GregorianCalendar(2018, 06, 26),
                 "Teatro Solís", 400, 400000, TipoRetorno.porGanancias, ICU.ObtenerProponente("mbusca"), "El Pimiento Indomable.jpg");
 
         IPC.crearPropuestaDatosdePrueba("Pilsen Rock", "La edición 2018 del Pilsen Rock se celebrará el 21 de Octubre en la Rural del Prado y contará con la participación de "
                 + "más de 15 bandas nacionales. Quienes no puedan trasladarse al lugar, "
                 + "tendrán la posibilidad de disfrutar los shows a través de Internet, así como entrevistas en vivo a los músicos una vez finalizados los conciertos.",
-                IPC.ObtenerCategoria("Festival"), new GregorianCalendar(2018, 11, 15), "Rural de Prado", 1000, 900000, TipoRetorno.EntGan, ICU.ObtenerProponente("kairoh"), "Pilsen Rock.jpg");
+                IPC.ObtenerCategoria("Festival"), new GregorianCalendar(2018, 10, 15), "Rural de Prado", 1000, 900000, TipoRetorno.EntGan, ICU.ObtenerProponente("kairoh"), "Pilsen Rock.jpg");
 
         IPC.crearPropuestaDatosdePrueba("Religiosamente", "MOMOSAPIENS presenta Religiosamente. Mediante dos parodias y un hilo conductor que aborda la temática de la religión "
                 + "Momosapiens, mediante el humor y la reflexión, hilvana una historia que muestra al hombre inmerso en el tema religioso. El libreto está escrito utilizando diferentes"
                 + " lenguajes de humor, dando una visión satírica y reflexiva desde distintos puntos de vista, logrando mediante situaciones paródicas armar una propuesta plena de"
-                + "arte carnavalero. ", IPC.ObtenerCategoria("Parodistas"), new GregorianCalendar(2018, 6, 18), "Teatro de Verano", 300, 300000, TipoRetorno.EntGan, ICU.ObtenerProponente("hrubino"), "Religiosamente.jpg");
+                + "arte carnavalero. ", IPC.ObtenerCategoria("Parodistas"), new GregorianCalendar(2018, 5, 18), "Teatro de Verano", 300, 300000, TipoRetorno.EntGan, ICU.ObtenerProponente("hrubino"), "Religiosamente.jpg");
 
         IPC.crearPropuestaDatosdePrueba("Romeo y Julieta", "Romeo y Julieta de Kenneth MacMillan, uno de los ballets favoritos del director artístico Julio Bocca, se presentará nuevamente "
                 + "el 5 de Noviembre en el Auditorio Nacional del Sodre. Basada en la obra homónima de William Shakespeare, Romeo y Julieta es considerada la coreografía maestra del MacMillan. "
-                + "La producción de vestuario y escenografía se realizó en los Talleres del Auditorio Adela Reta, sobre los diseños originales.", IPC.ObtenerCategoria("Ballet"), new GregorianCalendar(2018, 11, 05),
+                + "La producción de vestuario y escenografía se realizó en los Talleres del Auditorio Adela Reta, sobre los diseños originales.", IPC.ObtenerCategoria("Ballet"), new GregorianCalendar(2018, 10, 05),
                 "Auditorio Nacional del Sodre", 800, 750000, TipoRetorno.porGanancias, ICU.ObtenerProponente("juliob"), "Romeo y Julieta.jpg");
 
         IPC.crearPropuestaDatosdePrueba("Un día de Julio", "La Catalina presenta el espectáculo Un Día de Julio en Landia. Un hombre misterioso y solitario vive encerrado entre las cuatro paredes "
                 + "de su casa. Intenta, con sus teorías extravagantes, cambiar el mundo exterior que le resulta inhabitable. Un día de Julio sucederá algo que cambiará su vida y la de su entorno "
-                + "para siempre.", IPC.ObtenerCategoria("Murga"), new GregorianCalendar(2018, 11, 16), "Landia", 650, 300000, TipoRetorno.EntGan, ICU.ObtenerProponente("tabarec"), "Un día de Julio.jpg");
+                + "para siempre.", IPC.ObtenerCategoria("Murga"), new GregorianCalendar(2018, 10, 16), "Landia", 650, 300000, TipoRetorno.EntGan, ICU.ObtenerProponente("tabarec"), "Un día de Julio.jpg");
 
         //------------------------------------------Seguidores--------------------------------------------------//
         try {
@@ -294,31 +294,31 @@ public class Fabrica {
         }
 
 //------------------------------------------Colaboraciones--------------------------------------------------//
-        IPC.agregarColaboracionDatosdePrueba("Cine en el Botánico", "novick", 50000, new GregorianCalendar(2018, 05, 20, 14, 30, 0), false);
-        IPC.agregarColaboracionDatosdePrueba("Cine en el Botánico", "robinh", 50000, new GregorianCalendar(2018, 05, 24, 17, 25, 0), false);
-        IPC.agregarColaboracionDatosdePrueba("Cine en el Botánico", "nicoJ", 50000, new GregorianCalendar(2018, 05, 30, 18, 30, 0), false);
+        IPC.agregarColaboracionDatosdePrueba("Cine en el Botánico", "novick", 50000, new GregorianCalendar(2018, 04, 20, 14, 30, 0), false);
+        IPC.agregarColaboracionDatosdePrueba("Cine en el Botánico", "robinh", 50000, new GregorianCalendar(2018, 04, 24, 17, 25, 0), false);
+        IPC.agregarColaboracionDatosdePrueba("Cine en el Botánico", "nicoJ", 50000, new GregorianCalendar(2018, 04, 30, 18, 30, 0), false);
 
-        IPC.agregarColaboracionDatosdePrueba("Religiosamente", "marcelot", 200000, new GregorianCalendar(2018, 06, 30, 14, 25, 0), false);
-        IPC.agregarColaboracionDatosdePrueba("Religiosamente", "Tiajaci", 500, new GregorianCalendar(2018, 07, 01, 18, 05, 0), true);
-        IPC.agregarColaboracionDatosdePrueba("Religiosamente", "Mengano", 600, new GregorianCalendar(2018, 07, 07, 17, 45, 0), true);
-        IPC.agregarColaboracionDatosdePrueba("Religiosamente", "novick", 50000, new GregorianCalendar(2018, 07, 10, 14, 35, 0), false);
-        IPC.agregarColaboracionDatosdePrueba("Religiosamente", "sergiop", 50000, new GregorianCalendar(2018, 07, 15, 9, 45, 0), false);
+        IPC.agregarColaboracionDatosdePrueba("Religiosamente", "marcelot", 200000, new GregorianCalendar(2018, 05, 30, 14, 25, 0), false);
+        IPC.agregarColaboracionDatosdePrueba("Religiosamente", "Tiajaci", 500, new GregorianCalendar(2018, 06, 01, 18, 05, 0), true);
+        IPC.agregarColaboracionDatosdePrueba("Religiosamente", "Mengano", 600, new GregorianCalendar(2018, 06, 07, 17, 45, 0), true);
+        IPC.agregarColaboracionDatosdePrueba("Religiosamente", "novick", 50000, new GregorianCalendar(2018, 06, 10, 14, 35, 0), false);
+        IPC.agregarColaboracionDatosdePrueba("Religiosamente", "sergiop", 50000, new GregorianCalendar(2018, 06, 15, 9, 45, 0), false);
 
-        IPC.agregarColaboracionDatosdePrueba("El Pimiento Indomable", "marcelot", 200000, new GregorianCalendar(2018, 8, 01, 07, 40, 0), false);
-        IPC.agregarColaboracionDatosdePrueba("El Pimiento Indomable", "sergiop", 80000, new GregorianCalendar(2018, 8, 03, 9, 25, 0), false);
+        IPC.agregarColaboracionDatosdePrueba("El Pimiento Indomable", "marcelot", 200000, new GregorianCalendar(2018, 7, 01, 07, 40, 0), false);
+        IPC.agregarColaboracionDatosdePrueba("El Pimiento Indomable", "sergiop", 80000, new GregorianCalendar(2018, 7, 03, 9, 25, 0), false);
 
-        IPC.agregarColaboracionDatosdePrueba("Pilsen Rock", "chino", 50000, new GregorianCalendar(2018, 11, 25, 16, 50, 0), true);
-        IPC.agregarColaboracionDatosdePrueba("Pilsen Rock", "novick", 120000, new GregorianCalendar(2018, 11, 30, 15, 50, 0), false);
-        IPC.agregarColaboracionDatosdePrueba("Pilsen Rock", "tonyp", 120000, new GregorianCalendar(2018, 12, 05, 19, 30, 0), true);
+        IPC.agregarColaboracionDatosdePrueba("Pilsen Rock", "chino", 50000, new GregorianCalendar(2018, 10, 25, 16, 50, 0), true);
+        IPC.agregarColaboracionDatosdePrueba("Pilsen Rock", "novick", 120000, new GregorianCalendar(2018, 10, 30, 15, 50, 0), false);
+        IPC.agregarColaboracionDatosdePrueba("Pilsen Rock", "tonyp", 120000, new GregorianCalendar(2018, 11, 05, 19, 30, 0), true);
 
-        IPC.agregarColaboracionDatosdePrueba("Romeo y Julieta", "sergiop", 100000, new GregorianCalendar(2018, 11, 8, 04, 58, 0), false);
-        IPC.agregarColaboracionDatosdePrueba("Romeo y Julieta", "marcelot", 200000, new GregorianCalendar(2018, 11, 9, 11, 25, 0), false);
+        IPC.agregarColaboracionDatosdePrueba("Romeo y Julieta", "sergiop", 100000, new GregorianCalendar(2018, 10, 8, 04, 58, 0), false);
+        IPC.agregarColaboracionDatosdePrueba("Romeo y Julieta", "marcelot", 200000, new GregorianCalendar(2018, 10, 9, 11, 25, 0), false);
 
-        IPC.agregarColaboracionDatosdePrueba("Un día de Julio", "tonyp", 30000, new GregorianCalendar(2018, 11, 8, 04, 48, 0), true);
-        IPC.agregarColaboracionDatosdePrueba("Un día de Julio", "marcelot", 150000, new GregorianCalendar(2018, 11, 9, 15, 30, 0), false);
+        IPC.agregarColaboracionDatosdePrueba("Un día de Julio", "tonyp", 30000, new GregorianCalendar(2018, 10, 8, 04, 48, 0), true);
+        IPC.agregarColaboracionDatosdePrueba("Un día de Julio", "marcelot", 150000, new GregorianCalendar(2018, 10, 9, 15, 30, 0), false);
 //---------------------------------------------- Pagos --------------------------------------------------------//
 
-        IPC.CargarPagosTarjetaDP("novick", "Cine en el Botánico", "Oca", "1234567845672017", new GregorianCalendar(2018, 07, 30), 123, "Edgardo Novick");
+        IPC.CargarPagosTarjetaDP("novick", "Cine en el Botánico", "Oca", "1234567845672017", new GregorianCalendar(2018, 06, 30), 123, "Edgardo Novick");
         IPC.CargarPagosTarjetaDP("robinh", "Cine en el Botánico", "Oca", "1234567823452017", new GregorianCalendar(2018, 07, 30), 123, "Robin Henderson");
         IPC.CargarPagosTarjetaDP("nicoj", "Cine en el Botánico", "Visa", "1234567834562017", new GregorianCalendar(2018, 8, 30), 123, "Nicolás Jodal");
         IPC.CargarPagosTarjetaDP("marcelot", "Religiosamente", "Visa", "1234567845672017", new GregorianCalendar(2018, 9, 30), 123, "Marcelo Tinelli");
@@ -336,38 +336,38 @@ public class Fabrica {
         IPC.CargarPagosTransfPayDP("marcelot", "Un día de Julio", null, "5678901234", "Marcelo Tinelli");
 
 //------------------------------------------Estado Propuesta--------------------------------------------------//
-        IPC.nuevoEstadoPropuestaDatosdePrueba("Cine en el Botánico", TipoE.Ingresada, new GregorianCalendar(2018, 05, 16, 15, 30, 0));
-        IPC.nuevoEstadoPropuestaDatosdePrueba("Cine en el Botánico", TipoE.Publicada, new GregorianCalendar(2018, 05, 17, 8, 30, 0));
-        IPC.nuevoEstadoPropuestaDatosdePrueba("Cine en el Botánico", TipoE.enFinanciacion, new GregorianCalendar(2018, 05, 20, 14, 30, 0));
-        IPC.nuevoEstadoPropuestaDatosdePrueba("Cine en el Botánico", TipoE.Financiada, new GregorianCalendar(2018, 06, 16, 18, 30, 0));
-        IPC.setEstadoActualDatosDePrueba("Cine en el Botánico", new EstadoPropuesta(TipoE.Cancelada, new GregorianCalendar(2018, 06, 20, 14, 50, 0), true));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("Cine en el Botánico", TipoE.Ingresada, new GregorianCalendar(2018, 04, 16, 15, 30, 0));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("Cine en el Botánico", TipoE.Publicada, new GregorianCalendar(2018, 04, 17, 8, 30, 0));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("Cine en el Botánico", TipoE.enFinanciacion, new GregorianCalendar(2018, 04, 20, 14, 30, 0));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("Cine en el Botánico", TipoE.Financiada, new GregorianCalendar(2018, 05, 16, 18, 30, 0));
+        IPC.setEstadoActualDatosDePrueba("Cine en el Botánico", new EstadoPropuesta(TipoE.Cancelada, new GregorianCalendar(2018, 05, 20, 14, 50, 0), true));
 
-        IPC.nuevoEstadoPropuestaDatosdePrueba("Religiosamente", TipoE.Ingresada, new GregorianCalendar(2018, 06, 18, 4, 28, 0));
-        IPC.nuevoEstadoPropuestaDatosdePrueba("Religiosamente", TipoE.Publicada, new GregorianCalendar(2018, 06, 20, 4, 56, 0));
-        IPC.nuevoEstadoPropuestaDatosdePrueba("Religiosamente", TipoE.enFinanciacion, new GregorianCalendar(2018, 06, 30, 14, 25, 0));
-        IPC.setEstadoActualDatosDePrueba("Religiosamente", new EstadoPropuesta(TipoE.Financiada, new GregorianCalendar(2018, 07, 20, 9, 45, 0), true));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("Religiosamente", TipoE.Ingresada, new GregorianCalendar(2018, 05, 18, 4, 28, 0));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("Religiosamente", TipoE.Publicada, new GregorianCalendar(2018, 05, 20, 4, 56, 0));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("Religiosamente", TipoE.enFinanciacion, new GregorianCalendar(2018, 05, 30, 14, 25, 0));
+        IPC.setEstadoActualDatosDePrueba("Religiosamente", new EstadoPropuesta(TipoE.Financiada, new GregorianCalendar(2018, 06, 20, 9, 45, 0), true));
 
-        IPC.nuevoEstadoPropuestaDatosdePrueba("El Pimiento Indomable", TipoE.Ingresada, new GregorianCalendar(2018, 07, 26, 15, 30, 0));
-        IPC.nuevoEstadoPropuestaDatosdePrueba("El Pimiento Indomable", TipoE.Publicada, new GregorianCalendar(2018, 07, 31, 8, 30, 0));
-        IPC.nuevoEstadoPropuestaDatosdePrueba("El Pimiento Indomable", TipoE.enFinanciacion, new GregorianCalendar(2018, 8, 01, 7, 40, 0));
-        IPC.setEstadoActualDatosDePrueba("El Pimiento Indomable", new EstadoPropuesta(TipoE.noFinanciada, new GregorianCalendar(2018, 8, 30, 8, 30), true));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("El Pimiento Indomable", TipoE.Ingresada, new GregorianCalendar(2018, 06, 26, 15, 30, 0));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("El Pimiento Indomable", TipoE.Publicada, new GregorianCalendar(2018, 06, 31, 8, 30, 0));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("El Pimiento Indomable", TipoE.enFinanciacion, new GregorianCalendar(2018, 7, 01, 7, 40, 0));
+        IPC.setEstadoActualDatosDePrueba("El Pimiento Indomable", new EstadoPropuesta(TipoE.noFinanciada, new GregorianCalendar(2018, 7, 30, 8, 30), true));
 
-        IPC.nuevoEstadoPropuestaDatosdePrueba("Pilsen Rock", TipoE.Ingresada, new GregorianCalendar(2018, 11, 15, 15, 40, 0));
-        IPC.nuevoEstadoPropuestaDatosdePrueba("Pilsen Rock", TipoE.Publicada, new GregorianCalendar(2018, 11, 20, 14, 30, 0));
-        IPC.setEstadoActualDatosDePrueba("Pilsen Rock", new EstadoPropuesta(TipoE.enFinanciacion, new GregorianCalendar(2018, 11, 20, 16, 50, 0), true));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("Pilsen Rock", TipoE.Ingresada, new GregorianCalendar(2018, 10, 15, 15, 40, 0));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("Pilsen Rock", TipoE.Publicada, new GregorianCalendar(2018, 10, 20, 14, 30, 0));
+        IPC.setEstadoActualDatosDePrueba("Pilsen Rock", new EstadoPropuesta(TipoE.enFinanciacion, new GregorianCalendar(2018, 10, 20, 16, 50, 0), true));
 
-        IPC.nuevoEstadoPropuestaDatosdePrueba("Romeo y Julieta", TipoE.Ingresada, new GregorianCalendar(2018, 11, 05, 12, 20, 0));
-        IPC.nuevoEstadoPropuestaDatosdePrueba("Romeo y Julieta", TipoE.Publicada, new GregorianCalendar(2018, 11, 06, 10, 25, 0));
-        IPC.setEstadoActualDatosDePrueba("Romeo y Julieta", new EstadoPropuesta(TipoE.enFinanciacion, new GregorianCalendar(2018, 11, 8, 04, 58, 0), true));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("Romeo y Julieta", TipoE.Ingresada, new GregorianCalendar(2018, 10, 05, 12, 20, 0));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("Romeo y Julieta", TipoE.Publicada, new GregorianCalendar(2018, 10, 06, 10, 25, 0));
+        IPC.setEstadoActualDatosDePrueba("Romeo y Julieta", new EstadoPropuesta(TipoE.enFinanciacion, new GregorianCalendar(2018, 10, 8, 04, 58, 0), true));
 
-        IPC.nuevoEstadoPropuestaDatosdePrueba("Un día de Julio", TipoE.Ingresada, new GregorianCalendar(2018, 11, 16, 02, 00, 0));
-        IPC.nuevoEstadoPropuestaDatosdePrueba("Un día de Julio", TipoE.Publicada, new GregorianCalendar(2018, 11, 17, 04, 50, 0));
-        IPC.setEstadoActualDatosDePrueba("Un día de Julio", new EstadoPropuesta(TipoE.enFinanciacion, new GregorianCalendar(2018, 11, 18, 04, 48, 0), true));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("Un día de Julio", TipoE.Ingresada, new GregorianCalendar(2018, 10, 16, 02, 00, 0));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("Un día de Julio", TipoE.Publicada, new GregorianCalendar(2018, 10, 17, 04, 50, 0));
+        IPC.setEstadoActualDatosDePrueba("Un día de Julio", new EstadoPropuesta(TipoE.enFinanciacion, new GregorianCalendar(2018, 10, 18, 04, 48, 0), true));
 
-        IPC.nuevoEstadoPropuestaDatosdePrueba("El Lazarillo de Tormes", TipoE.Ingresada, new GregorianCalendar(2018, 12, 03, 02, 40, 0));
-        IPC.setEstadoActualDatosDePrueba("El Lazarillo de Tormes", new EstadoPropuesta(TipoE.Publicada, new GregorianCalendar(2018, 12, 9, 02, 40, 0), true));
+        IPC.nuevoEstadoPropuestaDatosdePrueba("El Lazarillo de Tormes", TipoE.Ingresada, new GregorianCalendar(2018, 11, 03, 02, 40, 0));
+        IPC.setEstadoActualDatosDePrueba("El Lazarillo de Tormes", new EstadoPropuesta(TipoE.Publicada, new GregorianCalendar(2018, 11, 9, 02, 40, 0), true));
 
-        IPC.setEstadoActualDatosDePrueba("Durazno Rock", new EstadoPropuesta(TipoE.Ingresada, new GregorianCalendar(2018, 12, 10, 2, 12, 0), true));
+        IPC.setEstadoActualDatosDePrueba("Durazno Rock", new EstadoPropuesta(TipoE.Ingresada, new GregorianCalendar(2018, 11, 10, 2, 12, 0), true));
         //------------------------------------------Comentarios Propuesta--------------------------------------------------//
 
         try {
