@@ -506,7 +506,7 @@ public class ControladorPropCat implements IPropCat {
             }
             
             DBC.agregarColaboracion(Entrada, monto);
-            this.Propuesta = null;
+            
             return true;
         } else {
             throw new Exception("El monto que ingreso ha superado el limite del monto total, ingrese un monto menor o igual a: $" + (this.getPropuesta().getMontoTot() - TotalColaboracion));
