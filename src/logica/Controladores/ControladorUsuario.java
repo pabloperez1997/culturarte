@@ -999,7 +999,7 @@ public class ControladorUsuario implements IControladorUsuario {
         Iterator it = col.iterator();
         while (it.hasNext()) {
             Colaboracion c = (Colaboracion) it.next();
-            DtColaboraciones dtc2 = new DtColaboraciones(c);
+            DtColaboraciones dtc2 = new DtColaboraciones(c, c.getPropuesta().getDescripcionP());
             col2.add(dtc2);
         }
         return col2;
@@ -1182,7 +1182,7 @@ public class ControladorUsuario implements IControladorUsuario {
     }
 
     @Override
-    public int cantidadUsuSiguenPropuesta(String titulo,String nick) {
+    public int cantidadUsuSiguenPropuesta(String titulo, String nick) {
         Iterator it = this.Usuarios.entrySet().iterator();
         int cantFav = 0;
         while (it.hasNext()) {

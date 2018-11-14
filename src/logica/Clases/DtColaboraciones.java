@@ -23,6 +23,7 @@ public class DtColaboraciones {
     private boolean Entradas;
     private String Propuesta;
     private DtPago Pago;
+    private String desc;
 
     public DtColaboraciones(String UColaborador, float montoC, Calendar fechaRealiz, boolean Entradas, String Propuesta) {
         this.UColaborador = UColaborador;
@@ -39,9 +40,21 @@ public class DtColaboraciones {
         this.fechaRealiz = col.getFechaRealiz();
         this.Entradas = col.getEntradas();
         this.Propuesta = col.getPropuesta().getTituloP();
-        if(col.getPago() != null){
-        this.Pago = col.getPago().getPago();
+        if (col.getPago() != null) {
+            this.Pago = col.getPago().getPago();
         }
+    }
+
+    public DtColaboraciones(Colaboracion col, String desc) {
+        this.UColaborador = col.getColaborador().getNickname();
+        this.montoC = col.getMontoC();
+        this.fechaRealiz = col.getFechaRealiz();
+        this.Entradas = col.getEntradas();
+        this.Propuesta = col.getPropuesta().getTituloP();
+        if (col.getPago() != null) {
+            this.Pago = col.getPago().getPago();
+        }
+        this.desc = desc;
     }
 
     public String getUColaborador() {
@@ -62,6 +75,10 @@ public class DtColaboraciones {
 
     public String getPropuesta() {
         return Propuesta;
+    }
+
+    public String getDesc() {
+        return desc;
     }
 
 }
