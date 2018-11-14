@@ -53,6 +53,7 @@ import logica.Fabrica;
 import logica.Interfaces.IControladorUsuario;
 import logica.Interfaces.IPropCat;
 import logica.Clases.DataImagen;
+import logica.Clases.DtBasicoUsu;
 import logica.Clases.DtComentarios;
 import logica.Clases.DtPago;
 import logica.Clases.DtRecomendacionProp;
@@ -66,7 +67,7 @@ import logica.Clases.TransfPay;
  * @author Santiago.S
  */
 public class ControladorPropCat implements IPropCat {
-
+    
     private static ControladorPropCat instancia;
     private Map<String, Propuesta> propuestas;
     private Map<String, Categoria> categorias;
@@ -79,14 +80,14 @@ public class ControladorPropCat implements IPropCat {
     private final String carpetaImagenesPropuestas = CarpetaImagenes.getInstance().carpetafPropuestas;
     private String carpetaImagenesDp = CarpetaImagenes.getInstance().carpetafDatosDP;
     convertidorDeIMG convertidor = new convertidorDeIMG();
-
+    
     public static ControladorPropCat getInstance() {
         if (instancia == null) {
             instancia = new ControladorPropCat();
         }
         return instancia;
     }
-
+    
     public ControladorPropCat() {
         this.dbPropuesta = new DBPropuesta();
         this.dbColaboracion = new DBColaboracion();
@@ -94,11 +95,11 @@ public class ControladorPropCat implements IPropCat {
         this.propuestas = new HashMap<>();
         this.Propuesta = null;
     }
-
+    
     @Override
     public List<DtNickTitProp> listarPropuestaC() {
         this.EvaluarEstadosPropuestas();
-
+        
         Map<String, Propuesta> prop = this.propuestas;
         Set set = prop.entrySet();
         Iterator iterator = set.iterator();
@@ -106,69 +107,69 @@ public class ControladorPropCat implements IPropCat {
         while (iterator.hasNext()) {
             Map.Entry mentry = (Map.Entry) iterator.next();
             Propuesta aux = (Propuesta) mentry.getValue();
-
+            
             if (aux.getEstadoActual().getEstado() == TipoE.Publicada && aux.getEstaActiva()) {
                 DtNickTitProp aux2 = new DtNickTitProp(aux);
                 retorno.add(aux2);
             }
-
+            
         }
         return retorno;
     }
-
+    
     @Override
     public boolean seleccionarUC(String nombreP, String tipoEsp) throws Exception {
-
+        
         Fabrica fabrica = Fabrica.getInstance();
-
+        
         this.uProponente = fabrica.getIControladorUsuario().ObtenerProponente(nombreP);
         if (this.uProponente == null) {
             throw new Exception("El usuario no existe en el sistema");
         } else if (!this.uProponente.getEstaActivo()) {
             throw new Exception("EL usuario esta desactivado");
         }
-
+        
         this.catRecordada = this.categorias.get(tipoEsp);
-
+        
         return this.catRecordada == null;
     }
-
+    
     @Override
     public List<String> ListarCategorias() {
         List<String> listCat = new ArrayList();
-
+        
         Iterator it = this.categorias.entrySet().iterator();
-
+        
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Categoria aux = (Categoria) mentry.getValue();
             listCat.add(aux.getNombreC());
         }
-
+        
         return listCat;
     }
-
+    
     @Override
     public Map<String, Categoria> getCategorias() {
         return this.categorias;
-
+        
     }
-
+    
     @Override
     public void altaCategoria(String nombre, String padre) throws Exception {
         this.catRecordada = this.categorias.get(padre);
-
+        
         if (this.catRecordada == null) {
             throw new Exception("La antecesora no existe");
         }
         if (this.categorias.containsKey(nombre)) {
             throw new Exception("La categoria que quiere cargar ya Existe");
         } else {
-
+            
             Categoria cat = new Categoria(nombre);
-
+            
             boolean correcto = this.dbPropuesta.agregarCategoria(nombre, padre);
-
+            
             if (correcto) {
                 this.catRecordada.setCategoriaH(cat);
                 this.categorias.put(cat.getNombreC(), cat);
@@ -177,19 +178,19 @@ public class ControladorPropCat implements IPropCat {
             }
         }
     }
-
+    
     @Override
     public boolean crearPropuesta(String tituloP, String descripcion, String lugar, DataImagen imagen, String fecha, float montoE, float montoTot, String retorno) throws Exception {
-
+        
         if (this.propuestas.get(tituloP) != null) {
             throw new Exception("Ya existe una propuesta bajo ese Nombre");
         }
-
+        
         TipoE tipo = TipoE.Ingresada;
         Calendar fechaI = new GregorianCalendar();
         EstadoPropuesta estado = new EstadoPropuesta(tipo, fechaI, true);
         String urlImagen;
-
+        
         if (imagen != null) {
             urlImagen = imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo();
         } else {
@@ -198,9 +199,9 @@ public class ControladorPropCat implements IPropCat {
             imagen = convertidor.convertirStringAImg(url, tituloP);
             urlImagen = (imagen.getNombreArchivo() + "." + imagen.getExtensionArchivo());
         }
-
+        
         TipoRetorno tipoR;
-
+        
         switch (retorno) {
             case "Entradas":
                 tipoR = TipoRetorno.Entradas;
@@ -212,7 +213,7 @@ public class ControladorPropCat implements IPropCat {
                 tipoR = TipoRetorno.EntGan;
                 break;
         }
-
+        
         Calendar cal = new GregorianCalendar();
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         Date fechaDate = new Date();
@@ -222,7 +223,7 @@ public class ControladorPropCat implements IPropCat {
             System.out.println(ex);
         }
         cal.setTime(fechaDate);
-
+        
         Propuesta nuevaP = new Propuesta(tituloP, descripcion, urlImagen, lugar, cal, montoE, montoTot, estado, this.catRecordada, tipoR, this.uProponente, true);
         boolean agregada = this.dbPropuesta.agregarPropuesta(nuevaP, estado);
         if (agregada) {
@@ -237,7 +238,7 @@ public class ControladorPropCat implements IPropCat {
         }
         return true;
     }
-
+    
     public void grabarFotoPropuestas(String titulo, DataImagen imagen) throws IOException {
         String extencion = imagen.getExtensionArchivo();
         String nombreA = imagen.getNombreArchivo();
@@ -259,13 +260,13 @@ public class ControladorPropCat implements IPropCat {
         final Path path = Paths.get(pathStr);
         Files.write(path, imagen.getStream(), CREATE); // se crea la imagen
     }
-
+    
     @Override
     public List<DtinfoPropuesta> ListarPropuestasDeProponenteX(String nick) throws Exception {
         this.EvaluarEstadosPropuestas();
-
+        
         Proponente prop = Fabrica.getInstance().getIControladorUsuario().ObtenerProponente(nick);
-
+        
         if (prop != null && prop.getEstaActivo()) {
             List<DtinfoPropuesta> retorno = new ArrayList<>();
             Set set = this.propuestas.entrySet();
@@ -283,19 +284,19 @@ public class ControladorPropCat implements IPropCat {
             throw new Exception("El proponente no existe o fue desactivado");
         }
     }
-
+    
     @Override
     public List<DtNickTitProp> listarPropuestas() {
         this.EvaluarEstadosPropuestas();
-
+        
         List<DtNickTitProp> listPropuestas = new ArrayList();
-
+        
         Iterator it = this.propuestas.entrySet().iterator();
-
+        
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mentry.getValue();
-
+            
             if (prop.getEstaActiva()) {
                 DtNickTitProp dtprop = new DtNickTitProp(prop.getTituloP(), prop.getCategoria().getNombreC());
                 listPropuestas.add(dtprop);
@@ -303,15 +304,15 @@ public class ControladorPropCat implements IPropCat {
         }
         return listPropuestas;
     }
-
+    
     @Override
     public List<DtNickTitProp> listarPropuestasR() {
         this.EvaluarEstadosPropuestas();
-
+        
         List<DtNickTitProp> listPropuestas = new ArrayList();
-
+        
         Iterator it = this.propuestas.entrySet().iterator();
-
+        
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mentry.getValue();
@@ -321,12 +322,12 @@ public class ControladorPropCat implements IPropCat {
                     listPropuestas.add(dtprop);
                 }
             }
-
+            
             return listPropuestas;
         }
         return null;
     }
-
+    
     @Override
     public DtinfoPropuesta SeleccionarPropuestaR(String titulo) {
         this.EvaluarEstadosPropuestas();
@@ -346,22 +347,22 @@ public class ControladorPropCat implements IPropCat {
         }
         return retorno;
     }
-
+    
     public float CalcularMontoPropuesta(Propuesta prop) {
         float montoTot = 0;
-
+        
         List<Colaboracion> lCol = prop.getColaboraciones();
-
+        
         for (int i = 0; i < lCol.size(); i++) {
-
+            
             Colaboracion col = (Colaboracion) lCol.get(i);
-
+            
             montoTot = montoTot + col.getMontoC();
         }
-
+        
         return montoTot;
     }
-
+    
     @Override
     public DtConsultaPropuesta SeleccionarPropuesta(String titulo, String proponente) {
         Propuesta prop = this.propuestas.get(titulo);
@@ -412,17 +413,17 @@ public class ControladorPropCat implements IPropCat {
         }
         return null;
     }
-
+    
     @Override
-
+    
     public Map<String, Propuesta> getPropuestas() {
         return this.propuestas;
     }
-
+    
     @Override
     public List<DtinfoPropuesta> DarPropuestasCol(Colaborador c) {
         this.EvaluarEstadosPropuestas();
-
+        
         List<DtinfoPropuesta> resultado = new ArrayList<>();
         Iterator it = c.getColaboraciones().iterator();
         while (it.hasNext()) {
@@ -434,7 +435,7 @@ public class ControladorPropCat implements IPropCat {
         }
         return resultado;
     }
-
+    
     @Override
     public void CargarPropuestas() {
         this.dbPropuesta.cargarCategorias();
@@ -442,43 +443,43 @@ public class ControladorPropCat implements IPropCat {
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta aux = (Propuesta) mentry.getValue();
-
+            
             this.dbPropuesta.cargarEstadoPropuesta(aux);
         }
     }
-
+    
     @Override
     public void CargarColaboraciones() {
         DBColaboracion DBC = new DBColaboracion();
         DBC.CargarColaboraciones();
     }
-
+    
     @Override
     public boolean agregarColaboracion(boolean Entrada, Float monto) throws Exception {
-
+        
         IControladorUsuario ICU = Fabrica.getInstance().getIControladorUsuario();
         Calendar calendario = new GregorianCalendar();
         DBColaboracion DBC = new DBColaboracion();
-
+        
         if (!this.getPropuesta().getEstaActiva()) {
             throw new Exception("La propuesta pertenece a un usuario desactivado");
         }
-
+        
         List<Colaboracion> colaboraciones = this.getPropuesta().getColaboraciones();
         List<Colaboracion> colaboracionesC = ICU.getColaborador().getColaboraciones();
         float TotalColaboracion = 0;
-
+        
         for (int indice = 0; indice < colaboraciones.size(); indice++) {
             TotalColaboracion = TotalColaboracion + colaboraciones.get(indice).getMontoC();
         }
-
+        
         for (int indice2 = 0; indice2 < colaboracionesC.size(); indice2++) {
             if (colaboracionesC.get(indice2).getTituloP().compareTo(this.getPropuesta().getTituloP()) == 0) {
                 throw new Exception("No puede colaborar en una propuesta mas de una vez");
             }
         }
         if ((TotalColaboracion + monto) <= this.getPropuesta().getMontoTot()) {
-
+            
             Colaboracion colaboracion = new Colaboracion(ICU.getColaborador(), monto, calendario, Entrada, this.getPropuesta());
             ICU.getColaborador().setColaboraciones(colaboracion);
             this.getPropuesta().setColaboraciones(colaboracion);
@@ -503,7 +504,7 @@ public class ControladorPropCat implements IPropCat {
                 this.getPropuesta().setEstados(EstAnterior);
                 DBC.agregarestadocolaboracion();
             }
-
+            
             DBC.agregarColaboracion(Entrada, monto);
             
             return true;
@@ -511,12 +512,12 @@ public class ControladorPropCat implements IPropCat {
             throw new Exception("El monto que ingreso ha superado el limite del monto total, ingrese un monto menor o igual a: $" + (this.getPropuesta().getMontoTot() - TotalColaboracion));
         }
     }
-
+    
     @Override
     public Propuesta getPropuesta() {
         return Propuesta;
     }
-
+    
     @Override
     public List<DtinfoColaborador> ListarColaboradores(String titulo) {
         List<DtinfoColaborador> retorno = new ArrayList<>();
@@ -531,7 +532,7 @@ public class ControladorPropCat implements IPropCat {
         }
         return retorno;
     }
-
+    
     @Override
     public boolean crearPropuestaDatosdePrueba(String tituloP, String descripcion, Categoria cat, Calendar fecha, String lugar, float montoE, float montoTot, TipoRetorno retorno, Proponente p, String imagen) {
         if (this.getPropuestas().get(tituloP) != null) {
@@ -545,7 +546,7 @@ public class ControladorPropCat implements IPropCat {
         try {
             DataImagen img = convertidor.convertirStringAImg(url, tituloP);
             nuevaP.setImagen(img.getNombreArchivo() + "." + img.getExtensionArchivo());
-
+            
             this.dbPropuesta = new DBPropuesta();
             boolean agregada = this.dbPropuesta.agregarPropuestaDatosdePrueba(nuevaP);
             if (agregada == true) {
@@ -556,18 +557,18 @@ public class ControladorPropCat implements IPropCat {
         }
         return true;
     }
-
+    
     @Override
     public Categoria ObtenerCategoria(String nomCat) {
         return (Categoria) this.categorias.get(nomCat);
     }
-
+    
     @Override
     public boolean crearCategoriaDatosdePrueba(String nomCat, String nomPadre
     ) {
-
+        
         boolean agregada = this.dbPropuesta.agregarCategoria(nomCat, nomPadre);
-
+        
         if (agregada) {
             Categoria hijo = new Categoria(nomCat);
             Categoria padre = this.categorias.get(nomPadre);
@@ -577,10 +578,10 @@ public class ControladorPropCat implements IPropCat {
             this.categorias.put(nomCat, hijo);
             return true;
         }
-
+        
         return false;
     }
-
+    
     @Override
     public boolean agregarColaboracionDatosdePrueba(String TituloP, String nickName,
             float monto, Calendar fechaRealiz,
@@ -589,46 +590,46 @@ public class ControladorPropCat implements IPropCat {
         Fabrica fabrica = Fabrica.getInstance();
         IControladorUsuario ICU = fabrica.getIControladorUsuario();
         IPropCat IPC = fabrica.getControladorPropCat();
-
+        
         Propuesta p = (Propuesta) this.propuestas.get(TituloP);
         Colaborador c = (Colaborador) ICU.getUsuarios().get(nickName);
-
+        
         Colaboracion colaboracion = new Colaboracion(c, monto, fechaRealiz, Entrada, p);
         c.setColaboraciones(colaboracion);
 //        colaboracion.setPropuesta(p);
         p.setColaboraciones(colaboracion);
-
+        
         DBColaboracion DBC = new DBColaboracion();
         DBC.agregarColaboracionDatosdePrueba(TituloP, nickName, monto, fechaRealiz, Entrada);
-
+        
         return true;
-
+        
     }
-
+    
     @Override
     public boolean nuevoEstadoPropuestaDatosdePrueba(String TituloP, TipoE estado,
             Calendar fecha
     ) {
-
+        
         EstadoPropuesta estadop = new EstadoPropuesta(estado, fecha, false);
         Propuesta p = (Propuesta) this.propuestas.get(TituloP);
         p.setEstados(estadop);
-
+        
         DBPropuesta DBP = new DBPropuesta();
         DBP.agregarEstadoPropuestaDatosdePrueba(estadop, TituloP);
-
+        
         return true;
-
+        
     }
-
+    
     @Override
     public void LimpiarPropCat() {
         Iterator it = this.categorias.entrySet().iterator();
-
+        
         while (it.hasNext()) {
             Map.Entry mtry = (Map.Entry) it.next();
             Categoria cat = (Categoria) mtry.getValue();
-
+            
             if (cat.getPropuestas().size() > 0) {
                 Iterator itP = cat.getPropuestas().entrySet().iterator();
                 while (itP.hasNext()) {
@@ -640,17 +641,17 @@ public class ControladorPropCat implements IPropCat {
                 }
             }
         }
-
+        
     }
-
+    
     public void LimpiarProp(Propuesta prop) {
-
+        
         for (Colaboracion col : prop.getColaboraciones()) {
             prop.getColaboraciones().remove(col);
             col.setPropuesta(null);
             col.setUColaborador(null);
         }
-
+        
         for (EstadoPropuesta estP : prop.getHistorialEst()) {
             prop.getHistorialEst().remove(estP);
         }
@@ -658,12 +659,12 @@ public class ControladorPropCat implements IPropCat {
         prop.setEstadoActual(null);
         prop.setAutor(null);
     }
-
+    
     @Override
     public void comprobarBaseCat() {
         this.dbPropuesta.ComprobarBaseCat();
     }
-
+    
     private static String getFileExtension(File file) {
         String fileName = file.getName();
         if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0) {
@@ -672,45 +673,45 @@ public class ControladorPropCat implements IPropCat {
             return "";
         }
     }
-
+    
     @Override
     public void copiarFoto(String foto, String tituloP) {
-
+        
         File origen = new File(foto);
         String extension = getFileExtension(origen);
         String rutaLocal = carpetaImagenesPropuestas + tituloP + "." + extension;
         File destino = new File(rutaLocal);
-
+        
         try {
             InputStream in = new FileInputStream(origen);
             OutputStream out = new FileOutputStream(destino);
-
+            
             byte[] buf = new byte[1024];
             int len;
-
+            
             while ((len = in.read(buf)) > 0) {
                 out.write(buf, 0, len);
             }
-
+            
             in.close();
             out.close();
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-
+        
     }
-
+    
     @Override
     public void setEstadoActualDatosDePrueba(String titulo, EstadoPropuesta estadoActual) {
-
+        
         Propuesta prop = this.getPropuestas().get(titulo);
-
+        
         boolean ok = this.dbPropuesta.agregarEstadoPropuestaDatosdePrueba(estadoActual, titulo);
         if (ok) {
             prop.setEstadoActual(estadoActual);
         }
     }
-
+    
     @Override
     public List<DtColaboraciones> listarColaboraciones(String titulo) throws Exception {
         List<DtColaboraciones> retorno = new ArrayList<>();
@@ -732,7 +733,7 @@ public class ControladorPropCat implements IPropCat {
             throw new Exception("La propuesta Seleccionada pertenece a un usuario desactivado");
         }
     }
-
+    
     @Override
     public boolean eliminarColaboracion(String titulo, String nick) throws Exception {
         boolean ok;
@@ -756,15 +757,15 @@ public class ControladorPropCat implements IPropCat {
         }
         return false;
     }
-
+    
     @Override
     public List<DtConsultaPropuesta2> ListaColaboradoresProp(String titulo) throws Exception {
         List<DtConsultaPropuesta2> listColab = new ArrayList<>();
-
+        
         Propuesta prop = this.getPropuestas().get(titulo);
         if (prop.getEstaActiva()) {
             Iterator it = prop.getColaboraciones().iterator();
-
+            
             while (it.hasNext()) {
                 Colaboracion colab = (Colaboracion) it.next();
                 Date fecha = (Date) colab.getFechaRealiz().getTime();
@@ -776,7 +777,7 @@ public class ControladorPropCat implements IPropCat {
             throw new Exception("El autor actualmente desactivo su cuenta");
         }
     }
-
+    
     @Override
     public boolean ActualizarDatosPropuesta(DtinfoPropuesta dtp) {
         Set set = this.propuestas.entrySet();
@@ -812,18 +813,18 @@ public class ControladorPropCat implements IPropCat {
         }
         return true;
     }
-
+    
     @Override
     public List<DtNickTitProp> ListaEvaluarPropuesta() {
         List<DtNickTitProp> listProp = new ArrayList<>();
-
+        
         Iterator it = this.getPropuestas().entrySet().iterator();
-
+        
         while (it.hasNext()) {
             Map.Entry mtry = (Map.Entry) it.next();
-
+            
             Propuesta prop = (Propuesta) mtry.getValue();
-
+            
             if (prop.getEstadoActual().getEstado() == TipoE.Ingresada) {
                 if (prop.getEstaActiva()) {
                     DtNickTitProp dtProp = new DtNickTitProp(prop.getTituloP(), prop.getAutor().getNickname());
@@ -833,20 +834,20 @@ public class ControladorPropCat implements IPropCat {
         }
         return listProp;
     }
-
+    
     @Override
     public boolean EvaluarPropuesta(String titulo, TipoE tipo) throws Exception {
-
+        
         Propuesta prop = this.getPropuestas().get(titulo);
-
+        
         if (prop.getEstadoActual().getEstado() != TipoE.Ingresada || prop.getEstadoActual().getActual() == false) {
             return false;
         } else {
             EstadoPropuesta estNuevo = new EstadoPropuesta(tipo, new GregorianCalendar(), true);
             EstadoPropuesta estAnterior = prop.getEstadoActual();
-
+            
             boolean ok = this.dbPropuesta.EvaluarPropuestaBD(estNuevo, estAnterior, titulo);
-
+            
             if (ok) {
                 estAnterior.setEsActual(false);
                 prop.setEstados(estAnterior);
@@ -857,22 +858,22 @@ public class ControladorPropCat implements IPropCat {
             }
         }
     }
-
+    
     @Override
     public void EvaluarEstadosPropuestas() {
-
+        
         Iterator it = this.getPropuestas().entrySet().iterator();
-
+        
         while (it.hasNext()) {
             Map.Entry mtry = (Map.Entry) it.next();
-
+            
             Propuesta prop = (Propuesta) mtry.getValue();
-
+            
             if (prop.getEstadoActual().getEstado() == TipoE.Publicada || prop.getEstadoActual().getEstado() == TipoE.enFinanciacion) {
-
+                
                 Calendar fechaDeHoy = new GregorianCalendar();
                 Date fechaDeHoy1 = fechaDeHoy.getTime();
-
+                
                 if (!fechaDeHoy1.before(this.FechaCambioEstado(prop.getFechaPublicacion().getTime()))) {
                     if (prop.getMontoTot() <= this.CalcularMontoPropuesta(prop)) {
                         EstadoPropuesta nuevoE = new EstadoPropuesta(TipoE.Financiada, fechaDeHoy, true);
@@ -890,19 +891,19 @@ public class ControladorPropCat implements IPropCat {
                         this.dbPropuesta.EvaluarPropuestaBD(nuevoE, EstadoAnt, prop.getTituloP());
                     }
                 }
-
+                
             }
         }
-
+        
     }
-
+    
     public Date FechaCambioEstado(Date fechaPublicada) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(fechaPublicada);
         cal.add(Calendar.DAY_OF_YEAR, 30);
         return cal.getTime();
     }
-
+    
     @Override
     public Usuario CargarFavoritas(Usuario usu, List<String> usufav) {
         Set set = this.propuestas.entrySet();
@@ -924,11 +925,11 @@ public class ControladorPropCat implements IPropCat {
         }
         return usu;
     }
-
+    
     @Override
     public List<DtinfoPropuesta> ListarPropuestasNoIngresadas(String nick) {
         this.EvaluarEstadosPropuestas();
-
+        
         List<DtinfoPropuesta> retorno = new ArrayList<>();
         Set set = this.propuestas.entrySet();
         Iterator iterator = set.iterator();
@@ -946,11 +947,11 @@ public class ControladorPropCat implements IPropCat {
         }
         return retorno;
     }
-
+    
     @Override
     public List<DtinfoPropuesta> ListarPropuestaNOI() {
         this.EvaluarEstadosPropuestas();
-
+        
         List<DtinfoPropuesta> propuestas = new ArrayList<>();
         Set set = this.propuestas.entrySet();
         Iterator it = set.iterator();
@@ -964,7 +965,7 @@ public class ControladorPropCat implements IPropCat {
         }
         return propuestas;
     }
-
+    
     @Override
     public List<DtinfoPropuesta> ListarPropuesta() {
         this.EvaluarEstadosPropuestas();
@@ -981,7 +982,7 @@ public class ControladorPropCat implements IPropCat {
         }
         return propuestas;
     }
-
+    
     @Override
     public boolean AgregarFavorita(String titulo, String nick) {
         Boolean exito = this.dbPropuesta.AgregarFavoritas(nick, titulo);
@@ -998,34 +999,34 @@ public class ControladorPropCat implements IPropCat {
         }
         return exito;
     }
-
+    
     @Override
     public List<DtPropuestaWeb> ListarPropuestasWeb(TipoE estado) {
         this.EvaluarEstadosPropuestas();
-
+        
         List<DtPropuestaWeb> listProp = new ArrayList<>();
-
+        
         Iterator it = this.propuestas.entrySet().iterator();
-
+        
         while (it.hasNext()) {
             Map.Entry mtry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mtry.getValue();
             if (prop.getEstaActiva()) {
                 if (prop.getEstadoActual().getEstado() == estado) {
-
+                    
                     Calendar fechaPub = prop.getFechaPublicacion();
                     int dias = 0;
-
+                    
                     if (fechaPub != null) {
                         Date fPubFin = this.FechaCambioEstado(fechaPub.getTime());
-
+                        
                         Date fechaActual = new GregorianCalendar().getTime();
                         dias = (int) ((fPubFin.getTime() - fechaActual.getTime()) / 86400000);
                     }
-
+                    
                     int porcentaje = (int) ((this.CalcularMontoPropuesta(prop) * 100) / prop.getMontoTot());
                     DtPropuestaWeb dtpropW;
-
+                    
                     if (prop.getEstadoActual().getEstado() == TipoE.Cancelada || prop.getEstadoActual().getEstado() == TipoE.Financiada || prop.getEstadoActual().getEstado() == TipoE.noFinanciada) {
                         dtpropW = new DtPropuestaWeb(prop.getTituloP(), prop.getDescripcionP(), 0, this.CalcularMontoPropuesta(prop), porcentaje, prop.getColaboraciones().size());
                     } else {
@@ -1037,7 +1038,7 @@ public class ControladorPropCat implements IPropCat {
         }
         return listProp;
     }
-
+    
     @Override
     public List<DtinfoPropuesta> ListarPropuestasCategoria(String nombrecat) {
         List<DtinfoPropuesta> propuestas = new ArrayList<>();
@@ -1056,14 +1057,14 @@ public class ControladorPropCat implements IPropCat {
         }
         return propuestas;
     }
-
+    
     @Override
     public List<DtNickTitProp> listarPropuestasComentar() {
-
+        
         List<DtNickTitProp> listPropuestas = new ArrayList();
-
+        
         Iterator it = this.propuestas.entrySet().iterator();
-
+        
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mentry.getValue();
@@ -1076,16 +1077,16 @@ public class ControladorPropCat implements IPropCat {
         }
         return listPropuestas;
     }
-
+    
     @Override
     public void ComentarPropuesta(String TituloP, String nickColab, String texto) throws Exception {
         Propuesta p = this.propuestas.get(TituloP);
         Colaborador colab = Fabrica.getInstance().getIControladorUsuario().ObtenerColaborador(nickColab);
-
+        
         Comentario c = new Comentario(colab, texto);
-
+        
         boolean colaboroenProp = false;
-
+        
         List<Comentario> comentariosProp = p.getComentarios();
         Iterator it = comentariosProp.iterator();
         while (it.hasNext()) {
@@ -1093,9 +1094,9 @@ public class ControladorPropCat implements IPropCat {
             if (comen.getColaborador().getNickname().compareTo(nickColab) == 0) {
                 throw new Exception("Solo puede comentar una unica vez la propuesta");
             }
-
+            
         }
-
+        
         List<Colaboracion> colaboracionesProp = p.getColaboraciones();
         Iterator it1 = colaboracionesProp.iterator();
         while (it1.hasNext()) {
@@ -1104,16 +1105,16 @@ public class ControladorPropCat implements IPropCat {
                 colaboroenProp = true;
             }
         }
-
+        
         if (colaboroenProp == false) {
             throw new Exception("Debe colaborar en la propuesta " + TituloP + " para poder Comentarla");
         }
-
+        
         p.getComentarios().add(c);
         this.dbPropuesta.AgregarComentario(TituloP, nickColab, texto);
-
+        
     }
-
+    
     @Override
     public List<DtNickTitProp> ListarPropuestasX_DeProponenteX(String nick) {
         this.EvaluarEstadosPropuestas();
@@ -1134,7 +1135,7 @@ public class ControladorPropCat implements IPropCat {
         }
         return retorno;
     }
-
+    
     @Override
     public boolean ExtenderFinanciacion(String Titulo) {
         Iterator it = this.getPropuestas().entrySet().iterator();
@@ -1145,7 +1146,7 @@ public class ControladorPropCat implements IPropCat {
                 if (prop.getTituloP().compareTo(Titulo) == 0) {
                     EstadoPropuesta EP = prop.getEstadoPublicado();
                     Calendar calendario = new GregorianCalendar();
-
+                    
                     EP.setfechaInicio(calendario);
                     this.dbPropuesta.ModificarEstadoPublicadaPropuesta(prop.getTituloP(), calendario);
                     return true;
@@ -1154,7 +1155,7 @@ public class ControladorPropCat implements IPropCat {
         }
         return false;
     }
-
+    
     public boolean Comentable(Propuesta prop, String nick) {
         Iterator it = prop.getComentarios().iterator();
         while (it.hasNext()) {
@@ -1165,10 +1166,10 @@ public class ControladorPropCat implements IPropCat {
         }
         return true;
     }
-
+    
     @Override
     public void CargarComentarios() {
-
+        
         Set set = this.propuestas.entrySet();
         Iterator it = set.iterator();
         while (it.hasNext()) {
@@ -1177,23 +1178,23 @@ public class ControladorPropCat implements IPropCat {
             this.dbPropuesta.CargarComentarios(p.getTituloP());
         }
     }
-
+    
     @Override
     public boolean CancelarPropuesta(String titulo, String nick) throws Exception {
-
+        
         Propuesta prop = this.propuestas.get(titulo);
-
+        
         Proponente autor = Fabrica.getInstance().getIControladorUsuario().ObtenerProponente(nick);
         if (prop != null && prop.getAutor().getNickname().equals(nick)) {
             if (prop.getEstaActiva() && autor.getEstaActivo()) {
                 EstadoPropuesta estAnterior = prop.getEstadoActual();
                 estAnterior.setEsActual(false);
                 prop.setEstados(estAnterior);
-
+                
                 EstadoPropuesta nuevoEstado = new EstadoPropuesta(TipoE.Cancelada, new GregorianCalendar(), true);
-
+                
                 prop.setEstadoActual(nuevoEstado);
-
+                
                 return this.dbPropuesta.EvaluarPropuestaBD(nuevoEstado, estAnterior, titulo);
             } else {
                 throw new Exception("El Autor de esta propuesta desactivo su perfil");
@@ -1201,7 +1202,7 @@ public class ControladorPropCat implements IPropCat {
         }
         return false;
     }
-
+    
     @Override
     public List<DtNickTitProp> ListarPropuestasCancelar(String proponente) {
         List<DtNickTitProp> listProp = new ArrayList<>();
@@ -1218,15 +1219,15 @@ public class ControladorPropCat implements IPropCat {
         }
         return listProp;
     }
-
+    
     @Override
     public List<DTListaPropuestasR> listarPropuestasRWEB() {//commit
         this.EvaluarEstadosPropuestas();
-
+        
         List<DTListaPropuestasR> listPropuestas = new ArrayList();
-
+        
         Iterator it = this.propuestas.entrySet().iterator();
-
+        
         while (it.hasNext()) {
             Map.Entry mentry = (Map.Entry) it.next();
             Propuesta prop = (Propuesta) mentry.getValue();
@@ -1237,12 +1238,12 @@ public class ControladorPropCat implements IPropCat {
         }
         return listPropuestas;
     }
-
+    
     @Override
     public void DesactivarPropuesta(Propuesta prop) {
         this.dbPropuesta.DesactivarPropuesta(prop.getTituloP());
     }
-
+    
     @Override
     public List<DtConsultaPropuesta> getDtPropuestas() throws Exception {
         List<DtConsultaPropuesta> lista = new ArrayList<>();
@@ -1256,11 +1257,11 @@ public class ControladorPropCat implements IPropCat {
                 DtConsultaPropuesta dtCP = this.SeleccionarPropuesta(prop.getTituloP(), null);
                 lista.add(dtCP);
             }
-
+            
         }
         return lista;
     }
-
+    
     @Override
     public byte[] retornarImagen(String titulo) throws IOException {
         byte[] arreglo = null;
@@ -1271,7 +1272,7 @@ public class ControladorPropCat implements IPropCat {
         arreglo = Files.readAllBytes(f.toPath());
         return arreglo;
     }
-
+    
     @Override
     public List<DtComentarios> retornarComantarios(String TituloP) {
         List<DtComentarios> lista = new ArrayList<>();
@@ -1285,21 +1286,21 @@ public class ControladorPropCat implements IPropCat {
                     lista.add(new DtComentarios(listaC.get(i).getColaborador().getNickname(), prop.getTituloP(), listaC.get(i).getTexto()));
                 }
             }
-
+            
         }
         return lista;
     }
-
+    
     @Override
     public void CargarPagosTarjetaDP(String nick, String titulo, String tarjeta, String numero, Calendar fecha, int cvc, String titular) {
         Propuesta prop = this.propuestas.get(titulo);
         Iterator it = prop.getColaboraciones().iterator();
-
+        
         while (it.hasNext()) {
             Colaboracion colab = (Colaboracion) it.next();
             if (colab.getColaborador().getNickname().equals(nick)) {
                 Tarjeta pago = new Tarjeta(tarjeta, numero, fecha, cvc, titular);
-
+                
                 try {
                     boolean ok = this.dbColaboracion.RegistrarPagoColaboracion(pago, nick, titulo);
                     if (ok) {
@@ -1314,12 +1315,12 @@ public class ControladorPropCat implements IPropCat {
             }
         }
     }
-
+    
     @Override
     public void CargarPagosTransfPayDP(String nick, String titulo, String nomBanco, String numCuenta, String nomTitular) {
         Propuesta prop = this.propuestas.get(titulo);
         Iterator it = prop.getColaboraciones().iterator();
-
+        
         while (it.hasNext()) {
             Colaboracion colab = (Colaboracion) it.next();
             if (colab.getColaborador().getNickname().equals(nick)) {
@@ -1338,13 +1339,13 @@ public class ControladorPropCat implements IPropCat {
             }
         }
     }
-
+    
     @Override
     public DtPago ObtenerPago(String nick, String titulo) {
         Propuesta prop = this.propuestas.get(titulo);
-
+        
         Iterator it = prop.getColaboraciones().iterator();
-
+        
         while (it.hasNext()) {
             Colaboracion colab = (Colaboracion) it.next();
             if (colab.getColaborador().getNickname().equals(nick)) {

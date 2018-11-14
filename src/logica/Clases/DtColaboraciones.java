@@ -39,7 +39,9 @@ public class DtColaboraciones {
         this.fechaRealiz = col.getFechaRealiz();
         this.Entradas = col.getEntradas();
         this.Propuesta = col.getPropuesta().getTituloP();
+        if(col.getPago() != null){
         this.Pago = col.getPago().getPago();
+        }
     }
 
     public String getUColaborador() {
