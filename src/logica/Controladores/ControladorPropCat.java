@@ -257,7 +257,7 @@ public class ControladorPropCat implements IPropCat {
         }
         pathStr = pathStr + File.separatorChar + nombreA + "." + extencion;
         final Path path = Paths.get(pathStr);
-        Files.write(path, imagen.getStream(), CREATE);
+        Files.write(path, imagen.getStream(), CREATE); // se crea la imagen
     }
 
     @Override
