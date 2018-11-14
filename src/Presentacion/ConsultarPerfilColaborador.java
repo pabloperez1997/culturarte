@@ -231,9 +231,15 @@ public class ConsultarPerfilColaborador extends javax.swing.JInternalFrame {
         textcorreo.setText(dtc.getCorreo());
         textnom.setText(dtc.getNombre());
         textfecha.setText(dia + "/" + mes + "/" + anio);
-        String fotos = System.getProperty("user.dir") + "\\fPerfiles\\" + dtc.getImagen();
-        ImageIcon fot = new ImageIcon(fotos);
-        Icon icono = new ImageIcon(fot.getImage().getScaledInstance(foto.getWidth(), foto.getHeight(), Image.SCALE_DEFAULT));
+        String fotos;
+                if (dtc.getImagen().equals("nadie.png")) {
+                    fotos = System.getProperty("user.dir") + "\\fPerfiles\\" + dtc.getImagen();
+                } else {
+                    fotos = System.getProperty("user.dir") + "\\fPerfiles\\" + dtc.getCorreo() + "\\" + dtc.getImagen();
+                }
+                ImageIcon fot = new ImageIcon(fotos);
+                Icon icono = new ImageIcon(fot.getImage().getScaledInstance(foto.getWidth(), foto.getHeight(), Image.SCALE_DEFAULT));
+
         foto.setIcon(icono);
 
 

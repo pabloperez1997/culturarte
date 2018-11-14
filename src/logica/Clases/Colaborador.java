@@ -50,12 +50,13 @@ public class Colaborador extends Usuario {
         List<DtColaboraciones> colab = new ArrayList<>();
         
         Iterator it = this.Colaboraciones.iterator();
-        
+        if(this.Colaboraciones.size() > 0){
         while(it.hasNext()){
             Colaboracion c = (Colaboracion) it.next();
             DtColaboraciones dtC = new DtColaboraciones(c);
             colab.add(dtC);
-        }   
+        }
+        }
         return colab;
     }
 }

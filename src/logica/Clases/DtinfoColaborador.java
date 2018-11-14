@@ -5,6 +5,7 @@
  */
 package logica.Clases;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -23,7 +24,7 @@ public class DtinfoColaborador {
     private String correo;
     private Calendar fechaN;
     private String imagen;
-    private List<DtColaboraciones> colaboraciones;
+    private List<DtColaboraciones> colaboraciones = new ArrayList<>();
 
     public DtinfoColaborador(String nickname, String nombre, String apellido, String correo, Calendar fechaN) {
         this.nickname = nickname;
